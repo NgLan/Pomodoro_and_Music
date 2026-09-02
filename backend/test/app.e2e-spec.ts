@@ -1,13 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module.js';
 
 describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
+  let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
+    Object.assign(process.env, {
+      NODE_ENV: 'test',
+      PORT: '3001',
+      DATABASE_URL: 'postgresql://user:password@localhost:5432/app',
+      JWT_ACCESS_SECRET: 'a-secure-test-secret-with-32-characters',
+      JWT_ACCESS_TTL: '15m',
+      REFRESH_TOKEN_TTL: '7d',
+      YOUTUBE_API_KEY: 'youtube-test-key',
+      FRONTEND_ORIGIN: 'http://localhost:5173',
+      LOG_LEVEL: 'error',
+    });
+    const { AppModule } = await import('./../src/app.module.js');
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -16,14 +26,48 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('wraps successful responses and returns request context headers', () => {
     return request(app.getHttpServer())
       .get('/')
+      .set('x-request-id', 'e2e-request-id')
       .expect(200)
-      .expect('Hello World!');
+      .expect('x-request-id', 'e2e-request-id')
+      .expect({
+        status: 'success',
+        code: 200,
+        message: 'Success',
+        data: 'Hello World!',
+      });
   });
 
-  afterEach(async () => {
-    await app.close();
+  it('exposes liveness without external dependencies', () => {
+    return request(app.getHttpServer())
+      .get('/health/live')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body).toMatchObject({
+          status: 'success',
+          code: 200,
+          data: { status: 'ok' },
+        });
+      });
+  });
+
+  it('normalizes HTTP exceptions', () => {
+    return request(app.getHttpServer())
+      .get('/not-found')
+      .set('x-request-id', 'missing-route-id')
+      .expect(404)
+      .expect({
+        code: 404,
+        message: 'Cannot GET /not-found',
+        error_code: 'RESOURCE_NOT_FOUND',
+        details: [],
+        request_id: 'missing-route-id',
+      });
+  });
+
+  afterAll(async () => {
+    await app?.close();
   });
 });

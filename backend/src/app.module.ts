@@ -1,19 +1,27 @@
 import { Module } from '@nestjs/common';
-import { createObserveModule } from '@nestjs/observe';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-
-export const { ObserveModule, ObserveInstrument } = createObserveModule();
+import { CommonModule } from './common/common.module.js';
+import {
+  appConfig,
+  authConfig,
+  databaseConfig,
+  validateEnvironment,
+  youtubeConfig,
+} from './common/config/index.js';
+import { HealthModule } from './health/health.module.js';
 
 @Module({
   imports: [
-    // Distributed tracing, auto-correlated logs, request/job metrics, error
-    // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com
-    ObserveModule.forRoot({
-      appKey: 'YOUR_APP_KEY',
-      appSecret: 'YOUR_APP_SECRET',
-      serviceId: 'backend',
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      load: [appConfig, databaseConfig, authConfig, youtubeConfig],
+      validate: validateEnvironment,
     }),
+    CommonModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
