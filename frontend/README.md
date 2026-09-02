@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cappucino không đá không đường — Frontend
 
-## Getting Started
+Next.js frontend for the Pomodoro and Music application. The shared foundation
+uses Tailwind CSS 4, shadcn/ui (Radix), next-intl, TanStack Query, React Hook
+Form, Zod, Sonner, and a generated Hey API client.
 
-First, run the development server:
+## Local development
+
+Use Node.js 22 or newer, then install dependencies and start the app:
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The frontend runs at `http://localhost:5173`. The default backend URL is
+`http://localhost:3000`; override it in `.env.local` when needed:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```dotenv
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_APP_ENV=development
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Only browser-safe values may use the `NEXT_PUBLIC_` prefix.
 
-## Learn More
+## API contract workflow
 
-To learn more about Next.js, take a look at the following resources:
+With the backend running, refresh the committed OpenAPI snapshot and regenerate
+the client:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run api:pull
+npm run api:generate
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Set `OPENAPI_INPUT` to pull from a different Swagger endpoint. Files under
+`src/api/generated/` are generated artifacts and must not be edited manually.
+`npm run api:check` regenerates them and fails when the committed client drifts
+from `openapi/openapi.json`.
 
-## Deploy on Vercel
+## Quality commands
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run format:check
+npm run lint
+npm run type-check
+npm run test
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The same sequence runs in `.github/workflows/frontend-ci.yml`.

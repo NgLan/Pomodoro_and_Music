@@ -1,0 +1,7 @@
+{
+  "MSG_SUCCESS": "Done.",
+  "MSG_SAVED": "Changes saved.",
+  "MSG_WARNING": "Please review the information.",
+  "MSG_INFO": "There is new information for you.",
+  "MSG_ERROR_GENERIC": "Something went wrong. Please try again."
+}

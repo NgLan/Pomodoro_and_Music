@@ -1,0 +1,9 @@
+{
+  "UNKNOWN": "Something went wrong. Please try again.",
+  "NETWORK_ERROR": "We could not reach the server. Check your connection.",
+  "RESOURCE_NOT_FOUND": "The requested content could not be found.",
+  "VALIDATION_ERROR": "Some information is not valid.",
+  "UNAUTHORIZED": "Please sign in to continue.",
+  "FORBIDDEN": "You do not have permission to do that.",
+  "DATABASE_NOT_READY": "The service is temporarily unavailable. Please try again later."
+}

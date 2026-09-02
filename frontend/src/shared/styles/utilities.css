@@ -1,0 +1,24 @@
+.neo-surface {
+  border: var(--border-width-strong) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-hard);
+}
+
+.neo-interactive {
+  transition:
+    transform var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    background-color var(--motion-fast) ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .neo-interactive:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 3px 4px 0 var(--color-border);
+  }
+}
+
+.neo-interactive:active {
+  transform: translate(4px, 5px);
+  box-shadow: none;
+}
