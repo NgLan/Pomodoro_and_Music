@@ -25,6 +25,33 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Database lifecycle
+
+Set the required values from `.env.example` before starting the application.
+The PostgreSQL role in `DATABASE_URL` must be able to connect to the
+`postgres` maintenance database and needs `CREATEDB` permission when the
+target database does not exist.
+
+At startup the backend:
+
+1. creates the configured database when it is missing;
+2. opens one TypeORM connection pool;
+3. runs every pending migration;
+4. creates or updates application tables through those migrations.
+
+`synchronize` is intentionally disabled in every environment. Create and
+commit a migration whenever an entity changes:
+
+```bash
+npm run migration:create
+npm run migration:generate
+npm run migration:run
+npm run migration:revert
+```
+
+Swagger UI is served at `/docs`; the OpenAPI JSON document is available at
+`/docs/openapi.json`.
+
 ## Project setup
 
 ```bash

@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
+import { DataSource } from 'typeorm';
+import { setupOpenApi } from './../src/openapi/openapi.js';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -20,9 +22,18 @@ describe('AppController (e2e)', () => {
     const { AppModule } = await import('./../src/app.module.js');
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideProvider(DataSource)
+      .useValue({
+        isInitialized: false,
+        query: vi.fn().mockResolvedValue([{ '?column?': 1 }]),
+        transaction: vi.fn(),
+        destroy: vi.fn(),
+      })
+      .compile();
 
     app = moduleFixture.createNestApplication();
+    setupOpenApi(app);
     await app.init();
   });
 
@@ -49,6 +60,38 @@ describe('AppController (e2e)', () => {
           status: 'success',
           code: 200,
           data: { status: 'ok' },
+        });
+      });
+  });
+
+  it('checks the database for readiness', () => {
+    return request(app.getHttpServer())
+      .get('/health/ready')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body).toMatchObject({
+          status: 'success',
+          code: 200,
+          data: {
+            status: 'ready',
+            checks: { application: 'up', database: 'up' },
+          },
+        });
+      });
+  });
+
+  it('serves a Swagger OpenAPI document with stable operation IDs', () => {
+    return request(app.getHttpServer())
+      .get('/docs/openapi.json')
+      .expect(200)
+      .expect(({ body }) => {
+        expect(body.info.title).toBe('Pomodoro and Music API');
+        expect(body.paths['/health/live'].get.operationId).toBe(
+          'healthLiveness',
+        );
+        expect(body.components.securitySchemes['access-token']).toMatchObject({
+          type: 'http',
+          scheme: 'bearer',
         });
       });
   });
