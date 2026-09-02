@@ -1,12 +1,17 @@
 import type { EntityManager } from 'typeorm';
-import { InfrastructureException } from '../../../src/common/exceptions/infrastructure.exception.js';
+import {
+  ErrorCode,
+  InfrastructureException,
+} from '../../../src/common/exceptions/index.js';
 import {
   ensureDatabaseExists,
   type DatabaseAdminClientFactory,
-} from '../../../src/database/database-initializer.js';
-import { TransactionContext } from '../../../src/database/transaction/transaction-context.js';
-import { TypeOrmUnitOfWork } from '../../../src/database/transaction/unit-of-work.js';
-import { createNestTypeOrmOptions } from '../../../src/database/typeorm-options.js';
+} from '../../../src/infrastructure/database/database-initializer.js';
+import { TransactionContext } from '../../../src/infrastructure/database/transaction/transaction-context.js';
+import { TypeOrmUnitOfWork } from '../../../src/infrastructure/database/transaction/unit-of-work.js';
+import { createNestTypeOrmOptions } from '../../../src/infrastructure/database/typeorm-options.js';
+import { InitialSchema1788360000000 } from '../../../src/infrastructure/database/migrations/1788360000000-initial-schema.js';
+import { DatabaseReadinessService } from '../../../src/infrastructure/database/database-readiness.service.js';
 
 function createAdminClient(options?: {
   existingRowCount?: number;
@@ -106,8 +111,44 @@ describe('database foundation', () => {
       );
 
       await expect(result).rejects.toBeInstanceOf(InfrastructureException);
-      await expect(result).rejects.toMatchObject({ cause });
+      await expect(result).rejects.toMatchObject({
+        code: ErrorCode.DATABASE_INITIALIZATION_FAILED,
+        cause,
+      });
       expect(client.end).toHaveBeenCalledOnce();
+    });
+  });
+
+  it('defines the initial migration for all schema tables', async () => {
+    const query = vi.fn().mockResolvedValue(undefined);
+
+    await new InitialSchema1788360000000().up({ query } as never);
+
+    const migrationSql = String(query.mock.calls[0]?.[0]);
+    expect(migrationSql.match(/CREATE TABLE /g)).toHaveLength(8);
+    for (const table of [
+      'users',
+      'refresh_tokens',
+      'user_settings',
+      'playlists',
+      'media_items',
+      'playlist_items',
+      'pomodoro',
+      'pomodoro_history',
+    ]) {
+      expect(migrationSql).toContain(`CREATE TABLE ${table}`);
+    }
+  });
+
+  it('translates a readiness failure with a detailed infrastructure code', async () => {
+    const cause = new Error('connection refused');
+    const readiness = new DatabaseReadinessService({
+      query: vi.fn().mockRejectedValue(cause),
+    } as never);
+
+    await expect(readiness.assertReady()).rejects.toMatchObject({
+      code: ErrorCode.DATABASE_NOT_READY,
+      cause,
     });
   });
 

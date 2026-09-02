@@ -127,6 +127,14 @@ Không đưa business logic, feature-specific validation, repository cụ thể 
 
 Trước khi tạo common mới, **search toàn repository** để tránh duplicate.
 
+Phân loại `common/` theo khả năng tái sử dụng và ownership, không áp dụng máy móc theo dependency:
+
+- ưu tiên code thuần, không chứa business logic hay provider-specific logic;
+- NestJS DTO, decorator, global filter, middleware, interceptor, pipe, validation mapping và logging/config cross-cutting có thể đặt ở `common/` khi thực sự dùng chung toàn ứng dụng; dependency NestJS/Swagger/class-validator tự nó không phải lý do bắt buộc chuyển file ra ngoài;
+- code feature-specific chỉ phục vụ một API/module đặt ở Presentation hoặc module sở hữu nó;
+- code phụ thuộc ORM, database driver, external provider hoặc SDK tích hợp phải đặt ở Infrastructure;
+- không chuyển nguyên cả thư mục ra khỏi `common/` chỉ vì một vài file phụ thuộc framework; đánh giá từng file theo phạm vi tái sử dụng.
+
 ## 5. Naming convention
 
 Nếu repository chưa có convention rõ, dùng nguyên tắc:
@@ -282,6 +290,9 @@ Quy tắc:
 7. Không expose stack trace/query/credential ra client.
 8. Public error code phải ổn định.
 9. Preserve exception cause nếu runtime hỗ trợ.
+10. `InfrastructureException` phải có error code kỹ thuật cụ thể theo failure, không gom mọi lỗi thành một mã `INFRASTRUCTURE_ERROR`.
+11. Message/cause kỹ thuật chi tiết được giữ để developer quan sát trong log; Global Exception Filter phải thay public message của mọi `InfrastructureException` bằng cùng một thông báo chung, không expose query/provider/credential.
+12. Ở code module/use case, ưu tiên throw để Global Exception Filter xử lý. Chỉ dùng `try/catch` khi cần translate lỗi provider ở Infrastructure boundary, bổ sung context có ý nghĩa, recovery có chủ đích hoặc cleanup tài nguyên; không catch chỉ để wrap/rethrow máy móc.
 
 ## 12. Configuration
 

@@ -2,7 +2,7 @@ import { validateEnvironment } from '../../../src/common/config/env.schema.js';
 import { PaginationQueryDto } from '../../../src/common/dto/pagination-query.dto.js';
 import { BusinessException } from '../../../src/common/exceptions/business.exception.js';
 import { ErrorCode } from '../../../src/common/exceptions/error-code.enum.js';
-import { ERROR_STATUS } from '../../../src/common/exceptions/error-status.map.js';
+import { ERROR_STATUS } from '../../../src/common/filters/error-status.map.js';
 import { redactSensitiveData } from '../../../src/common/logging/sensitive-data-redactor.js';
 import { AppValidationPipe } from '../../../src/common/pipes/validation.pipe.js';
 import { generateRandomToken } from '../../../src/common/security/random-token.js';

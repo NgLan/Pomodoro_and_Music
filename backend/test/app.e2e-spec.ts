@@ -2,10 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { DataSource } from 'typeorm';
-import { setupOpenApi } from './../src/openapi/openapi.js';
+import { setupOpenApi } from './../src/presentation/openapi/openapi.js';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  const databaseQuery = vi.fn().mockResolvedValue([{ '?column?': 1 }]);
 
   beforeAll(async () => {
     Object.assign(process.env, {
@@ -26,7 +27,7 @@ describe('AppController (e2e)', () => {
       .overrideProvider(DataSource)
       .useValue({
         isInitialized: false,
-        query: vi.fn().mockResolvedValue([{ '?column?': 1 }]),
+        query: databaseQuery,
         transaction: vi.fn(),
         destroy: vi.fn(),
       })
@@ -77,6 +78,24 @@ describe('AppController (e2e)', () => {
             checks: { application: 'up', database: 'up' },
           },
         });
+      });
+  });
+
+  it('hides infrastructure details behind a generic public message', () => {
+    databaseQuery.mockRejectedValueOnce(
+      new Error('password authentication failed for database user'),
+    );
+
+    return request(app.getHttpServer())
+      .get('/health/ready')
+      .set('x-request-id', 'database-failure-id')
+      .expect(503)
+      .expect({
+        code: 503,
+        message: 'Service temporarily unavailable',
+        error_code: 'DATABASE_NOT_READY',
+        details: [],
+        request_id: 'database-failure-id',
       });
   });
 

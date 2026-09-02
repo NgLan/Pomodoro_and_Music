@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import type { DataSourceOptions } from 'typeorm';
-import type { DatabaseConfig } from '../common/config/config.types.js';
+import type { DatabaseConfig } from '../../common/config/config.types.js';
 
 type PostgresDataSourceOptions = Extract<
   DataSourceOptions,
@@ -16,6 +16,7 @@ const MIGRATIONS_PATTERN = join(
 );
 const ENTITIES_PATTERN = join(
   import.meta.dirname,
+  '..',
   '..',
   'modules',
   '**',

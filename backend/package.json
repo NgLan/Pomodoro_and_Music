@@ -22,10 +22,10 @@
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "typeorm": "typeorm-ts-node-esm",
-    "migration:create": "npm run typeorm -- migration:create src/database/migrations/migration --esm",
-    "migration:generate": "npm run typeorm -- migration:generate src/database/migrations/schema -d src/database/typeorm.datasource.ts --esm",
-    "migration:run": "npm run typeorm -- migration:run -d src/database/typeorm.datasource.ts",
-    "migration:revert": "npm run typeorm -- migration:revert -d src/database/typeorm.datasource.ts"
+    "migration:create": "npm run typeorm -- migration:create src/infrastructure/database/migrations/migration --esm",
+    "migration:generate": "npm run typeorm -- migration:generate src/infrastructure/database/migrations/schema -d src/infrastructure/database/typeorm.datasource.ts --esm",
+    "migration:run": "npm run typeorm -- migration:run -d src/infrastructure/database/typeorm.datasource.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/infrastructure/database/typeorm.datasource.ts"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",

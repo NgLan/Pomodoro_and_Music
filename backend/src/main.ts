@@ -3,7 +3,7 @@ import type { ConfigType } from '@nestjs/config';
 import { AppModule } from './app.module.js';
 import { appConfig } from './common/config/index.js';
 import { AppLoggerService } from './common/logging/app-logger.service.js';
-import { setupOpenApi } from './openapi/openapi.js';
+import { setupOpenApi } from './presentation/openapi/openapi.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

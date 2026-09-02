@@ -26,11 +26,14 @@ src/
 │   ├── types/
 │   ├── utils/
 │   └── validation/
-├── database/
-│   ├── migrations/
-│   ├── transaction/
-│   └── database.module.ts
-├── health/
+├── infrastructure/
+│   └── database/
+│       ├── migrations/
+│       ├── transaction/
+│       └── database.module.ts
+├── presentation/
+│   ├── health/
+│   └── openapi/
 ├── modules/
 │   └── <business-module>/
 ├── app.module.ts
@@ -408,7 +411,7 @@ Rules:
 ## 13. Phase 11 — Database foundation
 
 ```text
-src/database/
+src/infrastructure/database/
 ├── database.module.ts
 ├── migrations/
 ├── transaction/
@@ -487,7 +490,7 @@ Không sửa generated frontend code thủ công.
 ## 16. Phase 14 — Health
 
 ```text
-src/health/
+src/presentation/health/
 ├── health.controller.ts
 ├── health.service.ts
 └── health.module.ts

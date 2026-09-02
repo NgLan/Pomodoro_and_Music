@@ -1,12 +1,15 @@
-import { AppException } from './app.exception.js';
-import { ErrorCode } from './error-code.enum.js';
+import { AppException, type AppExceptionOptions } from './app.exception.js';
+import type { InfrastructureErrorCode } from './error-code.enum.js';
+
+export interface InfrastructureExceptionOptions extends Omit<
+  AppExceptionOptions,
+  'code'
+> {
+  code: InfrastructureErrorCode;
+}
 
 export class InfrastructureException extends AppException {
-  constructor(cause?: unknown, message = 'Service temporarily unavailable') {
-    super({
-      code: ErrorCode.INFRASTRUCTURE_ERROR,
-      message,
-      cause,
-    });
+  constructor(options: InfrastructureExceptionOptions) {
+    super(options);
   }
 }

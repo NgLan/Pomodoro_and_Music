@@ -1,9 +1,9 @@
 import { AppException, type AppExceptionOptions } from './app.exception.js';
-import { ErrorCode } from './error-code.enum.js';
+import { ErrorCode, type InfrastructureErrorCode } from './error-code.enum.js';
 
 type BusinessErrorCode = Exclude<
   ErrorCode,
-  ErrorCode.INFRASTRUCTURE_ERROR | ErrorCode.INTERNAL_ERROR
+  InfrastructureErrorCode | ErrorCode.INTERNAL_ERROR
 >;
 
 export interface BusinessExceptionOptions extends Omit<

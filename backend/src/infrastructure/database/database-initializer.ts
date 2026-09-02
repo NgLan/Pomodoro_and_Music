@@ -1,5 +1,8 @@
 import { Client } from 'pg';
-import { InfrastructureException } from '../common/exceptions/infrastructure.exception.js';
+import {
+  ErrorCode,
+  InfrastructureException,
+} from '../../common/exceptions/index.js';
 
 interface DatabaseAdminClient {
   connect(): Promise<void>;
@@ -95,16 +98,18 @@ export async function ensureDatabaseExists(
   }
 
   if (initializationError) {
-    throw new InfrastructureException(
-      initializationError,
-      'Unable to initialize the PostgreSQL database',
-    );
+    throw new InfrastructureException({
+      code: ErrorCode.DATABASE_INITIALIZATION_FAILED,
+      message: 'Unable to initialize the PostgreSQL database',
+      cause: initializationError,
+    });
   }
   if (closingError) {
-    throw new InfrastructureException(
-      closingError,
-      'Unable to close the PostgreSQL admin connection',
-    );
+    throw new InfrastructureException({
+      code: ErrorCode.DATABASE_ADMIN_CONNECTION_CLOSE_FAILED,
+      message: 'Unable to close the PostgreSQL admin connection',
+      cause: closingError,
+    });
   }
 
   return databaseWasCreated;

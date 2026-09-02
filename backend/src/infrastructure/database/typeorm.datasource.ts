@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
-import type { DatabaseConfig } from '../common/config/config.types.js';
+import type { DatabaseConfig } from '../../common/config/config.types.js';
 import { ensureDatabaseExists } from './database-initializer.js';
 import { createDataSourceOptions } from './typeorm-options.js';
 

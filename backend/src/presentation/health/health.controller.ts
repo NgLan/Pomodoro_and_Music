@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   ApiErrorResponses,
   ApiSuccessResponse,
-} from '../common/decorators/index.js';
+} from '../../common/decorators/index.js';
 import {
   LivenessResponseDto,
   ReadinessResponseDto,

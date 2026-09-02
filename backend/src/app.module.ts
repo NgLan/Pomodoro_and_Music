@@ -10,8 +10,8 @@ import {
   validateEnvironment,
   youtubeConfig,
 } from './common/config/index.js';
-import { HealthModule } from './health/health.module.js';
-import { DatabaseModule } from './database/database.module.js';
+import { DatabaseModule } from './infrastructure/database/database.module.js';
+import { HealthModule } from './presentation/health/health.module.js';
 
 @Module({
   imports: [

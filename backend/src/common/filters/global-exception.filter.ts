@@ -7,11 +7,15 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import type { Request } from 'express';
-import { AppException } from '../exceptions/app.exception.js';
-import type { ErrorDetail } from '../exceptions/error-detail.js';
-import { ErrorCode } from '../exceptions/error-code.enum.js';
-import { ERROR_STATUS } from '../exceptions/error-status.map.js';
+import {
+  AppException,
+  ErrorCode,
+  InfrastructureException,
+  type ErrorDetail,
+} from '../exceptions/index.js';
+import { PUBLIC_INFRASTRUCTURE_ERROR_MESSAGE } from '../constants/app.constants.js';
 import { AppLoggerService } from '../logging/app-logger.service.js';
+import { ERROR_STATUS } from './error-status.map.js';
 import type { RequestWithContext } from '../middleware/request-context.middleware.js';
 import { RequestContextStorage } from '../middleware/request-context.storage.js';
 
@@ -113,9 +117,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (exception instanceof AppException) {
       return {
         code: ERROR_STATUS[exception.code],
-        message: exception.message,
+        message:
+          exception instanceof InfrastructureException
+            ? PUBLIC_INFRASTRUCTURE_ERROR_MESSAGE
+            : exception.message,
         error_code: exception.code,
-        details: exception.details,
+        details:
+          exception instanceof InfrastructureException ? [] : exception.details,
         request_id: requestId,
       };
     }
