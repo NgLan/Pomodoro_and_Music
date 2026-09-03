@@ -1,5 +1,5 @@
 import { ErrorCode } from '../../../src/common/exceptions/error-code.enum.js';
-import { RefreshToken } from '../../../src/domain/authentication/entities/refresh-token.entity.js';
+import { RefreshToken } from '../../../src/modules/authentication/domain/entities/refresh-token.entity.js';
 
 const CREATED_AT = new Date('2026-01-01T00:00:00.000Z');
 const EXPIRES_AT = new Date('2026-01-08T00:00:00.000Z');

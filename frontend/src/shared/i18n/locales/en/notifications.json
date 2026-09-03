@@ -3,5 +3,13 @@
   "MSG_SAVED": "Changes saved.",
   "MSG_WARNING": "Please review the information.",
   "MSG_INFO": "There is new information for you.",
-  "MSG_ERROR_GENERIC": "Something went wrong. Please try again."
+  "MSG_ERROR_GENERIC": "Something went wrong. Please try again.",
+  "MSG_CONFIG_CREATED": "Your new Pomodoro rhythm is ready.",
+  "MSG_CONFIG_UPDATED": "Your Pomodoro rhythm was updated.",
+  "MSG_CONFIG_DELETED": "Configuration deleted. Previous history is still intact.",
+  "MSG_PHASE_COMPLETED": "Phase complete. Nicely done!",
+  "MSG_PHASE_ENDED_EARLY": "Progress from the ended phase was saved.",
+  "MSG_LOGIN_SUCCESS": "Welcome back!",
+  "MSG_REGISTER_SUCCESS": "Your account is ready. Let's focus!",
+  "MSG_LOGOUT_SUCCESS": "You have been signed out safely."
 }

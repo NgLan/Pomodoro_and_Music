@@ -1,5 +1,13 @@
 # AGENT CODING GUIDELINES
 
+## Quy định bắt buộc về kích thước và trách nhiệm
+
+- Mỗi file mã nguồn không quá **120 dòng**, không tính file generated hoặc migration do công cụ sinh.
+- Mỗi hàm hoặc method không quá **25 dòng**.
+- Mỗi file chỉ giữ **một trách nhiệm duy nhất**; khi có nhiều vai trò phải tách thành các file có tên phản ánh đúng vai trò.
+- Không lặp lại cùng một đoạn code ở nhiều nơi; phải tái sử dụng abstraction, component, hook, mapper, rule hoặc utility phù hợp đã có.
+- Agent phải kiểm tra lại giới hạn dòng và mã trùng lặp trước khi kết thúc task.
+
 > Dành cho AI Coding Agent và developer trong toàn bộ vòng đời đọc code, lập kế hoạch, implement, refactor, test và review.
 > Tài liệu này **không phụ thuộc framework, ngôn ngữ hay nghiệp vụ**. Tên folder là cấu trúc tham chiếu; nếu codebase hiện tại dùng tên khác thì giữ convention hiện có.
 
@@ -390,6 +398,15 @@ source contract/config
 → generated artifact
 ```
 
+Quy định bắt buộc khi project đã có generated contract/client/type/schema:
+
+- Phải search và reuse request type, response type, enum, client function và validation schema đã generate trước khi khai báo type tương đương.
+- Frontend không được tự viết lại model API đã tồn tại trong OpenAPI/generated output, kể cả khi cấu trúc tự viết chỉ là một subset của response.
+- Type chỉ phục vụ UI/runtime cục bộ được phép khai báo riêng, nhưng phải compose từ generated type (`Pick`, `Omit`, intersection hoặc field reference) khi nó chứa dữ liệu thuộc API contract.
+- Nếu generated artifact chưa có field/type cần dùng, phải cập nhật source contract ở Backend rồi chạy generator; không “vá tạm” bằng một contract song song ở Frontend.
+- Feature service/mapper có thể đổi generated response thành view model, nhưng view model không được trở thành nguồn contract thứ hai cho request/response API.
+- Review diff phải kiểm tra không có enum/DTO/interface API bị duplicate ngoài thư mục generated.
+
 ## 19. Concurrency/background job
 
 - External I/O có timeout.
@@ -553,7 +570,22 @@ Tên file có nói rõ responsibility không?
 - [ ] Không commit secret/debug/generated artifact sai.
 - [ ] Ghi rõ phần chưa verify được.
 
-## 26. Quy tắc cuối
+## 26. Quy tắc đặt tên file Backend (NestJS + TypeORM)
+
+Phần này dành riêng cho backend dùng NestJS và TypeORM:
+
+- Tất cả tên file và thư mục dùng **kebab-case**; tên file phải thể hiện đúng vai trò, không dùng tên mơ hồ như helper, manager, data hoặc common service.
+- Mỗi module đặt domain tại **modules/[module]/domain/**; không tạo lại domain nghiệp vụ ở **src/domain/**.
+- Application dùng hậu tố **.service.ts**, **.service.interface.ts**, **.repository.interface.ts**, **.input.ts** và **.output.ts**. Service interface và repository interface không được đặt chung file; mỗi input/output có contract riêng.
+- Presentation dùng **.controller.ts**, **.guard.ts**, **.decorator.ts**, **.request.dto.ts**, **.query.dto.ts** và **.response.dto.ts**. Request, query và response DTO không đặt chung file.
+- Infrastructure database đặt entity trong **infrastructure/database/entities/**, mỗi file đúng một entity và có hậu tố **.orm-entity.ts**.
+- TypeORM repository đặt trong **infrastructure/database/repositories/** với hậu tố **.repository.ts**; mapper đặt trong **infrastructure/database/mappers/** với hậu tố **.mapper.ts**.
+- Security/external adapter dùng hậu tố mô tả provider, ví dụ **.provider.ts** hoặc **.adapter.ts**; dependency wiring giữ trong **.module.ts**.
+- Tên file phải khớp primary export: pomodoro-history.controller.ts chứa PomodoroHistoryController; không gom nhiều primary class khác vai trò vào một file.
+- Migration dùng timestamp ở đầu tên; test bám tên source và dùng hậu tố **.spec.ts**.
+- File generated phải giữ nguyên tên/cấu trúc do generator tạo và không sửa thủ công.
+
+## 27. Quy tắc cuối
 
 ```text
 BUSINESS RULE?

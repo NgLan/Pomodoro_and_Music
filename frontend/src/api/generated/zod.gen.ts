@@ -36,6 +36,95 @@ export const zReadinessResponseDto = z.object({
     checks: zReadinessChecksDto
 });
 
+export const zAuthUserResponseDto = z.object({
+    id: z.string().uuid(),
+    email: z.string().email(),
+    displayName: z.string().nullable()
+});
+
+export const zAuthSessionResponseDto = z.object({
+    accessToken: z.string(),
+    accessTokenExpiresInSeconds: z.number(),
+    user: zAuthUserResponseDto
+});
+
+export const zRegisterRequestDto = z.object({
+    email: z.string(),
+    password: z.string().min(8),
+    displayName: z.string().optional()
+});
+
+export const zLoginRequestDto = z.object({
+    email: z.string(),
+    password: z.string()
+});
+
+export const zLogoutResponseDto = z.object({
+    signedOut: z.boolean()
+});
+
+export const zPomodoroConfigurationResponseDto = z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    focusDurationSeconds: z.number(),
+    shortBreakDurationSeconds: z.number(),
+    longBreakDurationSeconds: z.number(),
+    focusSessionsBeforeLongBreak: z.number(),
+    focusPlaylistId: z.string().uuid().nullable(),
+    breakPlaylistId: z.string().uuid().nullable(),
+    isDefault: z.boolean(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+});
+
+export const zPomodoroConfigurationRequestDto = z.object({
+    name: z.string(),
+    focusDurationSeconds: z.number(),
+    shortBreakDurationSeconds: z.number(),
+    longBreakDurationSeconds: z.number(),
+    focusSessionsBeforeLongBreak: z.number(),
+    focusPlaylistId: z.string().uuid().nullish(),
+    breakPlaylistId: z.string().uuid().nullish()
+});
+
+export const zPomodoroPhaseType = z.enum([
+    'FOCUS',
+    'SHORT_BREAK',
+    'LONG_BREAK'
+]);
+
+export const zPomodoroHistoryStatus = z.enum([
+    'COMPLETED',
+    'ENDED_EARLY',
+    'CANCELLED'
+]);
+
+export const zPomodoroHistoryResponseDto = z.object({
+    id: z.string().uuid(),
+    pomodoroId: z.string().uuid().nullable(),
+    configurationName: z.string().nullable(),
+    phaseType: zPomodoroPhaseType,
+    plannedDurationSeconds: z.number(),
+    actualDurationSeconds: z.number(),
+    status: zPomodoroHistoryStatus,
+    startedAt: z.string().datetime(),
+    endedAt: z.string().datetime()
+});
+
+export const zCreatePomodoroHistoryRequestDto = z.object({
+    pomodoroId: z.string().uuid().nullish(),
+    phaseType: zPomodoroPhaseType,
+    plannedDurationSeconds: z.number(),
+    actualDurationSeconds: z.number(),
+    status: zPomodoroHistoryStatus,
+    startedAt: z.string().datetime(),
+    endedAt: z.string().datetime()
+});
+
+export const zDeletePomodoroResponseDto = z.object({
+    deleted: z.boolean()
+});
+
 /**
  * The application process is alive.
  */
@@ -48,4 +137,122 @@ export const zHealthLivenessResponse = zApiResponseDto.and(z.object({
  */
 export const zHealthReadinessResponse = zApiResponseDto.and(z.object({
     data: zReadinessResponseDto.optional()
+}));
+
+export const zAuthRegisterBody = zRegisterRequestDto;
+
+/**
+ * Account created and signed in.
+ */
+export const zAuthRegisterResponse = zApiResponseDto.and(z.object({
+    data: zAuthSessionResponseDto.optional()
+}));
+
+export const zAuthLoginBody = zLoginRequestDto;
+
+/**
+ * Signed in successfully.
+ */
+export const zAuthLoginResponse = zApiResponseDto.and(z.object({
+    data: zAuthSessionResponseDto.optional()
+}));
+
+/**
+ * Session refreshed.
+ */
+export const zAuthRefreshResponse = zApiResponseDto.and(z.object({
+    data: zAuthSessionResponseDto.optional()
+}));
+
+/**
+ * Signed out successfully.
+ */
+export const zAuthLogoutResponse = zApiResponseDto.and(z.object({
+    data: zLogoutResponseDto.optional()
+}));
+
+/**
+ * Pomodoro configurations returned.
+ */
+export const zPomodoroListResponse = zApiResponseDto.and(z.object({
+    data: z.array(zPomodoroConfigurationResponseDto).optional()
+}));
+
+export const zPomodoroCreateBody = zPomodoroConfigurationRequestDto;
+
+/**
+ * Pomodoro configuration created.
+ */
+export const zPomodoroCreateResponse = zApiResponseDto.and(z.object({
+    data: zPomodoroConfigurationResponseDto.optional()
+}));
+
+export const zPomodoroHistoryListQuery = z.object({
+    configurationId: z.string().uuid().optional(),
+    status: z.enum([
+        'COMPLETED',
+        'ENDED_EARLY',
+        'CANCELLED'
+    ]).optional(),
+    dateFrom: z.string().datetime().optional(),
+    dateTo: z.string().datetime().optional()
+});
+
+/**
+ * Pomodoro history returned.
+ */
+export const zPomodoroHistoryListResponse = zApiResponseDto.and(z.object({
+    data: z.object({
+        items: z.array(zPomodoroHistoryResponseDto),
+        meta: z.object({
+            page: z.number().int().gte(1),
+            pageSize: z.number().int().gte(1),
+            totalItems: z.number().int().gte(0),
+            totalPages: z.number().int().gte(0)
+        })
+    }).optional()
+}));
+
+export const zPomodoroHistoryCreateBody = zCreatePomodoroHistoryRequestDto;
+
+/**
+ * Pomodoro history recorded.
+ */
+export const zPomodoroHistoryCreateResponse = zApiResponseDto.and(z.object({
+    data: zPomodoroHistoryResponseDto.optional()
+}));
+
+export const zPomodoroDeletePath = z.object({
+    id: z.string()
+});
+
+/**
+ * Pomodoro configuration deleted.
+ */
+export const zPomodoroDeleteResponse = zApiResponseDto.and(z.object({
+    data: zDeletePomodoroResponseDto.optional()
+}));
+
+export const zPomodoroGetPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Pomodoro configuration returned.
+ */
+export const zPomodoroGetResponse = zApiResponseDto.and(z.object({
+    data: zPomodoroConfigurationResponseDto.optional()
+}));
+
+export const zPomodoroUpdateBody = zPomodoroConfigurationRequestDto;
+
+export const zPomodoroUpdatePath = z.object({
+    id: z.string()
+});
+
+/**
+ * Pomodoro configuration updated.
+ */
+export const zPomodoroUpdateResponse = zApiResponseDto.and(z.object({
+    data: zPomodoroConfigurationResponseDto.optional()
 }));

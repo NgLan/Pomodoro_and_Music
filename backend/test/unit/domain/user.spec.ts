@@ -1,7 +1,7 @@
 import { ErrorCode } from '../../../src/common/exceptions/error-code.enum.js';
-import { User } from '../../../src/domain/user/entities/user.entity.js';
-import { AuthProvider } from '../../../src/domain/user/enums/auth-provider.enum.js';
-import { UserStatus } from '../../../src/domain/user/enums/user-status.enum.js';
+import { User } from '../../../src/modules/user/domain/entities/user.entity.js';
+import { AuthProvider } from '../../../src/modules/user/domain/enums/auth-provider.enum.js';
+import { UserStatus } from '../../../src/modules/user/domain/enums/user-status.enum.js';
 
 const NOW = new Date('2026-01-01T00:00:00.000Z');
 

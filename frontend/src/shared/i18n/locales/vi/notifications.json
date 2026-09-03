@@ -3,5 +3,13 @@
   "MSG_SAVED": "Đã lưu thay đổi.",
   "MSG_WARNING": "Vui lòng kiểm tra lại thông tin.",
   "MSG_INFO": "Có thông tin mới dành cho bạn.",
-  "MSG_ERROR_GENERIC": "Đã có lỗi xảy ra. Vui lòng thử lại."
+  "MSG_ERROR_GENERIC": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+  "MSG_CONFIG_CREATED": "Đã tạo nhịp Pomodoro mới.",
+  "MSG_CONFIG_UPDATED": "Đã lưu thay đổi cho nhịp Pomodoro.",
+  "MSG_CONFIG_DELETED": "Đã xóa cấu hình. Lịch sử cũ vẫn còn nguyên.",
+  "MSG_PHASE_COMPLETED": "Hoàn thành một phase. Tuyệt lắm!",
+  "MSG_PHASE_ENDED_EARLY": "Đã lưu tiến độ của phase vừa kết thúc.",
+  "MSG_LOGIN_SUCCESS": "Chào mừng bạn quay lại!",
+  "MSG_REGISTER_SUCCESS": "Tài khoản đã sẵn sàng. Bắt đầu tập trung thôi!",
+  "MSG_LOGOUT_SUCCESS": "Đã đăng xuất an toàn."
 }

@@ -42,6 +42,87 @@ export type ReadinessResponseDto = {
     checks: ReadinessChecksDto;
 };
 
+export type AuthUserResponseDto = {
+    id: string;
+    email: string;
+    displayName: string | null;
+};
+
+export type AuthSessionResponseDto = {
+    accessToken: string;
+    accessTokenExpiresInSeconds: number;
+    user: AuthUserResponseDto;
+};
+
+export type RegisterRequestDto = {
+    email: string;
+    password: string;
+    displayName?: string;
+};
+
+export type LoginRequestDto = {
+    email: string;
+    password: string;
+};
+
+export type LogoutResponseDto = {
+    signedOut: boolean;
+};
+
+export type PomodoroConfigurationResponseDto = {
+    id: string;
+    name: string;
+    focusDurationSeconds: number;
+    shortBreakDurationSeconds: number;
+    longBreakDurationSeconds: number;
+    focusSessionsBeforeLongBreak: number;
+    focusPlaylistId: string | null;
+    breakPlaylistId: string | null;
+    isDefault: boolean;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type PomodoroConfigurationRequestDto = {
+    name: string;
+    focusDurationSeconds: number;
+    shortBreakDurationSeconds: number;
+    longBreakDurationSeconds: number;
+    focusSessionsBeforeLongBreak: number;
+    focusPlaylistId?: string | null;
+    breakPlaylistId?: string | null;
+};
+
+export type PomodoroPhaseType = 'FOCUS' | 'SHORT_BREAK' | 'LONG_BREAK';
+
+export type PomodoroHistoryStatus = 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
+
+export type PomodoroHistoryResponseDto = {
+    id: string;
+    pomodoroId: string | null;
+    configurationName: string | null;
+    phaseType: PomodoroPhaseType;
+    plannedDurationSeconds: number;
+    actualDurationSeconds: number;
+    status: PomodoroHistoryStatus;
+    startedAt: string;
+    endedAt: string;
+};
+
+export type CreatePomodoroHistoryRequestDto = {
+    pomodoroId?: string | null;
+    phaseType: PomodoroPhaseType;
+    plannedDurationSeconds: number;
+    actualDurationSeconds: number;
+    status: PomodoroHistoryStatus;
+    startedAt: string;
+    endedAt: string;
+};
+
+export type DeletePomodoroResponseDto = {
+    deleted: boolean;
+};
+
 export type AppGetHelloData = {
     body?: never;
     path?: never;
@@ -122,3 +203,407 @@ export type HealthReadinessResponses = {
 };
 
 export type HealthReadinessResponse = HealthReadinessResponses[keyof HealthReadinessResponses];
+
+export type AuthRegisterData = {
+    body: RegisterRequestDto;
+    path?: never;
+    query?: never;
+    url: '/auth/register';
+};
+
+export type AuthRegisterErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type AuthRegisterError = AuthRegisterErrors[keyof AuthRegisterErrors];
+
+export type AuthRegisterResponses = {
+    /**
+     * Account created and signed in.
+     */
+    200: ApiResponseDto & {
+        data?: AuthSessionResponseDto;
+    };
+};
+
+export type AuthRegisterResponse = AuthRegisterResponses[keyof AuthRegisterResponses];
+
+export type AuthLoginData = {
+    body: LoginRequestDto;
+    path?: never;
+    query?: never;
+    url: '/auth/login';
+};
+
+export type AuthLoginErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type AuthLoginError = AuthLoginErrors[keyof AuthLoginErrors];
+
+export type AuthLoginResponses = {
+    /**
+     * Signed in successfully.
+     */
+    200: ApiResponseDto & {
+        data?: AuthSessionResponseDto;
+    };
+};
+
+export type AuthLoginResponse = AuthLoginResponses[keyof AuthLoginResponses];
+
+export type AuthRefreshData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/refresh';
+};
+
+export type AuthRefreshErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type AuthRefreshError = AuthRefreshErrors[keyof AuthRefreshErrors];
+
+export type AuthRefreshResponses = {
+    /**
+     * Session refreshed.
+     */
+    200: ApiResponseDto & {
+        data?: AuthSessionResponseDto;
+    };
+};
+
+export type AuthRefreshResponse = AuthRefreshResponses[keyof AuthRefreshResponses];
+
+export type AuthLogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/auth/logout';
+};
+
+export type AuthLogoutErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type AuthLogoutError = AuthLogoutErrors[keyof AuthLogoutErrors];
+
+export type AuthLogoutResponses = {
+    /**
+     * Signed out successfully.
+     */
+    200: ApiResponseDto & {
+        data?: LogoutResponseDto;
+    };
+};
+
+export type AuthLogoutResponse = AuthLogoutResponses[keyof AuthLogoutResponses];
+
+export type PomodoroListData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/pomodoro';
+};
+
+export type PomodoroListErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroListError = PomodoroListErrors[keyof PomodoroListErrors];
+
+export type PomodoroListResponses = {
+    /**
+     * Pomodoro configurations returned.
+     */
+    200: ApiResponseDto & {
+        data?: Array<PomodoroConfigurationResponseDto>;
+    };
+};
+
+export type PomodoroListResponse = PomodoroListResponses[keyof PomodoroListResponses];
+
+export type PomodoroCreateData = {
+    body: PomodoroConfigurationRequestDto;
+    path?: never;
+    query?: never;
+    url: '/pomodoro';
+};
+
+export type PomodoroCreateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroCreateError = PomodoroCreateErrors[keyof PomodoroCreateErrors];
+
+export type PomodoroCreateResponses = {
+    /**
+     * Pomodoro configuration created.
+     */
+    200: ApiResponseDto & {
+        data?: PomodoroConfigurationResponseDto;
+    };
+};
+
+export type PomodoroCreateResponse = PomodoroCreateResponses[keyof PomodoroCreateResponses];
+
+export type PomodoroHistoryListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        configurationId?: string;
+        status?: 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
+        dateFrom?: string;
+        dateTo?: string;
+    };
+    url: '/pomodoro/history';
+};
+
+export type PomodoroHistoryListErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroHistoryListError = PomodoroHistoryListErrors[keyof PomodoroHistoryListErrors];
+
+export type PomodoroHistoryListResponses = {
+    /**
+     * Pomodoro history returned.
+     */
+    200: ApiResponseDto & {
+        data?: {
+            items: Array<PomodoroHistoryResponseDto>;
+            meta: {
+                page: number;
+                pageSize: number;
+                totalItems: number;
+                totalPages: number;
+            };
+        };
+    };
+};
+
+export type PomodoroHistoryListResponse = PomodoroHistoryListResponses[keyof PomodoroHistoryListResponses];
+
+export type PomodoroHistoryCreateData = {
+    body: CreatePomodoroHistoryRequestDto;
+    path?: never;
+    query?: never;
+    url: '/pomodoro/history';
+};
+
+export type PomodoroHistoryCreateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroHistoryCreateError = PomodoroHistoryCreateErrors[keyof PomodoroHistoryCreateErrors];
+
+export type PomodoroHistoryCreateResponses = {
+    /**
+     * Pomodoro history recorded.
+     */
+    200: ApiResponseDto & {
+        data?: PomodoroHistoryResponseDto;
+    };
+};
+
+export type PomodoroHistoryCreateResponse = PomodoroHistoryCreateResponses[keyof PomodoroHistoryCreateResponses];
+
+export type PomodoroDeleteData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/pomodoro/{id}';
+};
+
+export type PomodoroDeleteErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroDeleteError = PomodoroDeleteErrors[keyof PomodoroDeleteErrors];
+
+export type PomodoroDeleteResponses = {
+    /**
+     * Pomodoro configuration deleted.
+     */
+    200: ApiResponseDto & {
+        data?: DeletePomodoroResponseDto;
+    };
+};
+
+export type PomodoroDeleteResponse = PomodoroDeleteResponses[keyof PomodoroDeleteResponses];
+
+export type PomodoroGetData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/pomodoro/{id}';
+};
+
+export type PomodoroGetErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroGetError = PomodoroGetErrors[keyof PomodoroGetErrors];
+
+export type PomodoroGetResponses = {
+    /**
+     * Pomodoro configuration returned.
+     */
+    200: ApiResponseDto & {
+        data?: PomodoroConfigurationResponseDto;
+    };
+};
+
+export type PomodoroGetResponse = PomodoroGetResponses[keyof PomodoroGetResponses];
+
+export type PomodoroUpdateData = {
+    body: PomodoroConfigurationRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/pomodoro/{id}';
+};
+
+export type PomodoroUpdateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroUpdateError = PomodoroUpdateErrors[keyof PomodoroUpdateErrors];
+
+export type PomodoroUpdateResponses = {
+    /**
+     * Pomodoro configuration updated.
+     */
+    200: ApiResponseDto & {
+        data?: PomodoroConfigurationResponseDto;
+    };
+};
+
+export type PomodoroUpdateResponse = PomodoroUpdateResponses[keyof PomodoroUpdateResponses];

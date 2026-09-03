@@ -5,5 +5,12 @@
   "VALIDATION_ERROR": "Some information is not valid.",
   "UNAUTHORIZED": "Please sign in to continue.",
   "FORBIDDEN": "You do not have permission to do that.",
-  "DATABASE_NOT_READY": "The service is temporarily unavailable. Please try again later."
+  "DATABASE_NOT_READY": "The service is temporarily unavailable. Please try again later.",
+  "EMAIL_ALREADY_REGISTERED": "This email is already used by another account.",
+  "INVALID_CREDENTIALS": "The email or password is incorrect.",
+  "INVALID_REFRESH_TOKEN": "Your session has expired. Please sign in again.",
+  "POMODORO_NOT_FOUND": "This Pomodoro configuration could not be found.",
+  "INVALID_POMODORO_DURATION": "The Pomodoro duration is not valid.",
+  "INVALID_POMODORO_HISTORY_DURATION": "The session duration is not valid.",
+  "INVALID_POMODORO_HISTORY_RANGE": "The session time range is not valid."
 }

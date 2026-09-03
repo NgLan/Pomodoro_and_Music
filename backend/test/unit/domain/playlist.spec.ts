@@ -1,11 +1,11 @@
 import { ErrorCode } from '../../../src/common/exceptions/error-code.enum.js';
-import { MediaItem } from '../../../src/domain/playlist/entities/media-item.entity.js';
-import { Playlist } from '../../../src/domain/playlist/entities/playlist.entity.js';
-import { PlaylistItem } from '../../../src/domain/playlist/entities/playlist-item.entity.js';
-import { MediaAvailability } from '../../../src/domain/playlist/enums/media-availability.enum.js';
-import { MediaPlatform } from '../../../src/domain/playlist/enums/media-platform.enum.js';
-import { PlaylistSourceType } from '../../../src/domain/playlist/enums/playlist-source-type.enum.js';
-import { reorderPlaylistItems } from '../../../src/domain/playlist/rules/reorder-playlist-items.rule.js';
+import { MediaItem } from '../../../src/modules/playlist/domain/entities/media-item.entity.js';
+import { Playlist } from '../../../src/modules/playlist/domain/entities/playlist.entity.js';
+import { PlaylistItem } from '../../../src/modules/playlist/domain/entities/playlist-item.entity.js';
+import { MediaAvailability } from '../../../src/modules/playlist/domain/enums/media-availability.enum.js';
+import { MediaPlatform } from '../../../src/modules/playlist/domain/enums/media-platform.enum.js';
+import { PlaylistSourceType } from '../../../src/modules/playlist/domain/enums/playlist-source-type.enum.js';
+import { reorderPlaylistItems } from '../../../src/modules/playlist/domain/rules/reorder-playlist-items.rule.js';
 
 const NOW = new Date('2026-01-01T00:00:00.000Z');
 

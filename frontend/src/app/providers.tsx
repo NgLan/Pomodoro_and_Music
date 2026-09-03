@@ -1,10 +1,11 @@
 "use client";
 
-import { NextIntlClientProvider } from "next-intl";
 import type { ReactNode } from "react";
 
-import { defaultTimeZone, type AppLocale } from "@/shared/i18n/config";
+import type { AppLocale } from "@/shared/i18n/config";
 import type { AppMessages } from "@/shared/i18n/messages";
+import { AuthProvider } from "@/shared/providers/auth-provider";
+import { AppLocaleProvider } from "@/shared/providers/locale-provider";
 import { NotificationProvider } from "@/shared/providers/notification-provider";
 import { QueryProvider } from "@/shared/providers/query-provider";
 import { TooltipProvider } from "@/shared/ui/tooltip";
@@ -16,17 +17,16 @@ interface ProvidersProps {
 }
 
 export function Providers({ children, locale, messages }: ProvidersProps) {
+  void messages;
   return (
-    <NextIntlClientProvider
-      locale={locale}
-      messages={messages}
-      timeZone={defaultTimeZone}
-    >
+    <AppLocaleProvider initialLocale={locale}>
       <QueryProvider>
-        <TooltipProvider delayDuration={300}>
-          <NotificationProvider>{children}</NotificationProvider>
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider delayDuration={300}>
+            <NotificationProvider>{children}</NotificationProvider>
+          </TooltipProvider>
+        </AuthProvider>
       </QueryProvider>
-    </NextIntlClientProvider>
+    </AppLocaleProvider>
   );
 }

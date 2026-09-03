@@ -12,6 +12,8 @@ import {
 } from './common/config/index.js';
 import { DatabaseModule } from './infrastructure/database/database.module.js';
 import { HealthModule } from './presentation/health/health.module.js';
+import { AuthenticationModule } from './modules/authentication/authentication.module.js';
+import { PomodoroModule } from './modules/pomodoro/pomodoro.module.js';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { HealthModule } from './presentation/health/health.module.js';
     CommonModule,
     DatabaseModule,
     HealthModule,
+    AuthenticationModule,
+    PomodoroModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppGetHelloData, AppGetHelloResponses, HealthLivenessData, HealthLivenessErrors, HealthLivenessResponses, HealthReadinessData, HealthReadinessErrors, HealthReadinessResponses } from './types.gen';
+import type { AppGetHelloData, AppGetHelloResponses, AuthLoginData, AuthLoginErrors, AuthLoginResponses, AuthLogoutData, AuthLogoutErrors, AuthLogoutResponses, AuthRefreshData, AuthRefreshErrors, AuthRefreshResponses, AuthRegisterData, AuthRegisterErrors, AuthRegisterResponses, HealthLivenessData, HealthLivenessErrors, HealthLivenessResponses, HealthReadinessData, HealthReadinessErrors, HealthReadinessResponses, PomodoroCreateData, PomodoroCreateErrors, PomodoroCreateResponses, PomodoroDeleteData, PomodoroDeleteErrors, PomodoroDeleteResponses, PomodoroGetData, PomodoroGetErrors, PomodoroGetResponses, PomodoroHistoryCreateData, PomodoroHistoryCreateErrors, PomodoroHistoryCreateResponses, PomodoroHistoryListData, PomodoroHistoryListErrors, PomodoroHistoryListResponses, PomodoroListData, PomodoroListErrors, PomodoroListResponses, PomodoroUpdateData, PomodoroUpdateErrors, PomodoroUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -29,3 +29,116 @@ export const healthLiveness = <ThrowOnError extends boolean = false>(options?: O
  * Check whether the application can serve traffic
  */
 export const healthReadiness = <ThrowOnError extends boolean = false>(options?: Options<HealthReadinessData, ThrowOnError>): RequestResult<HealthReadinessResponses, HealthReadinessErrors, ThrowOnError> => (options?.client ?? client).get<HealthReadinessResponses, HealthReadinessErrors, ThrowOnError>({ url: '/health/ready', ...options });
+
+/**
+ * Create a local account
+ */
+export const authRegister = <ThrowOnError extends boolean = false>(options: Options<AuthRegisterData, ThrowOnError>): RequestResult<AuthRegisterResponses, AuthRegisterErrors, ThrowOnError> => (options.client ?? client).post<AuthRegisterResponses, AuthRegisterErrors, ThrowOnError>({
+    url: '/auth/register',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Sign in with email and password
+ */
+export const authLogin = <ThrowOnError extends boolean = false>(options: Options<AuthLoginData, ThrowOnError>): RequestResult<AuthLoginResponses, AuthLoginErrors, ThrowOnError> => (options.client ?? client).post<AuthLoginResponses, AuthLoginErrors, ThrowOnError>({
+    url: '/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Rotate refresh token and issue a new access token
+ */
+export const authRefresh = <ThrowOnError extends boolean = false>(options?: Options<AuthRefreshData, ThrowOnError>): RequestResult<AuthRefreshResponses, AuthRefreshErrors, ThrowOnError> => (options?.client ?? client).post<AuthRefreshResponses, AuthRefreshErrors, ThrowOnError>({ url: '/auth/refresh', ...options });
+
+/**
+ * Revoke the current refresh token
+ */
+export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/auth/logout',
+    ...options
+});
+
+/**
+ * List my Pomodoro configurations
+ */
+export const pomodoroList = <ThrowOnError extends boolean = false>(options?: Options<PomodoroListData, ThrowOnError>): RequestResult<PomodoroListResponses, PomodoroListErrors, ThrowOnError> => (options?.client ?? client).get<PomodoroListResponses, PomodoroListErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro',
+    ...options
+});
+
+/**
+ * Create a Pomodoro configuration
+ */
+export const pomodoroCreate = <ThrowOnError extends boolean = false>(options: Options<PomodoroCreateData, ThrowOnError>): RequestResult<PomodoroCreateResponses, PomodoroCreateErrors, ThrowOnError> => (options.client ?? client).post<PomodoroCreateResponses, PomodoroCreateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List my Pomodoro phase history
+ */
+export const pomodoroHistoryList = <ThrowOnError extends boolean = false>(options?: Options<PomodoroHistoryListData, ThrowOnError>): RequestResult<PomodoroHistoryListResponses, PomodoroHistoryListErrors, ThrowOnError> => (options?.client ?? client).get<PomodoroHistoryListResponses, PomodoroHistoryListErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/history',
+    ...options
+});
+
+/**
+ * Record a completed or ended phase
+ */
+export const pomodoroHistoryCreate = <ThrowOnError extends boolean = false>(options: Options<PomodoroHistoryCreateData, ThrowOnError>): RequestResult<PomodoroHistoryCreateResponses, PomodoroHistoryCreateErrors, ThrowOnError> => (options.client ?? client).post<PomodoroHistoryCreateResponses, PomodoroHistoryCreateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/history',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete a Pomodoro configuration without deleting history
+ */
+export const pomodoroDelete = <ThrowOnError extends boolean = false>(options: Options<PomodoroDeleteData, ThrowOnError>): RequestResult<PomodoroDeleteResponses, PomodoroDeleteErrors, ThrowOnError> => (options.client ?? client).delete<PomodoroDeleteResponses, PomodoroDeleteErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/{id}',
+    ...options
+});
+
+/**
+ * Get one Pomodoro configuration
+ */
+export const pomodoroGet = <ThrowOnError extends boolean = false>(options: Options<PomodoroGetData, ThrowOnError>): RequestResult<PomodoroGetResponses, PomodoroGetErrors, ThrowOnError> => (options.client ?? client).get<PomodoroGetResponses, PomodoroGetErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/{id}',
+    ...options
+});
+
+/**
+ * Update a Pomodoro configuration
+ */
+export const pomodoroUpdate = <ThrowOnError extends boolean = false>(options: Options<PomodoroUpdateData, ThrowOnError>): RequestResult<PomodoroUpdateResponses, PomodoroUpdateErrors, ThrowOnError> => (options.client ?? client).put<PomodoroUpdateResponses, PomodoroUpdateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

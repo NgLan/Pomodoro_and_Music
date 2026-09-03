@@ -6,7 +6,7 @@ interface RequestInterceptors {
 
 interface ConfigurableApiClient {
   interceptors: { request: RequestInterceptors };
-  setConfig(config: { baseUrl: string }): unknown;
+  setConfig(config: { baseUrl: string; credentials: "include" }): unknown;
 }
 
 function addRequestId(request: Request): Request {
@@ -19,6 +19,9 @@ function addRequestId(request: Request): Request {
 
 /** Applies app-wide base URL and request correlation to a generated client. */
 export function configureApiClient(client: ConfigurableApiClient): void {
-  client.setConfig({ baseUrl: publicEnvironment.apiBaseUrl });
+  client.setConfig({
+    baseUrl: publicEnvironment.apiBaseUrl,
+    credentials: "include",
+  });
   client.interceptors.request.use(addRequestId);
 }
