@@ -1,11 +1,15 @@
 import { PomodoroHistory } from '../../../domain/entities/pomodoro-history.entity.js';
 import { PomodoroHistoryOrmEntity } from '../entities/pomodoro-history.orm-entity.js';
 
-export function toHistoryDomain(entity: PomodoroHistoryOrmEntity): PomodoroHistory {
+export function toHistoryDomain(
+  entity: PomodoroHistoryOrmEntity,
+): PomodoroHistory {
   return PomodoroHistory.create({ ...entity });
 }
 
-export function toHistoryPersistence(domain: PomodoroHistory): PomodoroHistoryOrmEntity {
+export function toHistoryPersistence(
+  domain: PomodoroHistory,
+): PomodoroHistoryOrmEntity {
   return Object.assign(new PomodoroHistoryOrmEntity(), {
     id: domain.id,
     userId: domain.userId,

@@ -3,11 +3,13 @@ import enCommon from "./locales/en/common.json";
 import enErrors from "./locales/en/errors.json";
 import enNotifications from "./locales/en/notifications.json";
 import enPomodoro from "./locales/en/pomodoro.json";
+import enPlaylist from "./locales/en/playlist.json";
 import viAuth from "./locales/vi/auth.json";
 import viCommon from "./locales/vi/common.json";
 import viErrors from "./locales/vi/errors.json";
 import viNotifications from "./locales/vi/notifications.json";
 import viPomodoro from "./locales/vi/pomodoro.json";
+import viPlaylist from "./locales/vi/playlist.json";
 import type { AppLocale } from "./config";
 
 export const messagesByLocale = {
@@ -17,6 +19,7 @@ export const messagesByLocale = {
     errors: viErrors,
     notifications: viNotifications,
     pomodoro: viPomodoro,
+    playlist: viPlaylist,
   },
   en: {
     auth: enAuth,
@@ -24,6 +27,7 @@ export const messagesByLocale = {
     errors: enErrors,
     notifications: enNotifications,
     pomodoro: enPomodoro,
+    playlist: enPlaylist,
   },
 } as const satisfies Record<AppLocale, object>;
 

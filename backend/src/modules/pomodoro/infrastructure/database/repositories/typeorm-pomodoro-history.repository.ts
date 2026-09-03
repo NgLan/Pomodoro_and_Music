@@ -7,7 +7,10 @@ import type { PomodoroHistoryRecordOutput } from '../../../application/outputs/p
 import type { PomodoroHistory } from '../../../domain/entities/pomodoro-history.entity.js';
 import { PomodoroHistoryOrmEntity } from '../entities/pomodoro-history.orm-entity.js';
 import { PomodoroOrmEntity } from '../entities/pomodoro.orm-entity.js';
-import { toHistoryDomain, toHistoryPersistence } from '../mappers/pomodoro-history.mapper.js';
+import {
+  toHistoryDomain,
+  toHistoryPersistence,
+} from '../mappers/pomodoro-history.mapper.js';
 
 function applyFilters(
   query: SelectQueryBuilder<PomodoroHistoryOrmEntity>,
@@ -18,14 +21,18 @@ function applyFilters(
       configurationId: filters.configurationId,
     });
   }
-  if (filters.status) query.andWhere('history.status = :status', { status: filters.status });
-  if (filters.dateFrom) query.andWhere('history.started_at >= :dateFrom', { dateFrom: filters.dateFrom });
-  if (filters.dateTo) query.andWhere('history.started_at <= :dateTo', { dateTo: filters.dateTo });
+  if (filters.status)
+    query.andWhere('history.status = :status', { status: filters.status });
+  if (filters.dateFrom)
+    query.andWhere('history.started_at >= :dateFrom', {
+      dateFrom: filters.dateFrom,
+    });
+  if (filters.dateTo)
+    query.andWhere('history.started_at <= :dateTo', { dateTo: filters.dateTo });
 }
 
 @Injectable()
-export class TypeOrmPomodoroHistoryRepository
-implements PomodoroHistoryRepositoryInterface {
+export class TypeOrmPomodoroHistoryRepository implements PomodoroHistoryRepositoryInterface {
   constructor(
     @InjectRepository(PomodoroHistoryOrmEntity)
     private readonly history: Repository<PomodoroHistoryOrmEntity>,
@@ -38,7 +45,8 @@ implements PomodoroHistoryRepositoryInterface {
   async list(userId: string, filters: PomodoroHistoryFiltersInput) {
     const query = this.createQuery(userId);
     applyFilters(query, filters);
-    query.orderBy('history.started_at', 'DESC')
+    query
+      .orderBy('history.started_at', 'DESC')
       .skip((filters.page - 1) * filters.pageSize)
       .take(filters.pageSize);
     const totalItems = await query.getCount();
@@ -47,8 +55,13 @@ implements PomodoroHistoryRepositoryInterface {
   }
 
   private createQuery(userId: string) {
-    return this.history.createQueryBuilder('history')
-      .leftJoin(PomodoroOrmEntity, 'pomodoro', 'pomodoro.id = history.pomodoro_id')
+    return this.history
+      .createQueryBuilder('history')
+      .leftJoin(
+        PomodoroOrmEntity,
+        'pomodoro',
+        'pomodoro.id = history.pomodoro_id',
+      )
       .addSelect('pomodoro.name', 'configuration_name')
       .where('history.user_id = :userId', { userId });
   }
@@ -59,7 +72,8 @@ implements PomodoroHistoryRepositoryInterface {
   ): PomodoroHistoryRecordOutput[] {
     return entities.map((entity, index) => ({
       history: toHistoryDomain(entity),
-      configurationName: (raw[index]?.configuration_name as string | undefined) ?? null,
+      configurationName:
+        (raw[index]?.configuration_name as string | undefined) ?? null,
     }));
   }
 }

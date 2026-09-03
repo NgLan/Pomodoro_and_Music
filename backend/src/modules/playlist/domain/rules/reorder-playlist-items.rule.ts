@@ -20,7 +20,8 @@ export function reorderPlaylistItems(
   validatePlaylistItems(items, itemsById);
   const seenIds = new Set<string>();
   return orderedItemIds.map((id, position) =>
-    reorderItem(id, position, itemsById, seenIds));
+    reorderItem(id, position, itemsById, seenIds),
+  );
 }
 
 function validatePlaylistItems(

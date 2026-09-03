@@ -4,11 +4,13 @@ import { DataSource, Repository } from 'typeorm';
 import type { PomodoroConfigurationRepositoryInterface } from '../../../application/interfaces/pomodoro-configuration.repository.interface.js';
 import type { Pomodoro } from '../../../domain/entities/pomodoro.entity.js';
 import { PomodoroOrmEntity } from '../entities/pomodoro.orm-entity.js';
-import { toPomodoroDomain, toPomodoroPersistence } from '../mappers/pomodoro.mapper.js';
+import {
+  toPomodoroDomain,
+  toPomodoroPersistence,
+} from '../mappers/pomodoro.mapper.js';
 
 @Injectable()
-export class TypeOrmPomodoroConfigurationRepository
-implements PomodoroConfigurationRepositoryInterface {
+export class TypeOrmPomodoroConfigurationRepository implements PomodoroConfigurationRepositoryInterface {
   constructor(
     @InjectRepository(PomodoroOrmEntity)
     private readonly pomodoros: Repository<PomodoroOrmEntity>,
@@ -37,7 +39,10 @@ implements PomodoroConfigurationRepositoryInterface {
     return result.affected === 1;
   }
 
-  async arePlaylistsOwnedByUser(ids: string[], userId: string): Promise<boolean> {
+  async arePlaylistsOwnedByUser(
+    ids: string[],
+    userId: string,
+  ): Promise<boolean> {
     const rows = (await this.dataSource.query(
       'SELECT id FROM playlists WHERE user_id = $1 AND id = ANY($2::uuid[])',
       [userId, ids],

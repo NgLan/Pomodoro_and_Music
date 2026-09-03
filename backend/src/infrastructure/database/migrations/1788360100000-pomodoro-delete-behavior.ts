@@ -1,8 +1,6 @@
 import type { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class PomodoroDeleteBehavior1788360100000
-  implements MigrationInterface
-{
+export class PomodoroDeleteBehavior1788360100000 implements MigrationInterface {
   name = 'PomodoroDeleteBehavior1788360100000';
 
   async up(queryRunner: QueryRunner): Promise<void> {

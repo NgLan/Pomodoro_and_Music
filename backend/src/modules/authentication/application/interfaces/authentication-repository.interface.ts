@@ -9,6 +9,10 @@ export interface AuthenticationRepositoryInterface {
   findRefreshToken(tokenHash: string): Promise<RefreshToken | null>;
   createUserWithRefreshToken(user: User, token: RefreshToken): Promise<void>;
   saveRefreshToken(token: RefreshToken): Promise<void>;
-  replaceRefreshToken(currentId: string, token: RefreshToken, at: Date): Promise<void>;
+  replaceRefreshToken(
+    currentId: string,
+    token: RefreshToken,
+    at: Date,
+  ): Promise<void>;
   revokeRefreshToken(tokenHash: string, at: Date): Promise<void>;
 }

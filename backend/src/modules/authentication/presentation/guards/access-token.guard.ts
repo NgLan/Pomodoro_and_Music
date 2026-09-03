@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import type { RequestWithContext } from '../../../../common/middleware/request-context.middleware.js';
 import { RequestContextStorage } from '../../../../common/middleware/request-context.storage.js';
 import { AuthenticationService } from '../../application/services/authentication.service.js';

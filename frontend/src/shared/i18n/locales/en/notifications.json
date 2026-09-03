@@ -11,5 +11,11 @@
   "MSG_PHASE_ENDED_EARLY": "Progress from the ended phase was saved.",
   "MSG_LOGIN_SUCCESS": "Welcome back!",
   "MSG_REGISTER_SUCCESS": "Your account is ready. Let's focus!",
-  "MSG_LOGOUT_SUCCESS": "You have been signed out safely."
+  "MSG_LOGOUT_SUCCESS": "You have been signed out safely.",
+  "MSG_PLAYLIST_CREATED": "Your new playlist is ready.",
+  "MSG_PLAYLIST_UPDATED": "Playlist changes were saved.",
+  "MSG_PLAYLIST_DELETED": "The playlist was removed from your account.",
+  "MSG_PLAYLIST_DUPLICATED": "An independent playlist copy was created.",
+  "MSG_TRACK_ADDED": "The video was added to the end of the playlist.",
+  "MSG_TRACK_REMOVED": "The video was removed from the playlist."
 }

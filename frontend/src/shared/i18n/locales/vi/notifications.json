@@ -11,5 +11,11 @@
   "MSG_PHASE_ENDED_EARLY": "Đã lưu tiến độ của phase vừa kết thúc.",
   "MSG_LOGIN_SUCCESS": "Chào mừng bạn quay lại!",
   "MSG_REGISTER_SUCCESS": "Tài khoản đã sẵn sàng. Bắt đầu tập trung thôi!",
-  "MSG_LOGOUT_SUCCESS": "Đã đăng xuất an toàn."
+  "MSG_LOGOUT_SUCCESS": "Đã đăng xuất an toàn.",
+  "MSG_PLAYLIST_CREATED": "Playlist mới đã sẵn sàng.",
+  "MSG_PLAYLIST_UPDATED": "Đã lưu thay đổi cho playlist.",
+  "MSG_PLAYLIST_DELETED": "Đã xóa playlist khỏi tài khoản.",
+  "MSG_PLAYLIST_DUPLICATED": "Đã tạo một bản sao playlist độc lập.",
+  "MSG_TRACK_ADDED": "Đã thêm video vào cuối playlist.",
+  "MSG_TRACK_REMOVED": "Đã gỡ video khỏi playlist."
 }

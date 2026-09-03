@@ -17,14 +17,20 @@ import { PomodoroHistoryController } from './presentation/controllers/pomodoro-h
     AuthenticationModule,
     TypeOrmModule.forFeature([PomodoroOrmEntity, PomodoroHistoryOrmEntity]),
   ],
-  controllers: [PomodoroConfigurationController, PomodoroHistoryController],
+  controllers: [PomodoroHistoryController, PomodoroConfigurationController],
   providers: [
     PomodoroConfigurationService,
     PomodoroHistoryService,
     TypeOrmPomodoroConfigurationRepository,
     TypeOrmPomodoroHistoryRepository,
-    { provide: POMODORO_CONFIGURATION_REPOSITORY, useExisting: TypeOrmPomodoroConfigurationRepository },
-    { provide: POMODORO_HISTORY_REPOSITORY, useExisting: TypeOrmPomodoroHistoryRepository },
+    {
+      provide: POMODORO_CONFIGURATION_REPOSITORY,
+      useExisting: TypeOrmPomodoroConfigurationRepository,
+    },
+    {
+      provide: POMODORO_HISTORY_REPOSITORY,
+      useExisting: TypeOrmPomodoroHistoryRepository,
+    },
   ],
 })
 export class PomodoroModule {}

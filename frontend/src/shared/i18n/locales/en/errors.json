@@ -1,6 +1,7 @@
 {
   "UNKNOWN": "Something went wrong. Please try again.",
   "NETWORK_ERROR": "We could not reach the server. Check your connection.",
+  "INVALID_INPUT": "Some information is invalid. Please review it.",
   "RESOURCE_NOT_FOUND": "The requested content could not be found.",
   "VALIDATION_ERROR": "Some information is not valid.",
   "UNAUTHORIZED": "Please sign in to continue.",
@@ -12,5 +13,12 @@
   "POMODORO_NOT_FOUND": "This Pomodoro configuration could not be found.",
   "INVALID_POMODORO_DURATION": "The Pomodoro duration is not valid.",
   "INVALID_POMODORO_HISTORY_DURATION": "The session duration is not valid.",
-  "INVALID_POMODORO_HISTORY_RANGE": "The session time range is not valid."
+  "INVALID_POMODORO_HISTORY_RANGE": "The session time range is not valid.",
+  "PLAYLIST_NOT_FOUND": "This playlist could not be found or no longer exists.",
+  "PLAYLIST_ITEM_NOT_FOUND": "This track is no longer in the playlist.",
+  "INVALID_YOUTUBE_URL": "The YouTube video URL is invalid.",
+  "MEDIA_UNAVAILABLE": "This video is private, deleted, or unavailable.",
+  "INVALID_PLAYLIST_ORDER": "The order could not be saved because the track list changed.",
+  "YOUTUBE_PROVIDER_UNAVAILABLE": "YouTube is temporarily unavailable. Please try again later.",
+  "YOUTUBE_RATE_LIMITED": "The YouTube request limit was reached. Please try again later."
 }

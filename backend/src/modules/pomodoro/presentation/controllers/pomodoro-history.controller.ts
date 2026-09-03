@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginatedResponseDto } from '../../../../common/dto/paginated-response.dto.js';
-import { ApiErrorResponses, ApiPaginatedResponse, ApiSuccessResponse } from '../../../../common/decorators/index.js';
+import {
+  ApiErrorResponses,
+  ApiPaginatedResponse,
+  ApiSuccessResponse,
+} from '../../../../common/decorators/index.js';
 import { CurrentUserId } from '../../../authentication/presentation/decorators/current-user-id.decorator.js';
 import { AccessTokenGuard } from '../../../authentication/presentation/guards/access-token.guard.js';
 import { PomodoroHistoryService } from '../../application/services/pomodoro-history.service.js';
@@ -18,9 +22,18 @@ export class PomodoroHistoryController {
   constructor(private readonly service: PomodoroHistoryService) {}
 
   @Get()
-  @ApiOperation({ operationId: 'pomodoroHistoryList', summary: 'List my Pomodoro phase history' })
-  @ApiPaginatedResponse(PomodoroHistoryResponseDto, 'Pomodoro history returned.')
-  async list(@CurrentUserId() userId: string, @Query() query: PomodoroHistoryQueryDto) {
+  @ApiOperation({
+    operationId: 'pomodoroHistoryList',
+    summary: 'List my Pomodoro phase history',
+  })
+  @ApiPaginatedResponse(
+    PomodoroHistoryResponseDto,
+    'Pomodoro history returned.',
+  )
+  async list(
+    @CurrentUserId() userId: string,
+    @Query() query: PomodoroHistoryQueryDto,
+  ) {
     const filters = {
       ...query,
       dateFrom: query.dateFrom ? new Date(query.dateFrom) : undefined,
@@ -28,18 +41,31 @@ export class PomodoroHistoryController {
     };
     const result = await this.service.list(userId, filters);
     const items = result.items.map(PomodoroHistoryResponseDto.fromRecord);
-    return new PaginatedResponseDto(items, query.page, query.pageSize, result.totalItems);
+    return new PaginatedResponseDto(
+      items,
+      query.page,
+      query.pageSize,
+      result.totalItems,
+    );
   }
 
   @Post()
-  @ApiOperation({ operationId: 'pomodoroHistoryCreate', summary: 'Record a completed or ended phase' })
+  @ApiOperation({
+    operationId: 'pomodoroHistoryCreate',
+    summary: 'Record a completed or ended phase',
+  })
   @ApiSuccessResponse(PomodoroHistoryResponseDto, 'Pomodoro history recorded.')
-  async create(@CurrentUserId() userId: string, @Body() body: CreatePomodoroHistoryRequestDto) {
+  async create(
+    @CurrentUserId() userId: string,
+    @Body() body: CreatePomodoroHistoryRequestDto,
+  ) {
     const input = {
       ...body,
       startedAt: new Date(body.startedAt),
       endedAt: new Date(body.endedAt),
     };
-    return PomodoroHistoryResponseDto.fromRecord(await this.service.create(userId, input));
+    return PomodoroHistoryResponseDto.fromRecord(
+      await this.service.create(userId, input),
+    );
   }
 }

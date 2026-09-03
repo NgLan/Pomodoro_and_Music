@@ -1,6 +1,7 @@
 {
   "UNKNOWN": "Đã có lỗi xảy ra. Vui lòng thử lại.",
   "NETWORK_ERROR": "Không thể kết nối đến máy chủ. Hãy kiểm tra kết nối mạng.",
+  "INVALID_INPUT": "Một số thông tin chưa hợp lệ. Hãy kiểm tra lại.",
   "RESOURCE_NOT_FOUND": "Không tìm thấy nội dung bạn yêu cầu.",
   "VALIDATION_ERROR": "Một số thông tin chưa hợp lệ.",
   "UNAUTHORIZED": "Bạn cần đăng nhập để tiếp tục.",
@@ -12,5 +13,12 @@
   "POMODORO_NOT_FOUND": "Không tìm thấy cấu hình Pomodoro này.",
   "INVALID_POMODORO_DURATION": "Thời lượng Pomodoro chưa hợp lệ.",
   "INVALID_POMODORO_HISTORY_DURATION": "Thời lượng phiên chưa hợp lệ.",
-  "INVALID_POMODORO_HISTORY_RANGE": "Khoảng thời gian của phiên chưa hợp lệ."
+  "INVALID_POMODORO_HISTORY_RANGE": "Khoảng thời gian của phiên chưa hợp lệ.",
+  "PLAYLIST_NOT_FOUND": "Không tìm thấy playlist này hoặc playlist không còn tồn tại.",
+  "PLAYLIST_ITEM_NOT_FOUND": "Bài này không còn nằm trong playlist.",
+  "INVALID_YOUTUBE_URL": "URL video YouTube chưa hợp lệ.",
+  "MEDIA_UNAVAILABLE": "Video này đang riêng tư, đã xóa hoặc không khả dụng.",
+  "INVALID_PLAYLIST_ORDER": "Không thể lưu thứ tự vì danh sách bài đã thay đổi.",
+  "YOUTUBE_PROVIDER_UNAVAILABLE": "YouTube đang tạm thời không phản hồi. Hãy thử lại sau.",
+  "YOUTUBE_RATE_LIMITED": "Đã đạt giới hạn yêu cầu YouTube. Hãy thử lại sau một lúc."
 }

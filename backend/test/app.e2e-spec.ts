@@ -15,7 +15,7 @@ describe('AppController (e2e)', () => {
       DATABASE_URL: 'postgresql://user:password@localhost:5432/app',
       JWT_ACCESS_SECRET: 'a-secure-test-secret-with-32-characters',
       JWT_ACCESS_TTL: '15m',
-      REFRESH_TOKEN_TTL: '7d',
+      REFRESH_TOKEN_TTL: '30d',
       YOUTUBE_API_KEY: 'youtube-test-key',
       FRONTEND_ORIGIN: 'http://localhost:5173',
       LOG_LEVEL: 'error',
@@ -26,6 +26,9 @@ describe('AppController (e2e)', () => {
     })
       .overrideProvider(DataSource)
       .useValue({
+        entityMetadatas: [],
+        options: { type: 'postgres' },
+        getRepository: vi.fn().mockReturnValue({}),
         isInitialized: false,
         query: databaseQuery,
         transaction: vi.fn(),

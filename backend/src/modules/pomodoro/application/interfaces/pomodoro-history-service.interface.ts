@@ -3,7 +3,10 @@ import type { PomodoroHistoryFiltersInput } from '../inputs/pomodoro-history-fil
 import type { PomodoroHistoryRecordOutput } from '../outputs/pomodoro-history-record.output.js';
 
 export interface PomodoroHistoryServiceInterface {
-  create(userId: string, input: CreatePomodoroHistoryInput): Promise<PomodoroHistoryRecordOutput>;
+  create(
+    userId: string,
+    input: CreatePomodoroHistoryInput,
+  ): Promise<PomodoroHistoryRecordOutput>;
   list(
     userId: string,
     filters: PomodoroHistoryFiltersInput,

@@ -1,4 +1,8 @@
-import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 import type { RequestWithContext } from '../../../../common/middleware/request-context.middleware.js';
 
 export const CurrentUserId = createParamDecorator(

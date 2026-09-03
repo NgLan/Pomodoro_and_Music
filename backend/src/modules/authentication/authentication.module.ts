@@ -23,7 +23,10 @@ import { AccessTokenGuard } from './presentation/guards/access-token.guard.js';
     TypeOrmAuthenticationRepository,
     ScryptPasswordHasher,
     HmacAccessTokenProvider,
-    { provide: AUTHENTICATION_REPOSITORY, useExisting: TypeOrmAuthenticationRepository },
+    {
+      provide: AUTHENTICATION_REPOSITORY,
+      useExisting: TypeOrmAuthenticationRepository,
+    },
     { provide: PASSWORD_HASHER, useExisting: ScryptPasswordHasher },
     { provide: ACCESS_TOKEN_PROVIDER, useExisting: HmacAccessTokenProvider },
   ],

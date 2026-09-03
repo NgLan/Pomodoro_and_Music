@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppGetHelloData, AppGetHelloResponses, AuthLoginData, AuthLoginErrors, AuthLoginResponses, AuthLogoutData, AuthLogoutErrors, AuthLogoutResponses, AuthRefreshData, AuthRefreshErrors, AuthRefreshResponses, AuthRegisterData, AuthRegisterErrors, AuthRegisterResponses, HealthLivenessData, HealthLivenessErrors, HealthLivenessResponses, HealthReadinessData, HealthReadinessErrors, HealthReadinessResponses, PomodoroCreateData, PomodoroCreateErrors, PomodoroCreateResponses, PomodoroDeleteData, PomodoroDeleteErrors, PomodoroDeleteResponses, PomodoroGetData, PomodoroGetErrors, PomodoroGetResponses, PomodoroHistoryCreateData, PomodoroHistoryCreateErrors, PomodoroHistoryCreateResponses, PomodoroHistoryListData, PomodoroHistoryListErrors, PomodoroHistoryListResponses, PomodoroListData, PomodoroListErrors, PomodoroListResponses, PomodoroUpdateData, PomodoroUpdateErrors, PomodoroUpdateResponses } from './types.gen';
+import type { AppGetHelloData, AppGetHelloResponses, AuthLoginData, AuthLoginErrors, AuthLoginResponses, AuthLogoutData, AuthLogoutErrors, AuthLogoutResponses, AuthRefreshData, AuthRefreshErrors, AuthRefreshResponses, AuthRegisterData, AuthRegisterErrors, AuthRegisterResponses, HealthLivenessData, HealthLivenessErrors, HealthLivenessResponses, HealthReadinessData, HealthReadinessErrors, HealthReadinessResponses, PlaylistCreateData, PlaylistCreateErrors, PlaylistCreateResponses, PlaylistDeleteData, PlaylistDeleteErrors, PlaylistDeleteResponses, PlaylistDuplicateData, PlaylistDuplicateErrors, PlaylistDuplicateResponses, PlaylistGetData, PlaylistGetErrors, PlaylistGetResponses, PlaylistItemAddData, PlaylistItemAddErrors, PlaylistItemAddResponses, PlaylistItemDeleteData, PlaylistItemDeleteErrors, PlaylistItemDeleteResponses, PlaylistItemReorderData, PlaylistItemReorderErrors, PlaylistItemReorderResponses, PlaylistListData, PlaylistListErrors, PlaylistListResponses, PlaylistUpdateData, PlaylistUpdateErrors, PlaylistUpdateResponses, PomodoroCreateData, PomodoroCreateErrors, PomodoroCreateResponses, PomodoroDeleteData, PomodoroDeleteErrors, PomodoroDeleteResponses, PomodoroGetData, PomodoroGetErrors, PomodoroGetResponses, PomodoroHistoryCreateData, PomodoroHistoryCreateErrors, PomodoroHistoryCreateResponses, PomodoroHistoryListData, PomodoroHistoryListErrors, PomodoroHistoryListResponses, PomodoroListData, PomodoroListErrors, PomodoroListResponses, PomodoroUpdateData, PomodoroUpdateErrors, PomodoroUpdateResponses, YoutubeVideoResolveData, YoutubeVideoResolveErrors, YoutubeVideoResolveResponses, YoutubeVideoSearchData, YoutubeVideoSearchErrors, YoutubeVideoSearchResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -62,11 +62,7 @@ export const authRefresh = <ThrowOnError extends boolean = false>(options?: Opti
 /**
  * Revoke the current refresh token
  */
-export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/auth/logout',
-    ...options
-});
+export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError>({ url: '/auth/logout', ...options });
 
 /**
  * List my Pomodoro configurations
@@ -83,6 +79,37 @@ export const pomodoroList = <ThrowOnError extends boolean = false>(options?: Opt
 export const pomodoroCreate = <ThrowOnError extends boolean = false>(options: Options<PomodoroCreateData, ThrowOnError>): RequestResult<PomodoroCreateResponses, PomodoroCreateErrors, ThrowOnError> => (options.client ?? client).post<PomodoroCreateResponses, PomodoroCreateErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/pomodoro',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete configuration without deleting history
+ */
+export const pomodoroDelete = <ThrowOnError extends boolean = false>(options: Options<PomodoroDeleteData, ThrowOnError>): RequestResult<PomodoroDeleteResponses, PomodoroDeleteErrors, ThrowOnError> => (options.client ?? client).delete<PomodoroDeleteResponses, PomodoroDeleteErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/{id}',
+    ...options
+});
+
+/**
+ * Get one Pomodoro configuration
+ */
+export const pomodoroGet = <ThrowOnError extends boolean = false>(options: Options<PomodoroGetData, ThrowOnError>): RequestResult<PomodoroGetResponses, PomodoroGetErrors, ThrowOnError> => (options.client ?? client).get<PomodoroGetResponses, PomodoroGetErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/{id}',
+    ...options
+});
+
+/**
+ * Update a Pomodoro configuration
+ */
+export const pomodoroUpdate = <ThrowOnError extends boolean = false>(options: Options<PomodoroUpdateData, ThrowOnError>): RequestResult<PomodoroUpdateResponses, PomodoroUpdateErrors, ThrowOnError> => (options.client ?? client).put<PomodoroUpdateResponses, PomodoroUpdateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/{id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -113,29 +140,117 @@ export const pomodoroHistoryCreate = <ThrowOnError extends boolean = false>(opti
 });
 
 /**
- * Delete a Pomodoro configuration without deleting history
+ * List and search my playlists
  */
-export const pomodoroDelete = <ThrowOnError extends boolean = false>(options: Options<PomodoroDeleteData, ThrowOnError>): RequestResult<PomodoroDeleteResponses, PomodoroDeleteErrors, ThrowOnError> => (options.client ?? client).delete<PomodoroDeleteResponses, PomodoroDeleteErrors, ThrowOnError>({
+export const playlistList = <ThrowOnError extends boolean = false>(options?: Options<PlaylistListData, ThrowOnError>): RequestResult<PlaylistListResponses, PlaylistListErrors, ThrowOnError> => (options?.client ?? client).get<PlaylistListResponses, PlaylistListErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/pomodoro/{id}',
+    url: '/playlists',
     ...options
 });
 
 /**
- * Get one Pomodoro configuration
+ * Create a personal playlist
  */
-export const pomodoroGet = <ThrowOnError extends boolean = false>(options: Options<PomodoroGetData, ThrowOnError>): RequestResult<PomodoroGetResponses, PomodoroGetErrors, ThrowOnError> => (options.client ?? client).get<PomodoroGetResponses, PomodoroGetErrors, ThrowOnError>({
+export const playlistCreate = <ThrowOnError extends boolean = false>(options: Options<PlaylistCreateData, ThrowOnError>): RequestResult<PlaylistCreateResponses, PlaylistCreateErrors, ThrowOnError> => (options.client ?? client).post<PlaylistCreateResponses, PlaylistCreateErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/pomodoro/{id}',
+    url: '/playlists',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete only the internal playlist copy
+ */
+export const playlistDelete = <ThrowOnError extends boolean = false>(options: Options<PlaylistDeleteData, ThrowOnError>): RequestResult<PlaylistDeleteResponses, PlaylistDeleteErrors, ThrowOnError> => (options.client ?? client).delete<PlaylistDeleteResponses, PlaylistDeleteErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}',
     ...options
 });
 
 /**
- * Update a Pomodoro configuration
+ * Get playlist detail and ordered items
  */
-export const pomodoroUpdate = <ThrowOnError extends boolean = false>(options: Options<PomodoroUpdateData, ThrowOnError>): RequestResult<PomodoroUpdateResponses, PomodoroUpdateErrors, ThrowOnError> => (options.client ?? client).put<PomodoroUpdateResponses, PomodoroUpdateErrors, ThrowOnError>({
+export const playlistGet = <ThrowOnError extends boolean = false>(options: Options<PlaylistGetData, ThrowOnError>): RequestResult<PlaylistGetResponses, PlaylistGetErrors, ThrowOnError> => (options.client ?? client).get<PlaylistGetResponses, PlaylistGetErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/pomodoro/{id}',
+    url: '/playlists/{id}',
+    ...options
+});
+
+/**
+ * Update playlist metadata
+ */
+export const playlistUpdate = <ThrowOnError extends boolean = false>(options: Options<PlaylistUpdateData, ThrowOnError>): RequestResult<PlaylistUpdateResponses, PlaylistUpdateErrors, ThrowOnError> => (options.client ?? client).put<PlaylistUpdateResponses, PlaylistUpdateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Duplicate playlist and ordered items
+ */
+export const playlistDuplicate = <ThrowOnError extends boolean = false>(options: Options<PlaylistDuplicateData, ThrowOnError>): RequestResult<PlaylistDuplicateResponses, PlaylistDuplicateErrors, ThrowOnError> => (options.client ?? client).post<PlaylistDuplicateResponses, PlaylistDuplicateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}/duplicate',
+    ...options
+});
+
+/**
+ * Resolve and append one YouTube video
+ */
+export const playlistItemAdd = <ThrowOnError extends boolean = false>(options: Options<PlaylistItemAddData, ThrowOnError>): RequestResult<PlaylistItemAddResponses, PlaylistItemAddErrors, ThrowOnError> => (options.client ?? client).post<PlaylistItemAddResponses, PlaylistItemAddErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}/items',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove one item and normalize positions
+ */
+export const playlistItemDelete = <ThrowOnError extends boolean = false>(options: Options<PlaylistItemDeleteData, ThrowOnError>): RequestResult<PlaylistItemDeleteResponses, PlaylistItemDeleteErrors, ThrowOnError> => (options.client ?? client).delete<PlaylistItemDeleteResponses, PlaylistItemDeleteErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}/items/{itemId}',
+    ...options
+});
+
+/**
+ * Atomically save the complete item order
+ */
+export const playlistItemReorder = <ThrowOnError extends boolean = false>(options: Options<PlaylistItemReorderData, ThrowOnError>): RequestResult<PlaylistItemReorderResponses, PlaylistItemReorderErrors, ThrowOnError> => (options.client ?? client).put<PlaylistItemReorderResponses, PlaylistItemReorderErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}/items/order',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Search public YouTube videos
+ */
+export const youtubeVideoSearch = <ThrowOnError extends boolean = false>(options: Options<YoutubeVideoSearchData, ThrowOnError>): RequestResult<YoutubeVideoSearchResponses, YoutubeVideoSearchErrors, ThrowOnError> => (options.client ?? client).get<YoutubeVideoSearchResponses, YoutubeVideoSearchErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/youtube/videos',
+    ...options
+});
+
+/**
+ * Resolve a YouTube video URL
+ */
+export const youtubeVideoResolve = <ThrowOnError extends boolean = false>(options: Options<YoutubeVideoResolveData, ThrowOnError>): RequestResult<YoutubeVideoResolveResponses, YoutubeVideoResolveErrors, ThrowOnError> => (options.client ?? client).post<YoutubeVideoResolveResponses, YoutubeVideoResolveErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/youtube/videos/resolve',
     ...options,
     headers: {
         'Content-Type': 'application/json',

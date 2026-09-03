@@ -6,7 +6,10 @@ import { generateRandomToken } from '../../../../common/security/random-token.js
 import { hashToken } from '../../../../common/security/token-hash.js';
 import type { User } from '../../../user/domain/entities/user.entity.js';
 import { RefreshToken } from '../../domain/entities/refresh-token.entity.js';
-import { ACCESS_TOKEN_PROVIDER, type AccessTokenProviderInterface } from '../interfaces/access-token-provider.interface.js';
+import {
+  ACCESS_TOKEN_PROVIDER,
+  type AccessTokenProviderInterface,
+} from '../interfaces/access-token-provider.interface.js';
 import type { AuthenticationOutput } from '../outputs/authentication.output.js';
 
 export const ACCESS_TOKEN_TTL_SECONDS = 15 * 60;
@@ -24,13 +27,16 @@ export class SessionFactory {
   private readonly refreshTtl: number;
 
   constructor(
-    @Inject(ACCESS_TOKEN_PROVIDER) private readonly accessTokens: AccessTokenProviderInterface,
+    @Inject(ACCESS_TOKEN_PROVIDER)
+    private readonly accessTokens: AccessTokenProviderInterface,
     @Inject(authConfig.KEY) configuration: ConfigType<typeof authConfig>,
   ) {
     const accessTtl = parseDurationSeconds(configuration.jwtAccessTtl);
     const refreshTtl = parseDurationSeconds(configuration.refreshTokenTtl);
-    if (accessTtl !== ACCESS_TOKEN_TTL_SECONDS) throw new Error('JWT_ACCESS_TTL must be 15m');
-    if (refreshTtl !== REFRESH_TOKEN_TTL_SECONDS) throw new Error('REFRESH_TOKEN_TTL must be 30d');
+    if (accessTtl !== ACCESS_TOKEN_TTL_SECONDS)
+      throw new Error('JWT_ACCESS_TTL must be 15m');
+    if (refreshTtl !== REFRESH_TOKEN_TTL_SECONDS)
+      throw new Error('REFRESH_TOKEN_TTL must be 30d');
     this.refreshTtl = refreshTtl;
   }
 
@@ -38,13 +44,21 @@ export class SessionFactory {
     const rawToken = generateRandomToken();
     const expiresAt = new Date(now.getTime() + this.refreshTtl * 1000);
     const entity = RefreshToken.create({
-      id: randomUUID(), userId, tokenHash: hashToken(rawToken),
-      expiresAt, revokedAt: null, createdAt: now,
+      id: randomUUID(),
+      userId,
+      tokenHash: hashToken(rawToken),
+      expiresAt,
+      revokedAt: null,
+      createdAt: now,
     });
     return { entity, rawToken };
   }
 
-  createOutput(user: User, rawToken: string, expiresAt: Date): AuthenticationOutput {
+  createOutput(
+    user: User,
+    rawToken: string,
+    expiresAt: Date,
+  ): AuthenticationOutput {
     return {
       accessToken: this.accessTokens.create(user.id, ACCESS_TOKEN_TTL_SECONDS),
       accessTokenExpiresInSeconds: ACCESS_TOKEN_TTL_SECONDS,

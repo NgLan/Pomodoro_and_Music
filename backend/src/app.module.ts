@@ -14,6 +14,7 @@ import { DatabaseModule } from './infrastructure/database/database.module.js';
 import { HealthModule } from './presentation/health/health.module.js';
 import { AuthenticationModule } from './modules/authentication/authentication.module.js';
 import { PomodoroModule } from './modules/pomodoro/pomodoro.module.js';
+import { PlaylistModule } from './modules/playlist/playlist.module.js';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PomodoroModule } from './modules/pomodoro/pomodoro.module.js';
     HealthModule,
     AuthenticationModule,
     PomodoroModule,
+    PlaylistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

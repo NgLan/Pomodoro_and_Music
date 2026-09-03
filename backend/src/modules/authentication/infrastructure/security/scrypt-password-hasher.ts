@@ -1,4 +1,8 @@
-import { randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto';
+import {
+  randomBytes,
+  scrypt as scryptCallback,
+  timingSafeEqual,
+} from 'node:crypto';
 import { promisify } from 'node:util';
 import { Injectable } from '@nestjs/common';
 import type { PasswordHasherInterface } from '../../application/interfaces/password-hasher.interface.js';
@@ -19,6 +23,8 @@ export class ScryptPasswordHasher implements PasswordHasherInterface {
     if (algorithm !== 'scrypt' || !salt || !encodedHash) return false;
     const expected = Buffer.from(encodedHash, 'base64url');
     const actual = (await scrypt(password, salt, expected.length)) as Buffer;
-    return expected.length === actual.length && timingSafeEqual(expected, actual);
+    return (
+      expected.length === actual.length && timingSafeEqual(expected, actual)
+    );
   }
 }

@@ -1,8 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { BusinessException, ErrorCode } from '../../../../common/exceptions/index.js';
+import {
+  BusinessException,
+  ErrorCode,
+} from '../../../../common/exceptions/index.js';
 import type { Pomodoro } from '../../domain/entities/pomodoro.entity.js';
 import type { PomodoroConfigurationInput } from '../inputs/pomodoro-configuration.input.js';
-import { POMODORO_CONFIGURATION_REPOSITORY, type PomodoroConfigurationRepositoryInterface } from '../interfaces/pomodoro-configuration.repository.interface.js';
+import {
+  POMODORO_CONFIGURATION_REPOSITORY,
+  type PomodoroConfigurationRepositoryInterface,
+} from '../interfaces/pomodoro-configuration.repository.interface.js';
 import type { PomodoroConfigurationServiceInterface } from '../interfaces/pomodoro-configuration-service.interface.js';
 import { createPomodoro } from './pomodoro.factory.js';
 
@@ -13,7 +19,10 @@ export class PomodoroConfigurationService implements PomodoroConfigurationServic
     private readonly repository: PomodoroConfigurationRepositoryInterface,
   ) {}
 
-  async create(userId: string, input: PomodoroConfigurationInput): Promise<Pomodoro> {
+  async create(
+    userId: string,
+    input: PomodoroConfigurationInput,
+  ): Promise<Pomodoro> {
     await this.validatePlaylists(userId, input);
     const value = createPomodoro(userId, input);
     await this.repository.save(value);
@@ -30,7 +39,11 @@ export class PomodoroConfigurationService implements PomodoroConfigurationServic
     return value!;
   }
 
-  async update(userId: string, id: string, input: PomodoroConfigurationInput): Promise<Pomodoro> {
+  async update(
+    userId: string,
+    id: string,
+    input: PomodoroConfigurationInput,
+  ): Promise<Pomodoro> {
     const current = await this.get(userId, id);
     await this.validatePlaylists(userId, input);
     const value = createPomodoro(userId, input, current);
@@ -42,12 +55,22 @@ export class PomodoroConfigurationService implements PomodoroConfigurationServic
     if (!(await this.repository.deleteForUser(id, userId))) this.notFound();
   }
 
-  private async validatePlaylists(userId: string, input: PomodoroConfigurationInput): Promise<void> {
-    const ids = [input.focusPlaylistId, input.breakPlaylistId]
-      .filter((id): id is string => Boolean(id));
+  private async validatePlaylists(
+    userId: string,
+    input: PomodoroConfigurationInput,
+  ): Promise<void> {
+    const ids = [input.focusPlaylistId, input.breakPlaylistId].filter(
+      (id): id is string => Boolean(id),
+    );
     const uniqueIds = [...new Set(ids)];
-    if (uniqueIds.length && !(await this.repository.arePlaylistsOwnedByUser(uniqueIds, userId))) {
-      throw new BusinessException({ code: ErrorCode.FORBIDDEN, message: 'A selected playlist does not belong to the current user' });
+    if (
+      uniqueIds.length &&
+      !(await this.repository.arePlaylistsOwnedByUser(uniqueIds, userId))
+    ) {
+      throw new BusinessException({
+        code: ErrorCode.FORBIDDEN,
+        message: 'A selected playlist does not belong to the current user',
+      });
     }
   }
 

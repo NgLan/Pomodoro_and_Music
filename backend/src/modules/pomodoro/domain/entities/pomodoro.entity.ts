@@ -1,4 +1,8 @@
-import type { PomodoroDurations, PomodoroDurationUpdate, PomodoroProps } from './pomodoro.props.js';
+import type {
+  PomodoroDurations,
+  PomodoroDurationUpdate,
+  PomodoroProps,
+} from './pomodoro.props.js';
 import { validatePomodoroDurations } from '../rules/validate-pomodoro-durations.rule.js';
 
 export class Pomodoro {

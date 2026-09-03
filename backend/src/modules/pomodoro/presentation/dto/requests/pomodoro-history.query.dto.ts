@@ -5,18 +5,22 @@ import { PomodoroHistoryStatus } from '../../../domain/enums/pomodoro-history-st
 
 export class PomodoroHistoryQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({ format: 'uuid' })
-  @IsOptional() @IsUUID()
+  @IsOptional()
+  @IsUUID()
   configurationId?: string;
 
   @ApiPropertyOptional({ enum: PomodoroHistoryStatus })
-  @IsOptional() @IsEnum(PomodoroHistoryStatus)
+  @IsOptional()
+  @IsEnum(PomodoroHistoryStatus)
   status?: PomodoroHistoryStatus;
 
   @ApiPropertyOptional({ format: 'date-time' })
-  @IsOptional() @IsDateString()
+  @IsOptional()
+  @IsDateString()
   dateFrom?: string;
 
   @ApiPropertyOptional({ format: 'date-time' })
-  @IsOptional() @IsDateString()
+  @IsOptional()
+  @IsDateString()
   dateTo?: string;
 }

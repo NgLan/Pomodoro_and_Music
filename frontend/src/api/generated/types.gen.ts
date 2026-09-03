@@ -93,6 +93,10 @@ export type PomodoroConfigurationRequestDto = {
     breakPlaylistId?: string | null;
 };
 
+export type DeletePomodoroResponseDto = {
+    deleted: boolean;
+};
+
 export type PomodoroPhaseType = 'FOCUS' | 'SHORT_BREAK' | 'LONG_BREAK';
 
 export type PomodoroHistoryStatus = 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
@@ -119,8 +123,65 @@ export type CreatePomodoroHistoryRequestDto = {
     endedAt: string;
 };
 
-export type DeletePomodoroResponseDto = {
+export type MediaItemResponseDto = {
+    externalMediaId: string;
+    title: string | null;
+    channelName: string | null;
+    thumbnailUrl: string | null;
+    durationSeconds: number | null;
+    sourceUrl: string;
+    availability: 'AVAILABLE' | 'UNAVAILABLE' | 'PRIVATE' | 'DELETED' | 'REGION_BLOCKED' | 'UNKNOWN';
+};
+
+export type PlaylistItemResponseDto = {
+    id: string;
+    position: number;
+    media: MediaItemResponseDto;
+};
+
+export type PlaylistDetailResponseDto = {
+    id: string;
+    name: string;
+    description: string | null;
+    thumbnailUrl: string | null;
+    sourceType: 'MANUAL' | 'YOUTUBE';
+    sourceUrl: string | null;
+    items: Array<PlaylistItemResponseDto>;
+    createdAt: string;
+    updatedAt: string;
+};
+
+export type PlaylistMetadataRequestDto = {
+    name: string;
+    description?: string | null;
+    thumbnailUrl?: string | null;
+};
+
+export type PlaylistSummaryResponseDto = {
+    id: string;
+    name: string;
+    description: string | null;
+    thumbnailUrl: string | null;
+    sourceType: 'MANUAL' | 'YOUTUBE';
+    itemCount: number;
+    totalDurationSeconds: number | null;
+    updatedAt: string;
+};
+
+export type DeletePlaylistResponseDto = {
     deleted: boolean;
+};
+
+export type AddVideoRequestDto = {
+    externalVideoId: string;
+};
+
+export type ReorderPlaylistItemsRequestDto = {
+    itemIds: Array<string>;
+};
+
+export type ResolveYoutubeVideoRequestDto = {
+    url: string;
 };
 
 export type AppGetHelloData = {
@@ -414,89 +475,6 @@ export type PomodoroCreateResponses = {
 
 export type PomodoroCreateResponse = PomodoroCreateResponses[keyof PomodoroCreateResponses];
 
-export type PomodoroHistoryListData = {
-    body?: never;
-    path?: never;
-    query?: {
-        configurationId?: string;
-        status?: 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
-        dateFrom?: string;
-        dateTo?: string;
-    };
-    url: '/pomodoro/history';
-};
-
-export type PomodoroHistoryListErrors = {
-    /**
-     * The request is invalid.
-     */
-    400: ApiErrorResponseDto;
-    /**
-     * The requested resource was not found.
-     */
-    404: ApiErrorResponseDto;
-    /**
-     * An unexpected server error occurred.
-     */
-    500: ApiErrorResponseDto;
-};
-
-export type PomodoroHistoryListError = PomodoroHistoryListErrors[keyof PomodoroHistoryListErrors];
-
-export type PomodoroHistoryListResponses = {
-    /**
-     * Pomodoro history returned.
-     */
-    200: ApiResponseDto & {
-        data?: {
-            items: Array<PomodoroHistoryResponseDto>;
-            meta: {
-                page: number;
-                pageSize: number;
-                totalItems: number;
-                totalPages: number;
-            };
-        };
-    };
-};
-
-export type PomodoroHistoryListResponse = PomodoroHistoryListResponses[keyof PomodoroHistoryListResponses];
-
-export type PomodoroHistoryCreateData = {
-    body: CreatePomodoroHistoryRequestDto;
-    path?: never;
-    query?: never;
-    url: '/pomodoro/history';
-};
-
-export type PomodoroHistoryCreateErrors = {
-    /**
-     * The request is invalid.
-     */
-    400: ApiErrorResponseDto;
-    /**
-     * The requested resource was not found.
-     */
-    404: ApiErrorResponseDto;
-    /**
-     * An unexpected server error occurred.
-     */
-    500: ApiErrorResponseDto;
-};
-
-export type PomodoroHistoryCreateError = PomodoroHistoryCreateErrors[keyof PomodoroHistoryCreateErrors];
-
-export type PomodoroHistoryCreateResponses = {
-    /**
-     * Pomodoro history recorded.
-     */
-    200: ApiResponseDto & {
-        data?: PomodoroHistoryResponseDto;
-    };
-};
-
-export type PomodoroHistoryCreateResponse = PomodoroHistoryCreateResponses[keyof PomodoroHistoryCreateResponses];
-
 export type PomodoroDeleteData = {
     body?: never;
     path: {
@@ -607,3 +585,493 @@ export type PomodoroUpdateResponses = {
 };
 
 export type PomodoroUpdateResponse = PomodoroUpdateResponses[keyof PomodoroUpdateResponses];
+
+export type PomodoroHistoryListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        configurationId?: string;
+        status?: 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
+        dateFrom?: string;
+        dateTo?: string;
+    };
+    url: '/pomodoro/history';
+};
+
+export type PomodoroHistoryListErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroHistoryListError = PomodoroHistoryListErrors[keyof PomodoroHistoryListErrors];
+
+export type PomodoroHistoryListResponses = {
+    /**
+     * Pomodoro history returned.
+     */
+    200: ApiResponseDto & {
+        data?: {
+            items: Array<PomodoroHistoryResponseDto>;
+            meta: {
+                page: number;
+                pageSize: number;
+                totalItems: number;
+                totalPages: number;
+            };
+        };
+    };
+};
+
+export type PomodoroHistoryListResponse = PomodoroHistoryListResponses[keyof PomodoroHistoryListResponses];
+
+export type PomodoroHistoryCreateData = {
+    body: CreatePomodoroHistoryRequestDto;
+    path?: never;
+    query?: never;
+    url: '/pomodoro/history';
+};
+
+export type PomodoroHistoryCreateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroHistoryCreateError = PomodoroHistoryCreateErrors[keyof PomodoroHistoryCreateErrors];
+
+export type PomodoroHistoryCreateResponses = {
+    /**
+     * Pomodoro history recorded.
+     */
+    200: ApiResponseDto & {
+        data?: PomodoroHistoryResponseDto;
+    };
+};
+
+export type PomodoroHistoryCreateResponse = PomodoroHistoryCreateResponses[keyof PomodoroHistoryCreateResponses];
+
+export type PlaylistListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Search in playlist name and description
+         */
+        search?: string;
+    };
+    url: '/playlists';
+};
+
+export type PlaylistListErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistListError = PlaylistListErrors[keyof PlaylistListErrors];
+
+export type PlaylistListResponses = {
+    /**
+     * Playlists returned.
+     */
+    200: ApiResponseDto & {
+        data?: Array<PlaylistSummaryResponseDto>;
+    };
+};
+
+export type PlaylistListResponse = PlaylistListResponses[keyof PlaylistListResponses];
+
+export type PlaylistCreateData = {
+    body: PlaylistMetadataRequestDto;
+    path?: never;
+    query?: never;
+    url: '/playlists';
+};
+
+export type PlaylistCreateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistCreateError = PlaylistCreateErrors[keyof PlaylistCreateErrors];
+
+export type PlaylistCreateResponses = {
+    /**
+     * Playlist created.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistCreateResponse = PlaylistCreateResponses[keyof PlaylistCreateResponses];
+
+export type PlaylistDeleteData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}';
+};
+
+export type PlaylistDeleteErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistDeleteError = PlaylistDeleteErrors[keyof PlaylistDeleteErrors];
+
+export type PlaylistDeleteResponses = {
+    /**
+     * Playlist deleted.
+     */
+    200: ApiResponseDto & {
+        data?: DeletePlaylistResponseDto;
+    };
+};
+
+export type PlaylistDeleteResponse = PlaylistDeleteResponses[keyof PlaylistDeleteResponses];
+
+export type PlaylistGetData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}';
+};
+
+export type PlaylistGetErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistGetError = PlaylistGetErrors[keyof PlaylistGetErrors];
+
+export type PlaylistGetResponses = {
+    /**
+     * Playlist returned.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistGetResponse = PlaylistGetResponses[keyof PlaylistGetResponses];
+
+export type PlaylistUpdateData = {
+    body: PlaylistMetadataRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}';
+};
+
+export type PlaylistUpdateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistUpdateError = PlaylistUpdateErrors[keyof PlaylistUpdateErrors];
+
+export type PlaylistUpdateResponses = {
+    /**
+     * Playlist updated.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistUpdateResponse = PlaylistUpdateResponses[keyof PlaylistUpdateResponses];
+
+export type PlaylistDuplicateData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}/duplicate';
+};
+
+export type PlaylistDuplicateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistDuplicateError = PlaylistDuplicateErrors[keyof PlaylistDuplicateErrors];
+
+export type PlaylistDuplicateResponses = {
+    /**
+     * Playlist duplicated.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistDuplicateResponse = PlaylistDuplicateResponses[keyof PlaylistDuplicateResponses];
+
+export type PlaylistItemAddData = {
+    body: AddVideoRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}/items';
+};
+
+export type PlaylistItemAddErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistItemAddError = PlaylistItemAddErrors[keyof PlaylistItemAddErrors];
+
+export type PlaylistItemAddResponses = {
+    /**
+     * Video added.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistItemAddResponse = PlaylistItemAddResponses[keyof PlaylistItemAddResponses];
+
+export type PlaylistItemDeleteData = {
+    body?: never;
+    path: {
+        id: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/playlists/{id}/items/{itemId}';
+};
+
+export type PlaylistItemDeleteErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistItemDeleteError = PlaylistItemDeleteErrors[keyof PlaylistItemDeleteErrors];
+
+export type PlaylistItemDeleteResponses = {
+    /**
+     * Playlist item removed.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistItemDeleteResponse = PlaylistItemDeleteResponses[keyof PlaylistItemDeleteResponses];
+
+export type PlaylistItemReorderData = {
+    body: ReorderPlaylistItemsRequestDto;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}/items/order';
+};
+
+export type PlaylistItemReorderErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PlaylistItemReorderError = PlaylistItemReorderErrors[keyof PlaylistItemReorderErrors];
+
+export type PlaylistItemReorderResponses = {
+    /**
+     * Playlist order updated.
+     */
+    200: ApiResponseDto & {
+        data?: PlaylistDetailResponseDto;
+    };
+};
+
+export type PlaylistItemReorderResponse = PlaylistItemReorderResponses[keyof PlaylistItemReorderResponses];
+
+export type YoutubeVideoSearchData = {
+    body?: never;
+    path?: never;
+    query: {
+        query: string;
+    };
+    url: '/youtube/videos';
+};
+
+export type YoutubeVideoSearchErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type YoutubeVideoSearchError = YoutubeVideoSearchErrors[keyof YoutubeVideoSearchErrors];
+
+export type YoutubeVideoSearchResponses = {
+    /**
+     * YouTube videos returned.
+     */
+    200: ApiResponseDto & {
+        data?: Array<MediaItemResponseDto>;
+    };
+};
+
+export type YoutubeVideoSearchResponse = YoutubeVideoSearchResponses[keyof YoutubeVideoSearchResponses];
+
+export type YoutubeVideoResolveData = {
+    body: ResolveYoutubeVideoRequestDto;
+    path?: never;
+    query?: never;
+    url: '/youtube/videos/resolve';
+};
+
+export type YoutubeVideoResolveErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type YoutubeVideoResolveError = YoutubeVideoResolveErrors[keyof YoutubeVideoResolveErrors];
+
+export type YoutubeVideoResolveResponses = {
+    /**
+     * YouTube video metadata returned.
+     */
+    200: ApiResponseDto & {
+        data?: MediaItemResponseDto;
+    };
+};
+
+export type YoutubeVideoResolveResponse = YoutubeVideoResolveResponses[keyof YoutubeVideoResolveResponses];

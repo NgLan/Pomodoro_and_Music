@@ -50,13 +50,13 @@ export const zAuthSessionResponseDto = z.object({
 
 export const zRegisterRequestDto = z.object({
     email: z.string(),
-    password: z.string().min(8),
+    password: z.string().min(8).max(128),
     displayName: z.string().optional()
 });
 
 export const zLoginRequestDto = z.object({
     email: z.string(),
-    password: z.string()
+    password: z.string().max(128)
 });
 
 export const zLogoutResponseDto = z.object({
@@ -85,6 +85,10 @@ export const zPomodoroConfigurationRequestDto = z.object({
     focusSessionsBeforeLongBreak: z.number(),
     focusPlaylistId: z.string().uuid().nullish(),
     breakPlaylistId: z.string().uuid().nullish()
+});
+
+export const zDeletePomodoroResponseDto = z.object({
+    deleted: z.boolean()
 });
 
 export const zPomodoroPhaseType = z.enum([
@@ -121,8 +125,72 @@ export const zCreatePomodoroHistoryRequestDto = z.object({
     endedAt: z.string().datetime()
 });
 
-export const zDeletePomodoroResponseDto = z.object({
+export const zMediaItemResponseDto = z.object({
+    externalMediaId: z.string(),
+    title: z.string().nullable(),
+    channelName: z.string().nullable(),
+    thumbnailUrl: z.string().url().nullable(),
+    durationSeconds: z.number().nullable(),
+    sourceUrl: z.string().url(),
+    availability: z.enum([
+        'AVAILABLE',
+        'UNAVAILABLE',
+        'PRIVATE',
+        'DELETED',
+        'REGION_BLOCKED',
+        'UNKNOWN'
+    ])
+});
+
+export const zPlaylistItemResponseDto = z.object({
+    id: z.string().uuid(),
+    position: z.number(),
+    media: zMediaItemResponseDto
+});
+
+export const zPlaylistDetailResponseDto = z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    description: z.string().nullable(),
+    thumbnailUrl: z.string().url().nullable(),
+    sourceType: z.enum(['MANUAL', 'YOUTUBE']),
+    sourceUrl: z.string().nullable(),
+    items: z.array(zPlaylistItemResponseDto),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime()
+});
+
+export const zPlaylistMetadataRequestDto = z.object({
+    name: z.string(),
+    description: z.string().nullish(),
+    thumbnailUrl: z.string().url().nullish()
+});
+
+export const zPlaylistSummaryResponseDto = z.object({
+    id: z.string().uuid(),
+    name: z.string(),
+    description: z.string().nullable(),
+    thumbnailUrl: z.string().url().nullable(),
+    sourceType: z.enum(['MANUAL', 'YOUTUBE']),
+    itemCount: z.number(),
+    totalDurationSeconds: z.number().nullable(),
+    updatedAt: z.string().datetime()
+});
+
+export const zDeletePlaylistResponseDto = z.object({
     deleted: z.boolean()
+});
+
+export const zAddVideoRequestDto = z.object({
+    externalVideoId: z.string()
+});
+
+export const zReorderPlaylistItemsRequestDto = z.object({
+    itemIds: z.array(z.string().uuid())
+});
+
+export const zResolveYoutubeVideoRequestDto = z.object({
+    url: z.string()
 });
 
 /**
@@ -187,6 +255,41 @@ export const zPomodoroCreateResponse = zApiResponseDto.and(z.object({
     data: zPomodoroConfigurationResponseDto.optional()
 }));
 
+export const zPomodoroDeletePath = z.object({
+    id: z.string()
+});
+
+/**
+ * Pomodoro configuration deleted.
+ */
+export const zPomodoroDeleteResponse = zApiResponseDto.and(z.object({
+    data: zDeletePomodoroResponseDto.optional()
+}));
+
+export const zPomodoroGetPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Pomodoro configuration returned.
+ */
+export const zPomodoroGetResponse = zApiResponseDto.and(z.object({
+    data: zPomodoroConfigurationResponseDto.optional()
+}));
+
+export const zPomodoroUpdateBody = zPomodoroConfigurationRequestDto;
+
+export const zPomodoroUpdatePath = z.object({
+    id: z.string()
+});
+
+/**
+ * Pomodoro configuration updated.
+ */
+export const zPomodoroUpdateResponse = zApiResponseDto.and(z.object({
+    data: zPomodoroConfigurationResponseDto.optional()
+}));
+
 export const zPomodoroHistoryListQuery = z.object({
     configurationId: z.string().uuid().optional(),
     status: z.enum([
@@ -222,37 +325,126 @@ export const zPomodoroHistoryCreateResponse = zApiResponseDto.and(z.object({
     data: zPomodoroHistoryResponseDto.optional()
 }));
 
-export const zPomodoroDeletePath = z.object({
-    id: z.string()
+export const zPlaylistListQuery = z.object({
+    search: z.string().optional()
 });
 
 /**
- * Pomodoro configuration deleted.
+ * Playlists returned.
  */
-export const zPomodoroDeleteResponse = zApiResponseDto.and(z.object({
-    data: zDeletePomodoroResponseDto.optional()
+export const zPlaylistListResponse = zApiResponseDto.and(z.object({
+    data: z.array(zPlaylistSummaryResponseDto).optional()
 }));
 
-export const zPomodoroGetPath = z.object({
-    id: z.string()
-});
+export const zPlaylistCreateBody = zPlaylistMetadataRequestDto;
 
 /**
- * Pomodoro configuration returned.
+ * Playlist created.
  */
-export const zPomodoroGetResponse = zApiResponseDto.and(z.object({
-    data: zPomodoroConfigurationResponseDto.optional()
+export const zPlaylistCreateResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
 }));
 
-export const zPomodoroUpdateBody = zPomodoroConfigurationRequestDto;
-
-export const zPomodoroUpdatePath = z.object({
+export const zPlaylistDeletePath = z.object({
     id: z.string()
 });
 
 /**
- * Pomodoro configuration updated.
+ * Playlist deleted.
  */
-export const zPomodoroUpdateResponse = zApiResponseDto.and(z.object({
-    data: zPomodoroConfigurationResponseDto.optional()
+export const zPlaylistDeleteResponse = zApiResponseDto.and(z.object({
+    data: zDeletePlaylistResponseDto.optional()
+}));
+
+export const zPlaylistGetPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Playlist returned.
+ */
+export const zPlaylistGetResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
+}));
+
+export const zPlaylistUpdateBody = zPlaylistMetadataRequestDto;
+
+export const zPlaylistUpdatePath = z.object({
+    id: z.string()
+});
+
+/**
+ * Playlist updated.
+ */
+export const zPlaylistUpdateResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
+}));
+
+export const zPlaylistDuplicatePath = z.object({
+    id: z.string()
+});
+
+/**
+ * Playlist duplicated.
+ */
+export const zPlaylistDuplicateResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
+}));
+
+export const zPlaylistItemAddBody = zAddVideoRequestDto;
+
+export const zPlaylistItemAddPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Video added.
+ */
+export const zPlaylistItemAddResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
+}));
+
+export const zPlaylistItemDeletePath = z.object({
+    id: z.string(),
+    itemId: z.string()
+});
+
+/**
+ * Playlist item removed.
+ */
+export const zPlaylistItemDeleteResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
+}));
+
+export const zPlaylistItemReorderBody = zReorderPlaylistItemsRequestDto;
+
+export const zPlaylistItemReorderPath = z.object({
+    id: z.string()
+});
+
+/**
+ * Playlist order updated.
+ */
+export const zPlaylistItemReorderResponse = zApiResponseDto.and(z.object({
+    data: zPlaylistDetailResponseDto.optional()
+}));
+
+export const zYoutubeVideoSearchQuery = z.object({
+    query: z.string()
+});
+
+/**
+ * YouTube videos returned.
+ */
+export const zYoutubeVideoSearchResponse = zApiResponseDto.and(z.object({
+    data: z.array(zMediaItemResponseDto).optional()
+}));
+
+export const zYoutubeVideoResolveBody = zResolveYoutubeVideoRequestDto;
+
+/**
+ * YouTube video metadata returned.
+ */
+export const zYoutubeVideoResolveResponse = zApiResponseDto.and(z.object({
+    data: zMediaItemResponseDto.optional()
 }));

@@ -26,7 +26,10 @@ export function createPomodoro(
   });
 }
 
-export function createHistory(userId: string, input: CreatePomodoroHistoryInput): PomodoroHistory {
+export function createHistory(
+  userId: string,
+  input: CreatePomodoroHistoryInput,
+): PomodoroHistory {
   return PomodoroHistory.create({
     id: randomUUID(),
     userId,
