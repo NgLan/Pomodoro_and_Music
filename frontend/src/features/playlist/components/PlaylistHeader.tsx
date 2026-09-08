@@ -10,7 +10,7 @@ import { PageContainer } from "@/shared/ui/layout/AppShell";
 
 export function PlaylistHeader() {
   return (
-    <PageContainer className="flex flex-wrap items-center justify-between gap-4 py-4 lg:py-4">
+    <PageContainer className="flex flex-wrap items-center justify-between gap-3 py-2 sm:py-2.5">
       <PlaylistLogo />
       <PlaylistNav />
       <div className="order-2 sm:order-3 flex items-center gap-2">

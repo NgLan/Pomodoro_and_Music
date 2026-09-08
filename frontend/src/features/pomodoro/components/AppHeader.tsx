@@ -23,7 +23,7 @@ export function AppHeader({
   onTabChange: (tab: WorkspaceTab) => void;
 }) {
   return (
-    <PageContainer className="flex flex-wrap items-center justify-between gap-4 py-4 lg:py-4">
+    <PageContainer className="flex flex-wrap items-center justify-between gap-3 py-2 sm:py-2.5">
       <AppLogo onSelect={() => onTabChange("timer")} />
       <AppNavigation activeTab={activeTab} onTabChange={onTabChange} />
       <div className="order-2 sm:order-3 flex items-center gap-2">

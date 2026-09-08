@@ -1,6 +1,6 @@
 "use client";
 
-import { Settings2 } from "lucide-react";
+import { Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { PomodoroConfigurationResponseDto } from "@/api";
 import { Button } from "@/shared/ui/button";
@@ -62,7 +62,7 @@ function EditConfigButton({ onEdit }: { onEdit: () => void }) {
       title={t("BTN_EDIT_CURRENT_CONFIG")}
       aria-label={t("BTN_EDIT_CURRENT_CONFIG")}
     >
-      <Settings2 className="size-4.5" />
+      <Settings className="size-4.5" />
     </Button>
   );
 }

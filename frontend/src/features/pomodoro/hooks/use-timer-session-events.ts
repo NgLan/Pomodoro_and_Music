@@ -22,6 +22,8 @@ export function useTimerSessionEvents(store: TimerSessionStore) {
       },
       stopped: () => notification.info("MSG_PHASE_ENDED_EARLY"),
     });
+    const initial = store.getSnapshot();
+    if (initial) player.activate(phasePlaylist(initial));
   }, [store, player, record, notification]);
 }
 

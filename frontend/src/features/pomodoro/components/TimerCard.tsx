@@ -49,7 +49,7 @@ function ActiveTimer(props: TimerCardProps & { configuration: PomodoroConfigurat
     setStopOpen(false);
   };
   return (
-    <Card className="bg-surface relative min-h-[34rem] overflow-hidden p-2 sm:p-4">
+    <Card className="bg-surface relative min-h-[27rem] sm:min-h-[28rem] overflow-hidden p-2 sm:p-4">
       <span className="bg-accent-yellow border-border absolute -top-7 -right-8 size-28 rotate-12 rounded-3xl border-3" />
       <TimerContent
         timer={timer}

@@ -32,15 +32,21 @@ export class TimerSessionStore {
   };
   configure = (configuration: PomodoroConfigurationResponseDto) => {
     if (this.runtime?.configurationSnapshot === configuration) return;
-    if (this.runtime && this.runtime.status !== "IDLE") return;
     const same = this.runtime?.configurationSnapshot.id === configuration.id;
-    this.set(
-      createTimerRuntime(
-        configuration,
-        same ? this.runtime!.phase : "FOCUS",
-        same ? this.runtime!.completedFocusSessions : 0,
-      ),
+    if (this.runtime && this.runtime.status !== "IDLE") {
+      if (same) {
+        this.set({ ...this.runtime, configurationSnapshot: configuration });
+        this.events?.music(this.runtime);
+      }
+      return;
+    }
+    const next = createTimerRuntime(
+      configuration,
+      same ? this.runtime!.phase : "FOCUS",
+      same ? this.runtime!.completedFocusSessions : 0,
     );
+    this.set(next);
+    this.events?.music(next);
   };
   toggle = () => {
     const runtime = this.runtime;

@@ -35,7 +35,7 @@ function MusicContent() {
   const { state, store } = usePlayer();
   const t = useTranslations("musicPlayer");
   return (
-    <CardContent className="space-y-5">
+    <CardContent className="space-y-3.5">
       <PlaylistSelector
         value={state.playlistId}
         onChange={store.activate}
