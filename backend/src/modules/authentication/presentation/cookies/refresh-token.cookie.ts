@@ -12,11 +12,19 @@ export function setRefreshTokenCookie(
     expires: output.refreshTokenExpiresAt,
     httpOnly: true,
     path: '/',
-    sameSite: 'lax',
+    sameSite: isProduction ? 'none' : 'lax',
     secure: isProduction,
   });
 }
 
-export function clearRefreshTokenCookie(response: Response): void {
-  response.clearCookie(REFRESH_TOKEN_COOKIE, { path: '/' });
+export function clearRefreshTokenCookie(
+  response: Response,
+  isProduction = false,
+): void {
+  response.clearCookie(REFRESH_TOKEN_COOKIE, {
+    path: '/',
+    sameSite: isProduction ? 'none' : 'lax',
+    secure: isProduction,
+  });
 }
+

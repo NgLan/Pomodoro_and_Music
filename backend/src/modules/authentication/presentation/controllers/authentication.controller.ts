@@ -104,7 +104,7 @@ export class AuthenticationController {
     @Res({ passthrough: true }) response: Response,
   ) {
     await this.authentication.logout(readCookie(request, REFRESH_TOKEN_COOKIE));
-    clearRefreshTokenCookie(response);
+    clearRefreshTokenCookie(response, this.config.nodeEnv === 'production');
     return { signedOut: true };
   }
 
