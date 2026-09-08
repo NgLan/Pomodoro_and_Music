@@ -1,3 +1,14 @@
+import { PlaylistItemRemovalService } from './application/services/playlist-item-removal.service.js';
+import { YoutubeApiClient } from './infrastructure/external/youtube-api.client.js';
+import { YoutubePlaylistProvider } from './infrastructure/external/youtube-playlist.provider.js';
+import { YoutubePlaylistImportService } from './application/services/youtube-playlist-import.service.js';
+import { YoutubePlaylistSyncService } from './application/services/youtube-playlist-sync.service.js';
+import { PlaylistImportWriter } from './application/services/playlist-import-writer.js';
+import { TypeOrmPlaylistSourceHistoryRepository } from './infrastructure/database/repositories/typeorm-playlist-source-history.repository.js';
+import { PlaylistSourceHistoryOrmEntity } from './infrastructure/database/entities/playlist-source-history.orm-entity.js';
+import { YoutubePlaylistController } from './presentation/controllers/youtube-playlist.controller.js';
+import { PLAYLIST_SOURCE_HISTORY } from './application/interfaces/playlist-source-history.repository.interface.js';
+import { YOUTUBE_PLAYLIST_PROVIDER } from './application/interfaces/youtube-playlist.provider.interface.js';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthenticationModule } from '../authentication/authentication.module.js';
@@ -24,18 +35,35 @@ import { YoutubeVideoController } from './presentation/controllers/youtube-video
   imports: [
     AuthenticationModule,
     TypeOrmModule.forFeature([
+      PlaylistSourceHistoryOrmEntity,
       PlaylistOrmEntity,
       PlaylistItemOrmEntity,
       MediaItemOrmEntity,
     ]),
   ],
   controllers: [
+    YoutubePlaylistController,
     PlaylistController,
     PlaylistDuplicateController,
     PlaylistItemController,
     YoutubeVideoController,
   ],
   providers: [
+    PlaylistItemRemovalService,
+    YoutubeApiClient,
+    YoutubePlaylistProvider,
+    YoutubePlaylistImportService,
+    YoutubePlaylistSyncService,
+    PlaylistImportWriter,
+    TypeOrmPlaylistSourceHistoryRepository,
+    {
+      provide: PLAYLIST_SOURCE_HISTORY,
+      useExisting: TypeOrmPlaylistSourceHistoryRepository,
+    },
+    {
+      provide: YOUTUBE_PLAYLIST_PROVIDER,
+      useExisting: YoutubePlaylistProvider,
+    },
     PlaylistService,
     PlaylistItemService,
     YoutubeVideoService,

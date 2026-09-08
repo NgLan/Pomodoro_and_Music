@@ -413,6 +413,230 @@
         ]
       }
     },
+    "/pomodoro/history": {
+      "get": {
+        "operationId": "pomodoroHistoryList",
+        "parameters": [
+          {
+            "name": "configurationId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "COMPLETED",
+                "ENDED_EARLY",
+                "CANCELLED"
+              ]
+            }
+          },
+          {
+            "name": "dateFrom",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateTo",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pomodoro history returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "required": [
+                            "items",
+                            "meta"
+                          ],
+                          "properties": {
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/PomodoroHistoryResponseDto"
+                              }
+                            },
+                            "meta": {
+                              "type": "object",
+                              "required": [
+                                "page",
+                                "pageSize",
+                                "totalItems",
+                                "totalPages"
+                              ],
+                              "properties": {
+                                "page": {
+                                  "type": "integer",
+                                  "minimum": 1
+                                },
+                                "pageSize": {
+                                  "type": "integer",
+                                  "minimum": 1
+                                },
+                                "totalItems": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                },
+                                "totalPages": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "List my Pomodoro phase history",
+        "tags": [
+          "Pomodoro"
+        ]
+      },
+      "post": {
+        "operationId": "pomodoroHistoryCreate",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePomodoroHistoryRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pomodoro history recorded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/PomodoroHistoryResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "Record a completed or ended phase",
+        "tags": [
+          "Pomodoro"
+        ]
+      }
+    },
     "/pomodoro": {
       "post": {
         "operationId": "pomodoroCreate",
@@ -797,169 +1021,23 @@
         ]
       }
     },
-    "/pomodoro/history": {
-      "get": {
-        "operationId": "pomodoroHistoryList",
-        "parameters": [
-          {
-            "name": "configurationId",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "uuid",
-              "type": "string"
-            }
-          },
-          {
-            "name": "status",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "COMPLETED",
-                "ENDED_EARLY",
-                "CANCELLED"
-              ]
-            }
-          },
-          {
-            "name": "dateFrom",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "date-time",
-              "type": "string"
-            }
-          },
-          {
-            "name": "dateTo",
-            "required": false,
-            "in": "query",
-            "schema": {
-              "format": "date-time",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Pomodoro history returned.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/ApiResponseDto"
-                    },
-                    {
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "required": [
-                            "items",
-                            "meta"
-                          ],
-                          "properties": {
-                            "items": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/PomodoroHistoryResponseDto"
-                              }
-                            },
-                            "meta": {
-                              "type": "object",
-                              "required": [
-                                "page",
-                                "pageSize",
-                                "totalItems",
-                                "totalPages"
-                              ],
-                              "properties": {
-                                "page": {
-                                  "type": "integer",
-                                  "minimum": 1
-                                },
-                                "pageSize": {
-                                  "type": "integer",
-                                  "minimum": 1
-                                },
-                                "totalItems": {
-                                  "type": "integer",
-                                  "minimum": 0
-                                },
-                                "totalPages": {
-                                  "type": "integer",
-                                  "minimum": 0
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "The request is invalid.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiErrorResponseDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "The requested resource was not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiErrorResponseDto"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "An unexpected server error occurred.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiErrorResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "access-token": []
-          }
-        ],
-        "summary": "List my Pomodoro phase history",
-        "tags": [
-          "Pomodoro"
-        ]
-      },
+    "/youtube/playlists/preview": {
       "post": {
-        "operationId": "pomodoroHistoryCreate",
+        "operationId": "youtubePlaylistPreview",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreatePomodoroHistoryRequestDto"
+                "$ref": "#/components/schemas/YoutubePlaylistPreviewRequestDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Pomodoro history recorded.",
+            "description": "Playlist preview returned.",
             "content": {
               "application/json": {
                 "schema": {
@@ -970,7 +1048,7 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/PomodoroHistoryResponseDto"
+                          "$ref": "#/components/schemas/YoutubePlaylistPreviewResponseDto"
                         }
                       }
                     }
@@ -1015,9 +1093,164 @@
             "access-token": []
           }
         ],
-        "summary": "Record a completed or ended phase",
+        "summary": "Preview a complete YouTube playlist without saving",
         "tags": [
-          "Pomodoro"
+          "YouTube playlists"
+        ]
+      }
+    },
+    "/youtube/playlists/import": {
+      "post": {
+        "operationId": "youtubePlaylistImport",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/YoutubePlaylistImportRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Playlist imported.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/YoutubePlaylistImportResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "Import selected videos atomically into a personal playlist",
+        "tags": [
+          "YouTube playlists"
+        ]
+      }
+    },
+    "/playlists/{id}/sync": {
+      "post": {
+        "operationId": "youtubePlaylistSync",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Playlist synchronized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ApiResponseDto"
+                    },
+                    {
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/YoutubePlaylistSyncResponseDto"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected server error occurred.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "summary": "Append new source videos while preserving local edits and exclusions",
+        "tags": [
+          "YouTube playlists"
         ]
       }
     },
@@ -2144,118 +2377,6 @@
           "signedOut"
         ]
       },
-      "PomodoroConfigurationResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": "string"
-          },
-          "focusDurationSeconds": {
-            "type": "number"
-          },
-          "shortBreakDurationSeconds": {
-            "type": "number"
-          },
-          "longBreakDurationSeconds": {
-            "type": "number"
-          },
-          "focusSessionsBeforeLongBreak": {
-            "type": "number"
-          },
-          "focusPlaylistId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "breakPlaylistId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "isDefault": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "focusDurationSeconds",
-          "shortBreakDurationSeconds",
-          "longBreakDurationSeconds",
-          "focusSessionsBeforeLongBreak",
-          "focusPlaylistId",
-          "breakPlaylistId",
-          "isDefault",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "PomodoroConfigurationRequestDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Deep work"
-          },
-          "focusDurationSeconds": {
-            "type": "number",
-            "example": 1500
-          },
-          "shortBreakDurationSeconds": {
-            "type": "number",
-            "example": 300
-          },
-          "longBreakDurationSeconds": {
-            "type": "number",
-            "example": 900
-          },
-          "focusSessionsBeforeLongBreak": {
-            "type": "number",
-            "example": 4
-          },
-          "focusPlaylistId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "breakPlaylistId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          }
-        },
-        "required": [
-          "name",
-          "focusDurationSeconds",
-          "shortBreakDurationSeconds",
-          "longBreakDurationSeconds",
-          "focusSessionsBeforeLongBreak"
-        ]
-      },
-      "DeletePomodoroResponseDto": {
-        "type": "object",
-        "properties": {
-          "deleted": {
-            "type": "boolean",
-            "example": true
-          }
-        },
-        "required": [
-          "deleted"
-        ]
-      },
       "PomodoroPhaseType": {
         "type": "string",
         "enum": [
@@ -2377,6 +2498,310 @@
           "endedAt"
         ]
       },
+      "PomodoroConfigurationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "focusDurationSeconds": {
+            "type": "number"
+          },
+          "shortBreakDurationSeconds": {
+            "type": "number"
+          },
+          "longBreakDurationSeconds": {
+            "type": "number"
+          },
+          "focusSessionsBeforeLongBreak": {
+            "type": "number"
+          },
+          "focusPlaylistId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "breakPlaylistId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "focusDurationSeconds",
+          "shortBreakDurationSeconds",
+          "longBreakDurationSeconds",
+          "focusSessionsBeforeLongBreak",
+          "focusPlaylistId",
+          "breakPlaylistId",
+          "isDefault",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "PomodoroConfigurationRequestDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Deep work"
+          },
+          "focusDurationSeconds": {
+            "type": "number",
+            "example": 1500
+          },
+          "shortBreakDurationSeconds": {
+            "type": "number",
+            "example": 300
+          },
+          "longBreakDurationSeconds": {
+            "type": "number",
+            "example": 900
+          },
+          "focusSessionsBeforeLongBreak": {
+            "type": "number",
+            "example": 4
+          },
+          "focusPlaylistId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "breakPlaylistId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "required": [
+          "name",
+          "focusDurationSeconds",
+          "shortBreakDurationSeconds",
+          "longBreakDurationSeconds",
+          "focusSessionsBeforeLongBreak"
+        ]
+      },
+      "DeletePomodoroResponseDto": {
+        "type": "object",
+        "properties": {
+          "deleted": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "deleted"
+        ]
+      },
+      "YoutubePlaylistPreviewItemDto": {
+        "type": "object",
+        "properties": {
+          "externalMediaId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "channelName": {
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri"
+          },
+          "durationSeconds": {
+            "type": "number",
+            "nullable": true
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "UNAVAILABLE",
+              "PRIVATE",
+              "DELETED",
+              "REGION_BLOCKED",
+              "UNKNOWN"
+            ]
+          },
+          "selectable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "externalMediaId",
+          "title",
+          "channelName",
+          "thumbnailUrl",
+          "durationSeconds",
+          "sourceUrl",
+          "availability",
+          "selectable"
+        ]
+      },
+      "YoutubePlaylistPreviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "sourceExternalId": {
+            "type": "string"
+          },
+          "sourceUrl": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/YoutubePlaylistPreviewItemDto"
+            }
+          },
+          "fetchedCount": {
+            "type": "number"
+          },
+          "availableCount": {
+            "type": "number"
+          },
+          "unavailableCount": {
+            "type": "number"
+          },
+          "skippedCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "sourceExternalId",
+          "sourceUrl",
+          "title",
+          "description",
+          "thumbnailUrl",
+          "totalCount",
+          "items",
+          "fetchedCount",
+          "availableCount",
+          "unavailableCount",
+          "skippedCount"
+        ]
+      },
+      "YoutubePlaylistPreviewRequestDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "https://www.youtube.com/playlist?list=PLexample"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "YoutubePlaylistImportResponseDto": {
+        "type": "object",
+        "properties": {
+          "playlistId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "importedCount": {
+            "type": "number"
+          },
+          "skippedCount": {
+            "type": "number"
+          },
+          "unavailableCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "playlistId",
+          "importedCount",
+          "skippedCount",
+          "unavailableCount"
+        ]
+      },
+      "YoutubePlaylistImportRequestDto": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "https://www.youtube.com/playlist?list=PLexample"
+          },
+          "selectedVideoIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "url",
+          "selectedVideoIds"
+        ]
+      },
+      "YoutubePlaylistSyncResponseDto": {
+        "type": "object",
+        "properties": {
+          "addedCount": {
+            "type": "number"
+          },
+          "skippedCount": {
+            "type": "number"
+          },
+          "unavailableCount": {
+            "type": "number"
+          },
+          "syncedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "addedCount",
+          "skippedCount",
+          "unavailableCount",
+          "syncedAt"
+        ]
+      },
       "MediaItemResponseDto": {
         "type": "object",
         "properties": {
@@ -2476,6 +2901,15 @@
             "type": "string",
             "nullable": true
           },
+          "sourceExternalId": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastSyncedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
           "items": {
             "type": "array",
             "items": {
@@ -2498,6 +2932,8 @@
           "thumbnailUrl",
           "sourceType",
           "sourceUrl",
+          "sourceExternalId",
+          "lastSyncedAt",
           "items",
           "createdAt",
           "updatedAt"

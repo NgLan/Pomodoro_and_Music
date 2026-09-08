@@ -14,7 +14,8 @@ export function mapYoutubeVideo(item: YoutubeVideoItem): MediaMetadataOutput {
     durationSeconds: parseYoutubeDuration(item.contentDetails?.duration),
     sourceUrl: `https://www.youtube.com/watch?v=${id}`,
     availability:
-      item.status?.privacyStatus === 'public'
+      ['public', 'unlisted'].includes(item.status?.privacyStatus ?? '') &&
+      item.status?.embeddable !== false
         ? MediaAvailability.AVAILABLE
         : MediaAvailability.UNAVAILABLE,
   };

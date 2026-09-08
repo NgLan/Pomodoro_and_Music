@@ -26,7 +26,12 @@ export class TypeOrmPlaylistRepository implements PlaylistRepositoryInterface {
   }
 
   async findByIdForUser(id: string, userId: string): Promise<Playlist | null> {
-    const entity = await this.repository().findOne({ where: { id, userId } });
+    const entity = await this.repository().findOne({
+      where: { id, userId },
+      ...(this.transactionContext.getEntityManager()
+        ? { lock: { mode: 'pessimistic_write' as const } }
+        : {}),
+    });
     return entity ? toPlaylistDomain(entity) : null;
   }
 

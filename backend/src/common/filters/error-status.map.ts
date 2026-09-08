@@ -2,6 +2,10 @@ import { HttpStatus } from '@nestjs/common';
 import { ErrorCode } from '../exceptions/error-code.enum.js';
 
 export const ERROR_STATUS = {
+  [ErrorCode.INVALID_YOUTUBE_PLAYLIST_URL]: HttpStatus.BAD_REQUEST,
+  [ErrorCode.YOUTUBE_PLAYLIST_NOT_FOUND]: HttpStatus.NOT_FOUND,
+  [ErrorCode.YOUTUBE_PLAYLIST_PRIVATE]: HttpStatus.FORBIDDEN,
+  [ErrorCode.YOUTUBE_RESPONSE_INVALID]: HttpStatus.SERVICE_UNAVAILABLE,
   [ErrorCode.INVALID_INPUT]: HttpStatus.BAD_REQUEST,
   [ErrorCode.BUSINESS_RULE_VIOLATION]: HttpStatus.UNPROCESSABLE_ENTITY,
   [ErrorCode.RESOURCE_NOT_FOUND]: HttpStatus.NOT_FOUND,

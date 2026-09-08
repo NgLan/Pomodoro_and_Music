@@ -58,9 +58,11 @@ export class PlaylistService implements PlaylistServiceInterface {
     id: string,
     input: PlaylistMetadataInput,
   ): Promise<PlaylistDetailOutput> {
-    const current = await this.requirePlaylist(userId, id);
-    await this.playlists.save(createPlaylist(userId, input, current));
-    return this.get(userId, id);
+    return this.unitOfWork.execute(async () => {
+      const current = await this.requirePlaylist(userId, id);
+      await this.playlists.save(createPlaylist(userId, input, current));
+      return this.get(userId, id);
+    });
   }
 
   async delete(userId: string, id: string): Promise<void> {

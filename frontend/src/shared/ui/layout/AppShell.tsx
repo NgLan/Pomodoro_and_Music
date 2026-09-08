@@ -26,7 +26,7 @@ export function AppShell({
       <main className="flex-1">{children}</main>
       {miniPlayer ? (
         <aside
-          className="border-border bg-surface z-(--z-sticky) border-t-3"
+          className="sticky bottom-0 z-(--z-sticky) border-t-3 border-border bg-surface"
           aria-label={miniPlayerLabel}
         >
           {miniPlayer}

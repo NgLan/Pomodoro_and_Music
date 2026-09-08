@@ -69,6 +69,32 @@ export type LogoutResponseDto = {
     signedOut: boolean;
 };
 
+export type PomodoroPhaseType = 'FOCUS' | 'SHORT_BREAK' | 'LONG_BREAK';
+
+export type PomodoroHistoryStatus = 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
+
+export type PomodoroHistoryResponseDto = {
+    id: string;
+    pomodoroId: string | null;
+    configurationName: string | null;
+    phaseType: PomodoroPhaseType;
+    plannedDurationSeconds: number;
+    actualDurationSeconds: number;
+    status: PomodoroHistoryStatus;
+    startedAt: string;
+    endedAt: string;
+};
+
+export type CreatePomodoroHistoryRequestDto = {
+    pomodoroId?: string | null;
+    phaseType: PomodoroPhaseType;
+    plannedDurationSeconds: number;
+    actualDurationSeconds: number;
+    status: PomodoroHistoryStatus;
+    startedAt: string;
+    endedAt: string;
+};
+
 export type PomodoroConfigurationResponseDto = {
     id: string;
     name: string;
@@ -97,30 +123,53 @@ export type DeletePomodoroResponseDto = {
     deleted: boolean;
 };
 
-export type PomodoroPhaseType = 'FOCUS' | 'SHORT_BREAK' | 'LONG_BREAK';
-
-export type PomodoroHistoryStatus = 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
-
-export type PomodoroHistoryResponseDto = {
-    id: string;
-    pomodoroId: string | null;
-    configurationName: string | null;
-    phaseType: PomodoroPhaseType;
-    plannedDurationSeconds: number;
-    actualDurationSeconds: number;
-    status: PomodoroHistoryStatus;
-    startedAt: string;
-    endedAt: string;
+export type YoutubePlaylistPreviewItemDto = {
+    externalMediaId: string;
+    title: string | null;
+    channelName: string | null;
+    thumbnailUrl: string | null;
+    durationSeconds: number | null;
+    sourceUrl: string;
+    availability: 'AVAILABLE' | 'UNAVAILABLE' | 'PRIVATE' | 'DELETED' | 'REGION_BLOCKED' | 'UNKNOWN';
+    selectable: boolean;
 };
 
-export type CreatePomodoroHistoryRequestDto = {
-    pomodoroId?: string | null;
-    phaseType: PomodoroPhaseType;
-    plannedDurationSeconds: number;
-    actualDurationSeconds: number;
-    status: PomodoroHistoryStatus;
-    startedAt: string;
-    endedAt: string;
+export type YoutubePlaylistPreviewResponseDto = {
+    sourceExternalId: string;
+    sourceUrl: string;
+    title: string;
+    description: string | null;
+    thumbnailUrl: string | null;
+    totalCount: number;
+    items: Array<YoutubePlaylistPreviewItemDto>;
+    fetchedCount: number;
+    availableCount: number;
+    unavailableCount: number;
+    skippedCount: number;
+};
+
+export type YoutubePlaylistPreviewRequestDto = {
+    url: string;
+};
+
+export type YoutubePlaylistImportResponseDto = {
+    playlistId: string;
+    importedCount: number;
+    skippedCount: number;
+    unavailableCount: number;
+};
+
+export type YoutubePlaylistImportRequestDto = {
+    url: string;
+    selectedVideoIds: Array<string>;
+    name?: string;
+};
+
+export type YoutubePlaylistSyncResponseDto = {
+    addedCount: number;
+    skippedCount: number;
+    unavailableCount: number;
+    syncedAt: string;
 };
 
 export type MediaItemResponseDto = {
@@ -146,6 +195,8 @@ export type PlaylistDetailResponseDto = {
     thumbnailUrl: string | null;
     sourceType: 'MANUAL' | 'YOUTUBE';
     sourceUrl: string | null;
+    sourceExternalId: string | null;
+    lastSyncedAt: string | null;
     items: Array<PlaylistItemResponseDto>;
     createdAt: string;
     updatedAt: string;
@@ -405,6 +456,89 @@ export type AuthLogoutResponses = {
 
 export type AuthLogoutResponse = AuthLogoutResponses[keyof AuthLogoutResponses];
 
+export type PomodoroHistoryListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        configurationId?: string;
+        status?: 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
+        dateFrom?: string;
+        dateTo?: string;
+    };
+    url: '/pomodoro/history';
+};
+
+export type PomodoroHistoryListErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroHistoryListError = PomodoroHistoryListErrors[keyof PomodoroHistoryListErrors];
+
+export type PomodoroHistoryListResponses = {
+    /**
+     * Pomodoro history returned.
+     */
+    200: ApiResponseDto & {
+        data?: {
+            items: Array<PomodoroHistoryResponseDto>;
+            meta: {
+                page: number;
+                pageSize: number;
+                totalItems: number;
+                totalPages: number;
+            };
+        };
+    };
+};
+
+export type PomodoroHistoryListResponse = PomodoroHistoryListResponses[keyof PomodoroHistoryListResponses];
+
+export type PomodoroHistoryCreateData = {
+    body: CreatePomodoroHistoryRequestDto;
+    path?: never;
+    query?: never;
+    url: '/pomodoro/history';
+};
+
+export type PomodoroHistoryCreateErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type PomodoroHistoryCreateError = PomodoroHistoryCreateErrors[keyof PomodoroHistoryCreateErrors];
+
+export type PomodoroHistoryCreateResponses = {
+    /**
+     * Pomodoro history recorded.
+     */
+    200: ApiResponseDto & {
+        data?: PomodoroHistoryResponseDto;
+    };
+};
+
+export type PomodoroHistoryCreateResponse = PomodoroHistoryCreateResponses[keyof PomodoroHistoryCreateResponses];
+
 export type PomodoroListData = {
     body?: never;
     path?: never;
@@ -586,62 +720,14 @@ export type PomodoroUpdateResponses = {
 
 export type PomodoroUpdateResponse = PomodoroUpdateResponses[keyof PomodoroUpdateResponses];
 
-export type PomodoroHistoryListData = {
-    body?: never;
-    path?: never;
-    query?: {
-        configurationId?: string;
-        status?: 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
-        dateFrom?: string;
-        dateTo?: string;
-    };
-    url: '/pomodoro/history';
-};
-
-export type PomodoroHistoryListErrors = {
-    /**
-     * The request is invalid.
-     */
-    400: ApiErrorResponseDto;
-    /**
-     * The requested resource was not found.
-     */
-    404: ApiErrorResponseDto;
-    /**
-     * An unexpected server error occurred.
-     */
-    500: ApiErrorResponseDto;
-};
-
-export type PomodoroHistoryListError = PomodoroHistoryListErrors[keyof PomodoroHistoryListErrors];
-
-export type PomodoroHistoryListResponses = {
-    /**
-     * Pomodoro history returned.
-     */
-    200: ApiResponseDto & {
-        data?: {
-            items: Array<PomodoroHistoryResponseDto>;
-            meta: {
-                page: number;
-                pageSize: number;
-                totalItems: number;
-                totalPages: number;
-            };
-        };
-    };
-};
-
-export type PomodoroHistoryListResponse = PomodoroHistoryListResponses[keyof PomodoroHistoryListResponses];
-
-export type PomodoroHistoryCreateData = {
-    body: CreatePomodoroHistoryRequestDto;
+export type YoutubePlaylistPreviewData = {
+    body: YoutubePlaylistPreviewRequestDto;
     path?: never;
     query?: never;
-    url: '/pomodoro/history';
+    url: '/youtube/playlists/preview';
 };
 
-export type PomodoroHistoryCreateErrors = {
+export type YoutubePlaylistPreviewErrors = {
     /**
      * The request is invalid.
      */
@@ -656,18 +742,90 @@ export type PomodoroHistoryCreateErrors = {
     500: ApiErrorResponseDto;
 };
 
-export type PomodoroHistoryCreateError = PomodoroHistoryCreateErrors[keyof PomodoroHistoryCreateErrors];
+export type YoutubePlaylistPreviewError = YoutubePlaylistPreviewErrors[keyof YoutubePlaylistPreviewErrors];
 
-export type PomodoroHistoryCreateResponses = {
+export type YoutubePlaylistPreviewResponses = {
     /**
-     * Pomodoro history recorded.
+     * Playlist preview returned.
      */
     200: ApiResponseDto & {
-        data?: PomodoroHistoryResponseDto;
+        data?: YoutubePlaylistPreviewResponseDto;
     };
 };
 
-export type PomodoroHistoryCreateResponse = PomodoroHistoryCreateResponses[keyof PomodoroHistoryCreateResponses];
+export type YoutubePlaylistPreviewResponse = YoutubePlaylistPreviewResponses[keyof YoutubePlaylistPreviewResponses];
+
+export type YoutubePlaylistImportData = {
+    body: YoutubePlaylistImportRequestDto;
+    path?: never;
+    query?: never;
+    url: '/youtube/playlists/import';
+};
+
+export type YoutubePlaylistImportErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type YoutubePlaylistImportError = YoutubePlaylistImportErrors[keyof YoutubePlaylistImportErrors];
+
+export type YoutubePlaylistImportResponses = {
+    /**
+     * Playlist imported.
+     */
+    200: ApiResponseDto & {
+        data?: YoutubePlaylistImportResponseDto;
+    };
+};
+
+export type YoutubePlaylistImportResponse = YoutubePlaylistImportResponses[keyof YoutubePlaylistImportResponses];
+
+export type YoutubePlaylistSyncData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/playlists/{id}/sync';
+};
+
+export type YoutubePlaylistSyncErrors = {
+    /**
+     * The request is invalid.
+     */
+    400: ApiErrorResponseDto;
+    /**
+     * The requested resource was not found.
+     */
+    404: ApiErrorResponseDto;
+    /**
+     * An unexpected server error occurred.
+     */
+    500: ApiErrorResponseDto;
+};
+
+export type YoutubePlaylistSyncError = YoutubePlaylistSyncErrors[keyof YoutubePlaylistSyncErrors];
+
+export type YoutubePlaylistSyncResponses = {
+    /**
+     * Playlist synchronized.
+     */
+    200: ApiResponseDto & {
+        data?: YoutubePlaylistSyncResponseDto;
+    };
+};
+
+export type YoutubePlaylistSyncResponse = YoutubePlaylistSyncResponses[keyof YoutubePlaylistSyncResponses];
 
 export type PlaylistListData = {
     body?: never;

@@ -20,5 +20,9 @@
   "MEDIA_UNAVAILABLE": "This video is private, deleted, or unavailable.",
   "INVALID_PLAYLIST_ORDER": "The order could not be saved because the track list changed.",
   "YOUTUBE_PROVIDER_UNAVAILABLE": "YouTube is temporarily unavailable. Please try again later.",
-  "YOUTUBE_RATE_LIMITED": "The YouTube request limit was reached. Please try again later."
+  "YOUTUBE_RATE_LIMITED": "The YouTube request limit was reached. Please try again later.",
+  "INVALID_YOUTUBE_PLAYLIST_URL": "Enter a valid YouTube playlist link.",
+  "YOUTUBE_PLAYLIST_NOT_FOUND": "The source playlist was not found or is inaccessible.",
+  "YOUTUBE_PLAYLIST_PRIVATE": "This YouTube playlist is private or inaccessible.",
+  "YOUTUBE_RESPONSE_INVALID": "YouTube returned an incomplete response. Please try again."
 }

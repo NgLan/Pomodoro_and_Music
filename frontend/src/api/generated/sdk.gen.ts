@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppGetHelloData, AppGetHelloResponses, AuthLoginData, AuthLoginErrors, AuthLoginResponses, AuthLogoutData, AuthLogoutErrors, AuthLogoutResponses, AuthRefreshData, AuthRefreshErrors, AuthRefreshResponses, AuthRegisterData, AuthRegisterErrors, AuthRegisterResponses, HealthLivenessData, HealthLivenessErrors, HealthLivenessResponses, HealthReadinessData, HealthReadinessErrors, HealthReadinessResponses, PlaylistCreateData, PlaylistCreateErrors, PlaylistCreateResponses, PlaylistDeleteData, PlaylistDeleteErrors, PlaylistDeleteResponses, PlaylistDuplicateData, PlaylistDuplicateErrors, PlaylistDuplicateResponses, PlaylistGetData, PlaylistGetErrors, PlaylistGetResponses, PlaylistItemAddData, PlaylistItemAddErrors, PlaylistItemAddResponses, PlaylistItemDeleteData, PlaylistItemDeleteErrors, PlaylistItemDeleteResponses, PlaylistItemReorderData, PlaylistItemReorderErrors, PlaylistItemReorderResponses, PlaylistListData, PlaylistListErrors, PlaylistListResponses, PlaylistUpdateData, PlaylistUpdateErrors, PlaylistUpdateResponses, PomodoroCreateData, PomodoroCreateErrors, PomodoroCreateResponses, PomodoroDeleteData, PomodoroDeleteErrors, PomodoroDeleteResponses, PomodoroGetData, PomodoroGetErrors, PomodoroGetResponses, PomodoroHistoryCreateData, PomodoroHistoryCreateErrors, PomodoroHistoryCreateResponses, PomodoroHistoryListData, PomodoroHistoryListErrors, PomodoroHistoryListResponses, PomodoroListData, PomodoroListErrors, PomodoroListResponses, PomodoroUpdateData, PomodoroUpdateErrors, PomodoroUpdateResponses, YoutubeVideoResolveData, YoutubeVideoResolveErrors, YoutubeVideoResolveResponses, YoutubeVideoSearchData, YoutubeVideoSearchErrors, YoutubeVideoSearchResponses } from './types.gen';
+import type { AppGetHelloData, AppGetHelloResponses, AuthLoginData, AuthLoginErrors, AuthLoginResponses, AuthLogoutData, AuthLogoutErrors, AuthLogoutResponses, AuthRefreshData, AuthRefreshErrors, AuthRefreshResponses, AuthRegisterData, AuthRegisterErrors, AuthRegisterResponses, HealthLivenessData, HealthLivenessErrors, HealthLivenessResponses, HealthReadinessData, HealthReadinessErrors, HealthReadinessResponses, PlaylistCreateData, PlaylistCreateErrors, PlaylistCreateResponses, PlaylistDeleteData, PlaylistDeleteErrors, PlaylistDeleteResponses, PlaylistDuplicateData, PlaylistDuplicateErrors, PlaylistDuplicateResponses, PlaylistGetData, PlaylistGetErrors, PlaylistGetResponses, PlaylistItemAddData, PlaylistItemAddErrors, PlaylistItemAddResponses, PlaylistItemDeleteData, PlaylistItemDeleteErrors, PlaylistItemDeleteResponses, PlaylistItemReorderData, PlaylistItemReorderErrors, PlaylistItemReorderResponses, PlaylistListData, PlaylistListErrors, PlaylistListResponses, PlaylistUpdateData, PlaylistUpdateErrors, PlaylistUpdateResponses, PomodoroCreateData, PomodoroCreateErrors, PomodoroCreateResponses, PomodoroDeleteData, PomodoroDeleteErrors, PomodoroDeleteResponses, PomodoroGetData, PomodoroGetErrors, PomodoroGetResponses, PomodoroHistoryCreateData, PomodoroHistoryCreateErrors, PomodoroHistoryCreateResponses, PomodoroHistoryListData, PomodoroHistoryListErrors, PomodoroHistoryListResponses, PomodoroListData, PomodoroListErrors, PomodoroListResponses, PomodoroUpdateData, PomodoroUpdateErrors, PomodoroUpdateResponses, YoutubePlaylistImportData, YoutubePlaylistImportErrors, YoutubePlaylistImportResponses, YoutubePlaylistPreviewData, YoutubePlaylistPreviewErrors, YoutubePlaylistPreviewResponses, YoutubePlaylistSyncData, YoutubePlaylistSyncErrors, YoutubePlaylistSyncResponses, YoutubeVideoResolveData, YoutubeVideoResolveErrors, YoutubeVideoResolveResponses, YoutubeVideoSearchData, YoutubeVideoSearchErrors, YoutubeVideoSearchResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -65,6 +65,28 @@ export const authRefresh = <ThrowOnError extends boolean = false>(options?: Opti
 export const authLogout = <ThrowOnError extends boolean = false>(options?: Options<AuthLogoutData, ThrowOnError>): RequestResult<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError> => (options?.client ?? client).post<AuthLogoutResponses, AuthLogoutErrors, ThrowOnError>({ url: '/auth/logout', ...options });
 
 /**
+ * List my Pomodoro phase history
+ */
+export const pomodoroHistoryList = <ThrowOnError extends boolean = false>(options?: Options<PomodoroHistoryListData, ThrowOnError>): RequestResult<PomodoroHistoryListResponses, PomodoroHistoryListErrors, ThrowOnError> => (options?.client ?? client).get<PomodoroHistoryListResponses, PomodoroHistoryListErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/history',
+    ...options
+});
+
+/**
+ * Record a completed or ended phase
+ */
+export const pomodoroHistoryCreate = <ThrowOnError extends boolean = false>(options: Options<PomodoroHistoryCreateData, ThrowOnError>): RequestResult<PomodoroHistoryCreateResponses, PomodoroHistoryCreateErrors, ThrowOnError> => (options.client ?? client).post<PomodoroHistoryCreateResponses, PomodoroHistoryCreateErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/pomodoro/history',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * List my Pomodoro configurations
  */
 export const pomodoroList = <ThrowOnError extends boolean = false>(options?: Options<PomodoroListData, ThrowOnError>): RequestResult<PomodoroListResponses, PomodoroListErrors, ThrowOnError> => (options?.client ?? client).get<PomodoroListResponses, PomodoroListErrors, ThrowOnError>({
@@ -118,25 +140,38 @@ export const pomodoroUpdate = <ThrowOnError extends boolean = false>(options: Op
 });
 
 /**
- * List my Pomodoro phase history
+ * Preview a complete YouTube playlist without saving
  */
-export const pomodoroHistoryList = <ThrowOnError extends boolean = false>(options?: Options<PomodoroHistoryListData, ThrowOnError>): RequestResult<PomodoroHistoryListResponses, PomodoroHistoryListErrors, ThrowOnError> => (options?.client ?? client).get<PomodoroHistoryListResponses, PomodoroHistoryListErrors, ThrowOnError>({
+export const youtubePlaylistPreview = <ThrowOnError extends boolean = false>(options: Options<YoutubePlaylistPreviewData, ThrowOnError>): RequestResult<YoutubePlaylistPreviewResponses, YoutubePlaylistPreviewErrors, ThrowOnError> => (options.client ?? client).post<YoutubePlaylistPreviewResponses, YoutubePlaylistPreviewErrors, ThrowOnError>({
     security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/pomodoro/history',
-    ...options
-});
-
-/**
- * Record a completed or ended phase
- */
-export const pomodoroHistoryCreate = <ThrowOnError extends boolean = false>(options: Options<PomodoroHistoryCreateData, ThrowOnError>): RequestResult<PomodoroHistoryCreateResponses, PomodoroHistoryCreateErrors, ThrowOnError> => (options.client ?? client).post<PomodoroHistoryCreateResponses, PomodoroHistoryCreateErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/pomodoro/history',
+    url: '/youtube/playlists/preview',
     ...options,
     headers: {
         'Content-Type': 'application/json',
         ...options.headers
     }
+});
+
+/**
+ * Import selected videos atomically into a personal playlist
+ */
+export const youtubePlaylistImport = <ThrowOnError extends boolean = false>(options: Options<YoutubePlaylistImportData, ThrowOnError>): RequestResult<YoutubePlaylistImportResponses, YoutubePlaylistImportErrors, ThrowOnError> => (options.client ?? client).post<YoutubePlaylistImportResponses, YoutubePlaylistImportErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/youtube/playlists/import',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Append new source videos while preserving local edits and exclusions
+ */
+export const youtubePlaylistSync = <ThrowOnError extends boolean = false>(options: Options<YoutubePlaylistSyncData, ThrowOnError>): RequestResult<YoutubePlaylistSyncResponses, YoutubePlaylistSyncErrors, ThrowOnError> => (options.client ?? client).post<YoutubePlaylistSyncResponses, YoutubePlaylistSyncErrors, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/playlists/{id}/sync',
+    ...options
 });
 
 /**

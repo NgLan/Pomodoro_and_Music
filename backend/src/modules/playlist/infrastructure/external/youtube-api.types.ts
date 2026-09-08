@@ -16,7 +16,11 @@ export interface YoutubeVideoItem {
   id?: string;
   snippet?: YoutubeSnippet;
   contentDetails?: { duration?: string };
-  status?: { privacyStatus?: string; uploadStatus?: string };
+  status?: {
+    privacyStatus?: string;
+    uploadStatus?: string;
+    embeddable?: boolean;
+  };
 }
 
 export interface YoutubeListResponse<T> {

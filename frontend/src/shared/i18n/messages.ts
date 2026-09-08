@@ -1,3 +1,5 @@
+import viYoutubeImport from "./locales/vi/youtube-import.json";
+import enYoutubeImport from "./locales/en/youtube-import.json";
 import enAuth from "./locales/en/auth.json";
 import enCommon from "./locales/en/common.json";
 import enErrors from "./locales/en/errors.json";
@@ -20,6 +22,7 @@ export const messagesByLocale = {
     notifications: viNotifications,
     pomodoro: viPomodoro,
     playlist: viPlaylist,
+    youtubeImport: viYoutubeImport,
   },
   en: {
     auth: enAuth,
@@ -28,6 +31,7 @@ export const messagesByLocale = {
     notifications: enNotifications,
     pomodoro: enPomodoro,
     playlist: enPlaylist,
+    youtubeImport: enYoutubeImport,
   },
 } as const satisfies Record<AppLocale, object>;
 

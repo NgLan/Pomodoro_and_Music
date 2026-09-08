@@ -11,6 +11,10 @@ export class PlaylistDetailResponseDto {
     string | null;
   @ApiProperty({ enum: PlaylistSourceType }) sourceType!: PlaylistSourceType;
   @ApiProperty({ nullable: true, type: String }) sourceUrl!: string | null;
+  @ApiProperty({ nullable: true, type: String }) sourceExternalId!:
+    string | null;
+  @ApiProperty({ nullable: true, type: String, format: 'date-time' })
+  lastSyncedAt!: string | null;
   @ApiProperty({ type: [PlaylistItemResponseDto] })
   items!: PlaylistItemResponseDto[];
   @ApiProperty({ format: 'date-time' }) createdAt!: string;
@@ -27,6 +31,8 @@ export class PlaylistDetailResponseDto {
       thumbnailUrl: playlist.thumbnailUrl,
       sourceType: playlist.sourceType,
       sourceUrl: playlist.sourceUrl,
+      sourceExternalId: playlist.sourceExternalId,
+      lastSyncedAt: playlist.lastSyncedAt?.toISOString() ?? null,
       items: items.map(PlaylistItemResponseDto.fromOutput),
       createdAt: playlist.createdAt.toISOString(),
       updatedAt: playlist.updatedAt.toISOString(),

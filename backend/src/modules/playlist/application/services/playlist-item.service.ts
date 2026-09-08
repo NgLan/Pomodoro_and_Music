@@ -1,3 +1,4 @@
+import { PlaylistItemRemovalService } from './playlist-item-removal.service.js';
 import { Inject, Injectable } from '@nestjs/common';
 import {
   BusinessException,
@@ -33,6 +34,7 @@ import { createMedia, createPlaylistItem } from './playlist.factory.js';
 @Injectable()
 export class PlaylistItemService implements PlaylistItemServiceInterface {
   constructor(
+    private readonly removal: PlaylistItemRemovalService,
     @Inject(PLAYLIST_REPOSITORY)
     private readonly playlists: PlaylistRepositoryInterface,
     @Inject(PLAYLIST_ITEM_REPOSITORY)
@@ -64,16 +66,7 @@ export class PlaylistItemService implements PlaylistItemServiceInterface {
     id: string,
     itemId: string,
   ): Promise<PlaylistDetailOutput> {
-    return this.unitOfWork.execute(async () => {
-      await this.requirePlaylist(userId, id);
-      if (!(await this.items.findById(id, itemId))) this.itemNotFound();
-      await this.items.remove(itemId);
-      const remaining = (await this.items.findDetailed(id)).map(
-        ({ item }, position) => item.withPosition(position),
-      );
-      await this.items.reorder(remaining);
-      return this.detail(userId, id);
-    });
+    return this.removal.remove(userId, id, itemId);
   }
 
   reorder(
@@ -107,12 +100,5 @@ export class PlaylistItemService implements PlaylistItemServiceInterface {
         message: 'Playlist was not found',
       });
     return playlist;
-  }
-
-  private itemNotFound(): never {
-    throw new BusinessException({
-      code: ErrorCode.PLAYLIST_ITEM_NOT_FOUND,
-      message: 'Playlist item was not found',
-    });
   }
 }

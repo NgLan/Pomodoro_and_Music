@@ -20,5 +20,9 @@
   "MEDIA_UNAVAILABLE": "Video này đang riêng tư, đã xóa hoặc không khả dụng.",
   "INVALID_PLAYLIST_ORDER": "Không thể lưu thứ tự vì danh sách bài đã thay đổi.",
   "YOUTUBE_PROVIDER_UNAVAILABLE": "YouTube đang tạm thời không phản hồi. Hãy thử lại sau.",
-  "YOUTUBE_RATE_LIMITED": "Đã đạt giới hạn yêu cầu YouTube. Hãy thử lại sau một lúc."
+  "YOUTUBE_RATE_LIMITED": "Đã đạt giới hạn yêu cầu YouTube. Hãy thử lại sau một lúc.",
+  "INVALID_YOUTUBE_PLAYLIST_URL": "Đường dẫn playlist YouTube chưa hợp lệ.",
+  "YOUTUBE_PLAYLIST_NOT_FOUND": "Không tìm thấy hoặc không thể truy cập playlist nguồn.",
+  "YOUTUBE_PLAYLIST_PRIVATE": "Playlist YouTube này riêng tư hoặc không thể truy cập.",
+  "YOUTUBE_RESPONSE_INVALID": "YouTube trả về dữ liệu chưa đầy đủ. Vui lòng thử lại."
 }
