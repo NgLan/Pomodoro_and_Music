@@ -8,6 +8,7 @@ import { Card } from "@/shared/ui/card";
 import { EmptyState } from "@/shared/ui/states/StandardStates";
 import { usePomodoroTimer } from "../hooks/use-pomodoro-timer";
 import { TimerContent } from "./TimerContent";
+import { TimerResetDialog } from "./TimerResetDialog";
 import { TimerStopDialog } from "./TimerStopDialog";
 
 function EmptyTimer({ onCreate }: { onCreate: () => void }) {
@@ -43,11 +44,11 @@ export function TimerCard(props: TimerCardProps) {
 
 function ActiveTimer(props: TimerCardProps & { configuration: PomodoroConfigurationResponseDto }) {
   const [stopOpen, setStopOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
   const timer = usePomodoroTimer(props.configuration);
-  const stop = () => {
-    timer.stop();
-    setStopOpen(false);
-  };
+  const stop = () => { timer.stop(); setStopOpen(false); };
+  const reset = () => { timer.reset(); setResetOpen(false); };
+
   return (
     <Card className="bg-surface relative flex flex-col justify-between overflow-hidden p-3 sm:p-4 gap-2 sm:gap-3 min-h-[32rem] sm:min-h-[34rem]">
       <span className="bg-accent-yellow border-border absolute -top-7 -right-8 size-20 rotate-12 rounded-3xl border-3" />
@@ -57,12 +58,10 @@ function ActiveTimer(props: TimerCardProps & { configuration: PomodoroConfigurat
         onSelectConfiguration={props.onSelectConfiguration}
         onEditConfiguration={props.onEditConfiguration}
         onStop={() => setStopOpen(true)}
+        onReset={() => setResetOpen(true)}
       />
-      <TimerStopDialog
-        open={stopOpen}
-        onOpenChange={setStopOpen}
-        onStop={stop}
-      />
+      <TimerStopDialog open={stopOpen} onOpenChange={setStopOpen} onStop={stop} />
+      <TimerResetDialog open={resetOpen} onOpenChange={setResetOpen} onConfirm={reset} />
     </Card>
   );
 }

@@ -20,5 +20,6 @@ export function usePomodoroTimer(
     runtime: runtime ?? createTimerRuntime(configuration),
     toggle: store.toggle,
     stop: store.stop,
+    reset: store.reset,
   };
 }

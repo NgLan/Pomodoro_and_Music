@@ -14,12 +14,19 @@ interface TimerContentProps {
   onSelectConfiguration?: (id: string) => void;
   onEditConfiguration?: (config: PomodoroConfigurationResponseDto) => void;
   onStop: () => void;
+  onReset: () => void;
 }
 
 export function TimerContent(props: TimerContentProps) {
   const { runtime } = props.timer;
   const progress =
     (1 - runtime.remainingSeconds / runtime.plannedDurationSeconds) * 100;
+  const canReset =
+    runtime.phase !== "FOCUS" ||
+    runtime.completedFocusSessions > 0 ||
+    runtime.status !== "IDLE" ||
+    runtime.remainingSeconds !== runtime.plannedDurationSeconds;
+
   return (
     <>
       <TimerPhaseHeading
@@ -34,8 +41,10 @@ export function TimerContent(props: TimerContentProps) {
         <Progress className="max-w-sm sm:max-w-md h-3.5 sm:h-4" value={progress} />
         <TimerControls
           status={runtime.status}
+          canReset={canReset}
           onPrimary={props.timer.toggle}
           onStop={props.onStop}
+          onReset={props.onReset}
         />
         <TimerNextPhase runtime={runtime} />
       </CardContent>

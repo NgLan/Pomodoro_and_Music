@@ -1,7 +1,11 @@
 import type { PomodoroConfigurationResponseDto } from "@/api";
 import type { TimerRuntime } from "../types/pomodoro-ui.types";
 import type { TimerSessionEvents } from "../types/timer-session.types";
-import { createTimerRuntime, createStoppedHistory } from "./timer-runtime";
+import {
+  createTimerRuntime,
+  createStoppedHistory,
+  advanceRuntime,
+} from "./timer-runtime";
 import {
   pauseRuntime,
   resumeRuntime,
@@ -69,13 +73,17 @@ export class TimerSessionStore {
     this.events?.record(
       createStoppedHistory(runtime, remaining, new Date().toISOString()),
     );
-    this.set(
-      createTimerRuntime(
-        runtime.configurationSnapshot,
-        runtime.phase,
-        runtime.completedFocusSessions,
-      ),
-    );
+    const next = advanceRuntime(runtime, runtime.configurationSnapshot);
+    this.set(next);
+    this.events?.music(next);
+    this.events?.stopped();
+  };
+  reset = () => {
+    const runtime = this.runtime;
+    if (!runtime) return;
+    const next = createTimerRuntime(runtime.configurationSnapshot, "FOCUS", 0);
+    this.set(next);
+    this.events?.music(next);
     this.events?.stopped();
   };
 }
