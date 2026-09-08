@@ -28,22 +28,23 @@ it("advances to next phase when ending a focus phase early", () => {
   const snapshot = store.getSnapshot();
   expect(snapshot?.phase).toBe("SHORT_BREAK");
   expect(snapshot?.completedFocusSessions).toBe(1);
-  expect(snapshot?.status).toBe("IDLE");
+  expect(snapshot?.status).toBe("RUNNING");
 });
 
-it("advances from break phase to next focus round when ending early", () => {
+it("advances from break phase to next focus round when ending early and automatically runs", () => {
   const store = createTimerSessionStore();
   store.setEvents({ record: vi.fn(), completed: vi.fn(), stopped: vi.fn(), music: vi.fn() });
   store.configure(configurationFixture);
 
   store.toggle();
-  store.stop(); // Focus -> Short Break
+  store.stop(); // Focus -> Short Break (auto-starts RUNNING)
   expect(store.getSnapshot()?.phase).toBe("SHORT_BREAK");
+  expect(store.getSnapshot()?.status).toBe("RUNNING");
 
-  store.toggle(); // start break
-  store.stop(); // end break early
+  store.stop(); // end break early -> Focus (auto-starts RUNNING)
   expect(store.getSnapshot()?.phase).toBe("FOCUS");
   expect(store.getSnapshot()?.completedFocusSessions).toBe(1);
+  expect(store.getSnapshot()?.status).toBe("RUNNING");
 });
 
 it("resets entire session cycle back to round 1 (Focus) with 0 completed sessions", () => {

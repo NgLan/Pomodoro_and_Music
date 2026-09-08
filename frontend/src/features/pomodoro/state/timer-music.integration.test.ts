@@ -46,7 +46,6 @@ it("starts music, switches phase once, and restores Focus cursor", () => {
   expect(record).toHaveBeenCalledTimes(1);
   expect(player.getSnapshot().playlistId).toBe("break");
   player.reconcile(playlistFixture("break"));
-  timer.toggle();
   vi.setSystemTime(120000);
   timer.tick();
   player.reconcile(playlistFixture());

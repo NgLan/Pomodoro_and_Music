@@ -73,7 +73,9 @@ export class TimerSessionStore {
     this.events?.record(
       createStoppedHistory(runtime, remaining, new Date().toISOString()),
     );
-    const next = advanceRuntime(runtime, runtime.configurationSnapshot);
+    const next = resumeRuntime(
+      advanceRuntime(runtime, runtime.configurationSnapshot),
+    );
     this.set(next);
     this.events?.music(next);
     this.events?.stopped();

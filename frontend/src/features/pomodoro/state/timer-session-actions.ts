@@ -34,7 +34,9 @@ export function tickTimer(
       set({ ...runtime, remainingSeconds });
     return;
   }
-  const next = advanceRuntime(runtime, runtime.configurationSnapshot);
+  const next = resumeRuntime(
+    advanceRuntime(runtime, runtime.configurationSnapshot),
+  );
   set(next);
   events?.record(
     createCompletedHistory(runtime, new Date(runtime.endAt).toISOString()),
