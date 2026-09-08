@@ -40,7 +40,7 @@ export function PageContainer({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-(--content-max-width) px-4 py-8 sm:px-6 lg:px-10 lg:py-12",
+        "mx-auto w-full max-w-(--content-max-width) px-3 py-2 sm:px-6 sm:py-3 lg:px-8 pb-16",
         className,
       )}
       {...props}

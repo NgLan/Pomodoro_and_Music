@@ -28,9 +28,9 @@ export function TimerPhaseHeading({
     configurations?.length && onSelectConfiguration && onEditConfiguration,
   );
   return (
-    <CardHeader className="relative text-center pb-1 pt-2 sm:pt-3">
-      <div className="mb-1.5 flex items-center justify-center gap-2">
-        <Badge className="border-border bg-accent-pink text-surface border-2 px-2.5 py-0.5 text-xs">
+    <CardHeader className="relative text-center pb-0 pt-1 sm:pt-1.5">
+      <div className="mb-1 flex items-center justify-center gap-1.5">
+        <Badge className="border-border bg-accent-pink text-surface border-2 px-2 py-0.5 text-xs">
           <Sparkles />
           {t(phaseTranslationKey(runtime.phase))}
         </Badge>
@@ -43,9 +43,9 @@ export function TimerPhaseHeading({
           onEdit={onEditConfiguration!}
         />
       ) : (
-        <CardTitle className="text-xl">{runtime.configurationSnapshot.name}</CardTitle>
+        <CardTitle className="text-lg sm:text-xl">{runtime.configurationSnapshot.name}</CardTitle>
       )}
-      <CardDescription className="mt-1">{t("TXT_ROUND", { current, total })}</CardDescription>
+      <CardDescription className="mt-0.5 text-xs">{t("TXT_ROUND", { current, total })}</CardDescription>
     </CardHeader>
   );
 }

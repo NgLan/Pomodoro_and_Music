@@ -18,7 +18,7 @@ export function PomodoroWorkspace() {
   const state = useWorkspaceController();
   return (
     <AppShell header={<AppHeader activeTab={state.tab} onTabChange={state.setTab} />}>
-      <PageContainer className="space-y-8">
+      <PageContainer className="space-y-3 sm:space-y-4 pb-20">
         <WorkspaceHero configuration={state.selected} history={state.history} />
         {state.isLoading ? <LoadingState title={translate("TXT_TIMER_HEADING")} description={translate("TXT_READY")} />
           : state.isError ? <ErrorState title={common("TXT_ERROR_TITLE")} description={common("TXT_ERROR_DESCRIPTION")} action={<Button onClick={state.refetch}>{common("BTN_RETRY")}</Button>} />

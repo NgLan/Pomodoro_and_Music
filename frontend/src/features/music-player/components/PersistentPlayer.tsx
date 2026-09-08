@@ -22,12 +22,12 @@ function PlayerDock() {
   return (
     <aside
       aria-label={t("TXT_TITLE")}
-      className="border-border bg-surface bottom-0 z-(--z-sticky) border-t-3 sm:sticky"
+      className="border-border bg-surface fixed bottom-0 left-0 right-0 z-(--z-sticky) border-t-3 shadow-neo"
     >
       <div
         className={
           isMinimized
-            ? "mx-auto max-w-5xl relative"
+            ? "mx-auto max-w-7xl relative"
             : "mx-auto flex max-w-5xl flex-col gap-3 p-3 sm:flex-row sm:items-center sm:gap-4"
         }
       >
