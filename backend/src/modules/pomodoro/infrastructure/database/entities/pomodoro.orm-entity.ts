@@ -21,4 +21,7 @@ export class PomodoroOrmEntity {
   isDefault!: boolean;
   @Column({ name: 'created_at', type: 'timestamptz' }) createdAt!: Date;
   @Column({ name: 'updated_at', type: 'timestamptz' }) updatedAt!: Date;
+  @Column({ name: 'deleted_at', type: 'timestamptz', nullable: true })
+  deletedAt!: Date | null;
 }
+
