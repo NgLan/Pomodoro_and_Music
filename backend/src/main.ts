@@ -20,7 +20,7 @@ async function bootstrap() {
   app.enableShutdownHooks();
   setupOpenApi(app);
 
-  await app.listen(configuration.port);
+  await app.listen(configuration.port, '0.0.0.0');
   logger.log({
     event: 'application_started',
     operation: 'bootstrap',

@@ -1,7 +1,10 @@
 import { join } from 'node:path';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import type { DataSourceOptions } from 'typeorm';
-import type { DatabaseConfig } from '../../common/config/config.types.js';
+import type {
+  DatabaseConfig,
+  NodeEnvironment,
+} from '../../common/config/config.types.js';
 
 type PostgresDataSourceOptions = Extract<
   DataSourceOptions,
@@ -46,9 +49,10 @@ export function createDataSourceOptions(
 
 export function createNestTypeOrmOptions(
   configuration: DatabaseConfig,
+  nodeEnvironment: NodeEnvironment = 'development',
 ): TypeOrmModuleOptions {
   return {
-    ...createDataSourceOptions(configuration, true),
+    ...createDataSourceOptions(configuration, nodeEnvironment !== 'production'),
     autoLoadEntities: true,
     retryAttempts: 5,
     retryDelay: 3_000,

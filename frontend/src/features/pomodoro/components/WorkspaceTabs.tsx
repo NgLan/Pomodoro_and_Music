@@ -4,6 +4,8 @@ import type {
   PomodoroConfigurationResponseDto,
   PomodoroHistoryResponseDto,
 } from "@/api";
+import type { PomodoroHistoryPage } from "../services/pomodoro-api";
+import type { HistoryFilterValue } from "../types/pomodoro-ui.types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import type { WorkspaceTab } from "../types/pomodoro-ui.types";
 import { ConfigurationsPanel } from "./ConfigurationsPanel";
@@ -18,11 +20,16 @@ interface WorkspaceTabsProps {
   selected?: PomodoroConfigurationResponseDto;
   selectedId: string | null;
   history: PomodoroHistoryResponseDto[];
+  historyFilters: HistoryFilterValue;
+  historyMeta?: PomodoroHistoryPage["meta"];
+  isHistoryFetching: boolean;
   record: (entry: CreatePomodoroHistoryRequestDto) => void;
   create: () => void;
   edit: (value: PomodoroConfigurationResponseDto) => void;
   remove: (value: PomodoroConfigurationResponseDto) => void;
   select: (id: string) => void;
+  setHistoryPage: (page: number) => void;
+  updateHistoryFilters: (filters: HistoryFilterValue) => void;
 }
 
 export function WorkspaceTabs(props: WorkspaceTabsProps) {
@@ -34,14 +41,25 @@ export function WorkspaceTabs(props: WorkspaceTabsProps) {
       <WorkspaceTabLabels />
       <TimerTab {...props} />
       <ConfigurationTab {...props} />
-      <TabsContent value="history">
-        <HistoryPanel
-          configurations={props.configurations}
-          entries={props.history}
-          onGoToTimer={() => props.setTab("timer")}
-        />
-      </TabsContent>
+      <HistoryTab {...props} />
     </Tabs>
+  );
+}
+
+function HistoryTab(props: WorkspaceTabsProps) {
+  return (
+    <TabsContent value="history">
+      <HistoryPanel
+        configurations={props.configurations}
+        entries={props.history}
+        filters={props.historyFilters}
+        isFetching={props.isHistoryFetching}
+        meta={props.historyMeta}
+        onFiltersChange={props.updateHistoryFilters}
+        onGoToTimer={() => props.setTab("timer")}
+        onPageChange={props.setHistoryPage}
+      />
+    </TabsContent>
   );
 }
 

@@ -1,11 +1,15 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource, type DataSourceOptions } from 'typeorm';
+import type {
+  AppConfig,
+  DatabaseConfig,
+} from '../../common/config/config.types.js';
 import {
   ErrorCode,
   InfrastructureException,
 } from '../../common/exceptions/index.js';
-import { databaseConfig } from '../../common/config/index.js';
+import { appConfig, databaseConfig } from '../../common/config/index.js';
 import { ensureDatabaseExists } from './database-initializer.js';
 import { DatabaseReadinessService } from './database-readiness.service.js';
 import { createNestTypeOrmOptions } from './typeorm-options.js';
@@ -17,8 +21,9 @@ import { TypeOrmUnitOfWork } from './transaction/unit-of-work.js';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      inject: [databaseConfig.KEY],
-      useFactory: createNestTypeOrmOptions,
+      inject: [databaseConfig.KEY, appConfig.KEY],
+      useFactory: (database: DatabaseConfig, application: AppConfig) =>
+        createNestTypeOrmOptions(database, application.nodeEnv),
       dataSourceFactory: async (options) => {
         if (
           !options ||
@@ -28,7 +33,9 @@ import { TypeOrmUnitOfWork } from './transaction/unit-of-work.js';
         ) {
           throw new Error('TypeORM requires a PostgreSQL DATABASE_URL');
         }
-        await ensureDatabaseExists(options.url);
+        if (options.migrationsRun) {
+          await ensureDatabaseExists(options.url);
+        }
         try {
           return await new DataSource(
             options as DataSourceOptions,

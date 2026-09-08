@@ -298,6 +298,8 @@ export const zAuthLogoutResponse = zApiResponseDto.and(z.object({
 }));
 
 export const zPomodoroHistoryListQuery = z.object({
+    page: z.number().int().gte(1).optional().default(1),
+    pageSize: z.number().int().gte(1).lte(100).optional().default(20),
     configurationId: z.string().uuid().optional(),
     status: z.enum([
         'COMPLETED',

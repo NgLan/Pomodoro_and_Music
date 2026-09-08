@@ -9,8 +9,13 @@ import {
   type PomodoroConfigurationRequestDto,
   type PomodoroConfigurationResponseDto,
   type PomodoroHistoryListData,
+  type PomodoroHistoryListResponses,
   type PomodoroHistoryResponseDto,
 } from "@/api";
+
+export type PomodoroHistoryPage = NonNullable<
+  PomodoroHistoryListResponses[200]["data"]
+>;
 
 function authorizationHeaders(accessToken: string) {
   return { Authorization: `Bearer ${accessToken}` };
@@ -83,7 +88,7 @@ export async function createPomodoroHistory(
 export async function listPomodoroHistory(
   accessToken: string,
   query?: PomodoroHistoryListData["query"],
-): Promise<{ items: PomodoroHistoryResponseDto[] }> {
+): Promise<PomodoroHistoryPage> {
   const response = await pomodoroHistoryList({
     headers: authorizationHeaders(accessToken),
     query,

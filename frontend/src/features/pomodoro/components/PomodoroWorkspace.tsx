@@ -12,21 +12,99 @@ import { DeleteConfigurationDialog } from "./DeleteConfigurationDialog";
 import { WorkspaceHero } from "./WorkspaceHero";
 import { WorkspaceTabs } from "./WorkspaceTabs";
 
-export function PomodoroWorkspace() {
-  const translate = useTranslations("pomodoro");
+type WorkspaceState = ReturnType<typeof useWorkspaceController>;
+
+function ReadyWorkspace({ state }: { state: WorkspaceState }) {
+  return (
+    <WorkspaceTabs
+      tab={state.tab}
+      setTab={state.setTab}
+      configurations={state.configurations}
+      selected={state.selected}
+      selectedId={state.effectiveId}
+      history={state.history}
+      historyFilters={state.historyFilters}
+      historyMeta={state.historyMeta}
+      isHistoryFetching={state.isHistoryFetching}
+      record={state.record}
+      create={state.create}
+      edit={state.edit}
+      remove={state.setDeleting}
+      select={state.select}
+      setHistoryPage={state.setHistoryPage}
+      updateHistoryFilters={state.updateHistoryFilters}
+    />
+  );
+}
+
+function WorkspaceError({ state }: { state: WorkspaceState }) {
   const common = useTranslations("common");
+  const action = <Button onClick={state.refetch}>{common("BTN_RETRY")}</Button>;
+  return (
+    <ErrorState
+      title={common("TXT_ERROR_TITLE")}
+      description={common("TXT_ERROR_DESCRIPTION")}
+      action={action}
+    />
+  );
+}
+
+function WorkspaceStatus({ state }: { state: WorkspaceState }) {
+  const translate = useTranslations("pomodoro");
+  if (state.isLoading)
+    return (
+      <LoadingState
+        title={translate("TXT_TIMER_HEADING")}
+        description={translate("TXT_READY")}
+      />
+    );
+  if (state.isError) return <WorkspaceError state={state} />;
+  return <ReadyWorkspace state={state} />;
+}
+
+function WorkspaceDialogs({ state }: { state: WorkspaceState }) {
+  return (
+    <>
+      <ConfigurationDialog
+        configuration={state.editing}
+        isOpen={state.formOpen}
+        onOpenChange={state.closeForm}
+        onSubmit={state.save}
+      />
+      <DeleteConfigurationDialog
+        value={state.deleting}
+        onCancel={() => state.setDeleting(null)}
+        onConfirm={() => void state.confirmDelete()}
+      />
+    </>
+  );
+}
+
+function WorkspaceBody({ state }: { state: WorkspaceState }) {
+  const translate = useTranslations("pomodoro");
+  return (
+    <PageContainer className="space-y-2.5 pb-14 sm:space-y-3 sm:pb-16">
+      <WorkspaceHero
+        configuration={state.selected}
+        history={state.recentHistory}
+      />
+      <WorkspaceStatus state={state} />
+      <p className="text-muted-foreground flex items-center justify-center gap-2 text-xs">
+        <Clock3 className="size-3.5" />
+        {translate("TXT_SERVER_NOTE")}
+      </p>
+    </PageContainer>
+  );
+}
+
+export function PomodoroWorkspace() {
   const state = useWorkspaceController();
   return (
-    <AppShell header={<AppHeader activeTab={state.tab} onTabChange={state.setTab} />}>
-      <PageContainer className="space-y-2.5 sm:space-y-3 pb-14 sm:pb-16">
-        <WorkspaceHero configuration={state.selected} history={state.history} />
-        {state.isLoading ? <LoadingState title={translate("TXT_TIMER_HEADING")} description={translate("TXT_READY")} />
-          : state.isError ? <ErrorState title={common("TXT_ERROR_TITLE")} description={common("TXT_ERROR_DESCRIPTION")} action={<Button onClick={state.refetch}>{common("BTN_RETRY")}</Button>} />
-            : <WorkspaceTabs tab={state.tab} setTab={state.setTab} configurations={state.configurations} selected={state.selected} selectedId={state.effectiveId} history={state.history} record={state.record} create={state.create} edit={state.edit} remove={state.setDeleting} select={state.select} />}
-        <p className="text-muted-foreground flex items-center justify-center gap-2 text-xs"><Clock3 className="size-3.5" />{translate("TXT_SERVER_NOTE")}</p>
-      </PageContainer>
-      <ConfigurationDialog configuration={state.editing} isOpen={state.formOpen} onOpenChange={state.closeForm} onSubmit={state.save} />
-      <DeleteConfigurationDialog value={state.deleting} onCancel={() => state.setDeleting(null)} onConfirm={() => void state.confirmDelete()} />
+    <AppShell
+      header={<AppHeader activeTab={state.tab} onTabChange={state.setTab} />}
+    >
+      <WorkspaceBody state={state} />
+      <WorkspaceDialogs state={state} />
     </AppShell>
   );
 }

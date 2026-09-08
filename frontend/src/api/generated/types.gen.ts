@@ -460,6 +460,8 @@ export type PomodoroHistoryListData = {
     body?: never;
     path?: never;
     query?: {
+        page?: number;
+        pageSize?: number;
         configurationId?: string;
         status?: 'COMPLETED' | 'ENDED_EARLY' | 'CANCELLED';
         dateFrom?: string;

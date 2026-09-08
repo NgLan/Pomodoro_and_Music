@@ -6,9 +6,13 @@
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -25,6 +29,7 @@
     "migration:create": "npm run typeorm -- migration:create src/infrastructure/database/migrations/migration --esm",
     "migration:generate": "npm run typeorm -- migration:generate src/infrastructure/database/migrations/schema -d src/infrastructure/database/typeorm.datasource.ts --esm",
     "migration:run": "npm run typeorm -- migration:run -d src/infrastructure/database/typeorm.datasource.ts",
+    "migration:run:prod": "typeorm migration:run -d dist/infrastructure/database/typeorm.datasource.js",
     "migration:revert": "npm run typeorm -- migration:revert -d src/infrastructure/database/typeorm.datasource.ts"
   },
   "dependencies": {

@@ -31,10 +31,10 @@ it("keeps saved music selections when playlist options finish loading", async ()
   view.rerender(<ConfigurationDialog {...props} />);
   await waitFor(() => {
     expect(
-      screen.getByRole("combobox", { name: "Nhạc tập trung" }),
+      screen.getByRole("combobox", { name: "Playlist khi tập trung" }),
     ).toHaveTextContent("Deep Focus");
     expect(
-      screen.getByRole("combobox", { name: "Nhạc nghỉ ngơi" }),
+      screen.getByRole("combobox", { name: "Playlist khi nghỉ" }),
     ).toHaveTextContent("Relax");
   });
 });

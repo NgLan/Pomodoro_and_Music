@@ -1,31 +1,56 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import type { PomodoroConfigurationResponseDto } from "@/api";
+import { useState } from "react";
+import type {
+  PomodoroConfigurationResponseDto,
+  PomodoroHistoryListData,
+} from "@/api";
 import { useAuth } from "@/shared/providers/auth-provider";
-import { useConfigurationActions, useHistoryRecorder } from "./use-pomodoro-actions";
+import {
+  useConfigurationActions,
+  useHistoryRecorder,
+} from "./use-pomodoro-actions";
 import { usePomodoroQueries } from "./use-pomodoro-queries";
 
-export function usePomodoroData() {
+function readQueryState(queries: ReturnType<typeof usePomodoroQueries>) {
+  return {
+    configurations: queries.configurations.data ?? [],
+    history: queries.history.data?.items ?? [],
+    historyMeta: queries.history.data?.meta,
+    isError:
+      queries.configurations.isError ||
+      queries.history.isError ||
+      queries.recentHistory.isError,
+    isHistoryFetching: queries.history.isFetching,
+    isLoading:
+      queries.configurations.isLoading ||
+      queries.history.isLoading ||
+      queries.recentHistory.isLoading,
+    recentHistory: queries.recentHistory.data?.items ?? [],
+  };
+}
+
+export function usePomodoroData(
+  historyQuery: NonNullable<PomodoroHistoryListData["query"]>,
+) {
   const { accessToken } = useAuth();
-  const [editing, setEditing] = useState<PomodoroConfigurationResponseDto | null>(null);
-  const queries = usePomodoroQueries(accessToken);
+  const [editing, setEditing] =
+    useState<PomodoroConfigurationResponseDto | null>(null);
+  const queries = usePomodoroQueries(accessToken, historyQuery);
   const actions = useConfigurationActions(accessToken!, editing);
   const record = useHistoryRecorder(accessToken!);
-  const configurations = useMemo(() => queries.configurations.data ?? [],
-    [queries.configurations.data]);
-  const history = useMemo(() => queries.history.data?.items ?? [],
-    [queries.history.data]);
   const save = async (draft: Parameters<typeof actions.save>[0]) => {
     const value = await actions.save(draft);
     setEditing(null);
     return value;
   };
   return {
-    configurations, editing, history,
-    isError: queries.configurations.isError || queries.history.isError,
-    isLoading: queries.configurations.isLoading || queries.history.isLoading,
-    record, refetch: queries.refetch, remove: actions.remove,
-    save, setEditing,
+    ...readQueryState(queries),
+    editing,
+    record,
+    refetch: queries.refetch,
+    remove: actions.remove,
+    save,
+    setEditing,
   };
 }

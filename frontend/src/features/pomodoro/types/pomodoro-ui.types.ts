@@ -1,10 +1,17 @@
 import type {
   PomodoroConfigurationResponseDto,
+  PomodoroHistoryStatus,
   PomodoroPhaseType,
 } from "@/api";
 
 export type WorkspaceTab = "timer" | "configurations" | "history";
 export type TimerStatus = "IDLE" | "RUNNING" | "PAUSED";
+
+export interface HistoryFilterValue {
+  configurationId: string;
+  date: string;
+  status: "all" | PomodoroHistoryStatus;
+}
 
 export interface TimerRuntime {
   completedFocusSessions: number;
