@@ -47,6 +47,11 @@ export function getRemainingSeconds(endAt: number, now: number): number {
 export function getCurrentRound(
   completedFocusSessions: number,
   focusSessionsBeforeLongBreak: number,
+  phase: PomodoroPhaseType = "FOCUS",
 ): number {
-  return (completedFocusSessions % focusSessionsBeforeLongBreak) + 1;
+  const effectiveIndex =
+    phase === "FOCUS"
+      ? completedFocusSessions
+      : Math.max(0, completedFocusSessions - 1);
+  return (effectiveIndex % focusSessionsBeforeLongBreak) + 1;
 }

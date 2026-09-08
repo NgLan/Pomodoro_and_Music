@@ -23,7 +23,11 @@ export function TimerPhaseHeading({
 }: TimerPhaseHeadingProps) {
   const t = useTranslations("pomodoro");
   const total = runtime.configurationSnapshot.focusSessionsBeforeLongBreak;
-  const current = getCurrentRound(runtime.completedFocusSessions, total);
+  const current = getCurrentRound(
+    runtime.completedFocusSessions,
+    total,
+    runtime.phase,
+  );
   const showSelector = Boolean(
     configurations?.length && onSelectConfiguration && onEditConfiguration,
   );
