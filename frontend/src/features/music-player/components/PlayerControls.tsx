@@ -13,7 +13,7 @@ import { PlayerVolumeHover } from "./PlayerVolumeHover";
 
 export function PlayerControls() {
   return (
-    <div className="flex items-center justify-center gap-1 sm:gap-2">
+    <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
       <ModeButton mode="shuffle" />
       <StepButton direction={-1} />
       <PlayButton />
@@ -33,6 +33,7 @@ function ModeButton({ mode }: { mode: "shuffle" | "repeat" }) {
     <Button
       size="icon"
       variant={pressed ? "secondary" : "ghost"}
+      className="size-9 sm:size-10 [&_svg]:size-4.5 sm:[&_svg]:size-5"
       aria-label={t(isShuffle ? "BTN_SHUFFLE" : "BTN_REPEAT")}
       aria-pressed={pressed}
       onClick={isShuffle ? store.toggleShuffle : store.toggleRepeat}
@@ -49,6 +50,7 @@ function StepButton({ direction }: { direction: -1 | 1 }) {
     <Button
       size="icon"
       variant="ghost"
+      className="size-9 sm:size-10 [&_svg]:size-4.5 sm:[&_svg]:size-5"
       disabled={!current}
       aria-label={t(direction === 1 ? "BTN_NEXT" : "BTN_PREVIOUS")}
       onClick={() => store.step(direction)}
@@ -64,7 +66,7 @@ function PlayButton() {
   return (
     <Button
       size="icon"
-      className="size-10 sm:size-11 rounded-full"
+      className="size-12 sm:size-14 rounded-full shadow-neo [&_svg]:size-6 sm:[&_svg]:size-7"
       disabled={!current}
       aria-label={t(state.isPlaying ? "BTN_PAUSE" : "BTN_PLAY")}
       onClick={store.toggle}

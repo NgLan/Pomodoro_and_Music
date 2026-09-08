@@ -14,7 +14,7 @@ export function PersistentPlayer() {
 }
 
 function PlayerDock() {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const { store, state } = usePlayer();
   const host = useYoutubePlayer(store, state.providerRevision);
   const t = useTranslations("musicPlayer");

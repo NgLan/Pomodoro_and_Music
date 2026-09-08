@@ -61,7 +61,7 @@ function WorkspaceTabLabels() {
 
 function TimerTab(props: WorkspaceTabsProps) {
   return (
-    <TabsContent value="timer" className="space-y-6">
+    <TabsContent value="timer">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(18rem,0.85fr)]">
         <TimerCard
           configuration={props.selected}
@@ -72,14 +72,14 @@ function TimerTab(props: WorkspaceTabsProps) {
         />
         <MusicPanel />
       </div>
-      <ConfigurationSummary configuration={props.selected} />
     </TabsContent>
   );
 }
 
 function ConfigurationTab(props: WorkspaceTabsProps) {
   return (
-    <TabsContent value="configurations">
+    <TabsContent value="configurations" className="space-y-6">
+      <ConfigurationSummary configuration={props.selected} />
       <ConfigurationsPanel
         configurations={props.configurations}
         selectedId={props.selectedId}

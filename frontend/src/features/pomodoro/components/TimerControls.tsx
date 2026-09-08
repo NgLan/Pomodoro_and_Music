@@ -11,12 +11,12 @@ export function TimerControls({ status, onPrimary, onStop }: {
   const translate = useTranslations("pomodoro");
   const label = status === "RUNNING" ? "BTN_PAUSE" : status === "PAUSED" ? "BTN_RESUME" : "BTN_START";
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-      <Button className="h-9 sm:h-10 px-4 sm:px-5 font-bold" onClick={onPrimary}>
-        {status === "RUNNING" ? <Pause aria-hidden="true" className="size-4" /> : <Play aria-hidden="true" className="size-4" />}
+    <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5">
+      <Button className="h-11 sm:h-12 px-6 sm:px-8 text-base sm:text-lg font-extrabold shadow-neo" onClick={onPrimary}>
+        {status === "RUNNING" ? <Pause aria-hidden="true" className="size-5" /> : <Play aria-hidden="true" className="size-5" />}
         {translate(label)}
       </Button>
-      {status !== "IDLE" && <Button variant="outline" className="h-9 sm:h-10 px-4 font-bold" onClick={onStop}><Square aria-hidden="true" className="size-4" />{translate("BTN_STOP")}</Button>}
+      {status !== "IDLE" && <Button variant="outline" className="h-11 sm:h-12 px-5 sm:px-6 text-base font-bold shadow-neo" onClick={onStop}><Square aria-hidden="true" className="size-5" />{translate("BTN_STOP")}</Button>}
     </div>
   );
 }

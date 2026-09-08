@@ -12,12 +12,12 @@ export function QueueButton() {
   return (
     <>
       <Button
-        className="w-full"
+        className="w-full h-11 sm:h-12 font-bold text-sm sm:text-base shadow-neo-sm"
         variant="outline"
         disabled={!state.playlistId}
         onClick={() => setOpen(true)}
       >
-        <ListMusic />
+        <ListMusic className="size-5" />
         {t("BTN_QUEUE", { count: state.queue.length })}
       </Button>
       <PlayerQueue open={open} onOpenChange={setOpen} />

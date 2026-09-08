@@ -37,14 +37,14 @@ export function PlaylistSelector({
   const t = useTranslations("musicPlayer");
   const displayLabel = getSelectorDisplay(value, query.data, t);
   return (
-    <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+    <div className="space-y-1.5 sm:space-y-2">
+      <Label htmlFor={id} className="text-xs sm:text-sm font-bold">{label}</Label>
       <Select
         value={value ?? "none"}
         onValueChange={(next) => onChange(next === "none" ? null : next)}
       >
-        <SelectTrigger id={id} className="w-full" disabled={query.isLoading && !query.data}>
-          <span data-slot="select-value" className="truncate flex-1 text-left font-medium">
+        <SelectTrigger id={id} className="w-full h-10 sm:h-10.5 text-sm sm:text-base font-bold" disabled={query.isLoading && !query.data}>
+          <span data-slot="select-value" className="truncate flex-1 text-left font-bold">
             {displayLabel}
           </span>
         </SelectTrigger>

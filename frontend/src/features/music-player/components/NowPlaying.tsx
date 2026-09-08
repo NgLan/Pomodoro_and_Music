@@ -6,17 +6,17 @@ export function NowPlaying() {
   const { current } = usePlayer();
   const t = useTranslations("musicPlayer");
   return (
-    <div className="border-border bg-surface flex items-center gap-2 rounded-xl border-2 p-1.5 sm:p-2">
+    <div className="border-border bg-surface flex items-center gap-3 rounded-xl border-2 p-2.5 sm:p-3 shadow-neo-sm">
       <PlaylistThumbnail
         src={current?.thumbnailUrl ?? null}
         alt=""
-        className="aspect-square size-11 sm:size-12 shrink-0 rounded-lg"
+        className="aspect-square size-14 sm:size-16 shrink-0 rounded-lg"
       />
       <div className="min-w-0">
-        <p className="line-clamp-1 font-bold text-xs sm:text-sm">
+        <p className="line-clamp-1 font-bold text-sm sm:text-base">
           {current?.title || t("TXT_READY")}
         </p>
-        <p className="text-muted-foreground truncate text-[0.68rem] sm:text-xs">
+        <p className="text-muted-foreground truncate text-xs sm:text-sm mt-0.5">
           {current?.channelName || t("TXT_YOUR_SPACE")}
         </p>
       </div>
