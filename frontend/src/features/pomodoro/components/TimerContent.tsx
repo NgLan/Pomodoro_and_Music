@@ -5,6 +5,7 @@ import type { usePomodoroTimer } from "../hooks/use-pomodoro-timer";
 import { TimerConfigRail } from "./TimerConfigRail";
 import { TimerControls } from "./TimerControls";
 import { TimerPhaseHeading } from "./TimerPhaseHeading";
+import { getPhaseTheme } from "../utils/phase-theme";
 import { TimerCountdown } from "./TimerCountdown";
 import { TimerNextPhase } from "./TimerNextPhase";
 
@@ -26,6 +27,7 @@ export function TimerContent(props: TimerContentProps) {
     runtime.completedFocusSessions > 0 ||
     runtime.status !== "IDLE" ||
     runtime.remainingSeconds !== runtime.plannedDurationSeconds;
+  const theme = getPhaseTheme(runtime.phase);
 
   return (
     <>
@@ -38,7 +40,11 @@ export function TimerContent(props: TimerContentProps) {
       <CardContent className="relative flex flex-1 flex-col items-center justify-evenly gap-2.5 sm:gap-3.5 py-2 sm:py-3">
         <TimerConfigRail configuration={runtime.configurationSnapshot} />
         <TimerCountdown runtime={runtime} />
-        <Progress className="max-w-sm sm:max-w-md h-3.5 sm:h-4" value={progress} />
+        <Progress
+          className="max-w-sm sm:max-w-md h-3.5 sm:h-4"
+          indicatorClassName={theme.progressClass}
+          value={progress}
+        />
         <TimerControls
           status={runtime.status}
           canReset={canReset}
