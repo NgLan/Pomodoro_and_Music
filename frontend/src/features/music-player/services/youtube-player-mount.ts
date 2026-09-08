@@ -33,7 +33,7 @@ export function mountPlayer(
 function playerOptions(store: PlayerStore, ready: () => void) {
   return {
     width: "100%",
-    height: "200",
+    height: "100%",
     playerVars: { origin: window.location.origin, playsinline: 1 },
     events: createPlayerEvents(store, ready),
   };
@@ -58,8 +58,14 @@ function observePlayer(player: YoutubePlayer, store: PlayerStore) {
   const interval = setInterval(() => {
     if (!isCurrentVideo(player, store)) return;
     const position = player.getCurrentTime();
+    const duration = player.getDuration?.() ?? 0;
     if (Number.isFinite(position))
-      store.update((state) => ({ ...state, position }));
+      store.update((state) => ({
+        ...state,
+        position,
+        duration:
+          Number.isFinite(duration) && duration > 0 ? duration : state.duration,
+      }));
   }, 500);
   return () => {
     unsubscribe();

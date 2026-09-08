@@ -33,5 +33,10 @@
   "TXT_SHARED_HINT": "Choose the same playlist for Focus and Break to keep the music flowing.",
   "FOCUS_PLAYLIST_LABEL": "Focus playlist",
   "BREAK_PLAYLIST_LABEL": "Break playlist",
-  "BTN_CLOSE": "Close queue"
+  "BTN_CLOSE": "Close queue",
+  "BTN_MINIMIZE": "Minimize player",
+  "BTN_EXPAND": "Expand player",
+  "TXT_SEEK_LABEL": "Playback progress",
+  "BTN_MUTE": "Mute",
+  "BTN_UNMUTE": "Unmute"
 }

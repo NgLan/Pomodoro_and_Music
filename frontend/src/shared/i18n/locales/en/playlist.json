@@ -31,7 +31,7 @@
   "TXT_ADD_MUSIC": "Add music to your focus session",
   "TXT_ADD_MUSIC_DESCRIPTION": "Search YouTube or paste a video link directly.",
   "TXT_TRACK_LIST": "Track list",
-  "TXT_REORDER_HINT": "Use each track menu to move it up or down. The new order saves automatically.",
+  "TXT_REORDER_HINT": "Drag the grip handle or use each track's menu to reorder.",
   "TXT_EMPTY_PLAYLIST_TITLE": "This playlist is quiet",
   "TXT_EMPTY_PLAYLIST_DESCRIPTION": "Find a YouTube video to add the first bit of music.",
   "TXT_UNKNOWN_TRACK": "Untitled video",

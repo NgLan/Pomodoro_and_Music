@@ -20,4 +20,6 @@ export interface PlayerState extends PlaylistCursor {
   revision: number;
   providerRevision: number;
   volume: number;
+  duration: number;
+  seekTarget: number | null;
 }

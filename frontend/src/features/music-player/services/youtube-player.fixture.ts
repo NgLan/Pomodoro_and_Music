@@ -9,6 +9,8 @@ export function youtubeFixture(): YoutubePlayer {
     pauseVideo: vi.fn(),
     stopVideo: vi.fn(),
     getCurrentTime: () => 12,
+    getDuration: () => 180,
+    seekTo: vi.fn(),
     getVideoUrl: () => "https://www.youtube.com/watch?v=a",
     setVolume: vi.fn(),
     destroy: vi.fn(),

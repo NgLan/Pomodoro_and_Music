@@ -33,5 +33,10 @@
   "TXT_SHARED_HINT": "Chọn cùng một playlist cho Focus và Break để nhạc tiếp tục xuyên suốt.",
   "FOCUS_PLAYLIST_LABEL": "Nhạc tập trung",
   "BREAK_PLAYLIST_LABEL": "Nhạc nghỉ ngơi",
-  "BTN_CLOSE": "Đóng danh sách"
+  "BTN_CLOSE": "Đóng danh sách",
+  "BTN_MINIMIZE": "Thu nhỏ trình phát",
+  "BTN_EXPAND": "Mở rộng trình phát",
+  "TXT_SEEK_LABEL": "Tiến trình phát",
+  "BTN_MUTE": "Tắt tiếng",
+  "BTN_UNMUTE": "Bật tiếng"
 }

@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, MoreHorizontal, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, MoreVertical, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/shared/ui/button";
 import {
@@ -21,14 +21,14 @@ export function TrackMenu({
 }) {
   const translate = useTranslations("playlist");
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           aria-label={translate("ARIA_TRACK_MENU")}
           size="icon-sm"
           variant="ghost"
         >
-          <MoreHorizontal />
+          <MoreVertical className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

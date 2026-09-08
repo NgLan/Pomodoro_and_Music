@@ -20,6 +20,12 @@ export function createPlaybackActions(
     toggleRepeat: () =>
       update((state) => ({ ...state, isRepeat: !state.isRepeat })),
     toggleShuffle: () => update(toggleShuffle),
+    seek: (seconds: number) =>
+      update((state) => ({
+        ...state,
+        position: seconds,
+        seekTarget: seconds,
+      })),
   };
 }
 

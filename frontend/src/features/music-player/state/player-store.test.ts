@@ -90,3 +90,13 @@ it("stops at the end unless repeating and bounds unavailable retries", () => {
     issue: "MSG_PLAYER_ERROR",
   });
 });
+
+it("updates position and seekTarget when seeking", () => {
+  const player = createPlayerStore();
+  player.seek(45);
+  expect(player.getSnapshot()).toMatchObject({
+    position: 45,
+    seekTarget: 45,
+  });
+});
+

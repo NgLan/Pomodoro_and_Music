@@ -26,11 +26,23 @@ function syncPlayback(
     return;
   }
   if (state.volume !== previous?.volume) player.setVolume(state.volume);
+  if (
+    typeof state.seekTarget === "number" &&
+    state.seekTarget !== previous?.seekTarget
+  ) {
+    player.seekTo(state.seekTarget, true);
+  }
+  syncVideoTrack(player, state, previous, item.media.externalMediaId);
+}
+
+function syncVideoTrack(
+  player: YoutubePlayer,
+  state: PlayerState,
+  previous: PlayerState | null,
+  externalMediaId: string,
+) {
   if (!previous?.playlist || previous.revision !== state.revision) {
-    const options = {
-      videoId: item.media.externalMediaId,
-      startSeconds: state.position,
-    };
+    const options = { videoId: externalMediaId, startSeconds: state.position };
     if (state.isPlaying) player.loadVideoById(options);
     else player.cueVideoById(options);
   } else if (previous.isPlaying !== state.isPlaying) {
@@ -38,6 +50,7 @@ function syncPlayback(
     else player.pauseVideo();
   }
 }
+
 
 export function isCurrentVideo(player: YoutubePlayer, store: PlayerStore) {
   const state = store.getSnapshot();

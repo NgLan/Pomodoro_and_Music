@@ -56,6 +56,7 @@ function QueueTracks({ id }: { id: string }) {
           onPlay={controller.playback.select}
           onRemove={controller.remove}
           onMove={controller.move}
+          onReorder={controller.reorder}
           onOpenSearch={() => router.push(routes.PLAYLIST_DETAIL(id))}
         />
       )}

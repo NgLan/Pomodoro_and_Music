@@ -19,6 +19,8 @@ export const initialPlayerState: PlayerState = {
   revision: 0,
   providerRevision: 0,
   volume: 60,
+  duration: 0,
+  seekTarget: null,
 };
 
 /** Session-scoped store. Synchronous intents make the last selection win, regardless of fetch order. */

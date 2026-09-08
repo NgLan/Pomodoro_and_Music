@@ -5,6 +5,8 @@ export interface YoutubePlayer {
   pauseVideo(): void;
   stopVideo(): void;
   getCurrentTime(): number;
+  getDuration(): number;
+  seekTo(seconds: number, allowSeekAhead?: boolean): void;
   getVideoUrl(): string;
   setVolume(volume: number): void;
   destroy(): void;

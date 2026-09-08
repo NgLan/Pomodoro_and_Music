@@ -5,24 +5,21 @@ import {
   Shuffle,
   SkipBack,
   SkipForward,
-  Volume2,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/shared/ui/button";
-import { Slider } from "@/shared/ui/slider";
 import { usePlayer } from "../providers/PlayerProvider";
+import { PlayerVolumeHover } from "./PlayerVolumeHover";
 
 export function PlayerControls() {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-center gap-2">
-        <ModeButton mode="shuffle" />
-        <StepButton direction={-1} />
-        <PlayButton />
-        <StepButton direction={1} />
-        <ModeButton mode="repeat" />
-      </div>
-      <PlayerVolume />
+    <div className="flex items-center justify-center gap-1 sm:gap-2">
+      <ModeButton mode="shuffle" />
+      <StepButton direction={-1} />
+      <PlayButton />
+      <StepButton direction={1} />
+      <ModeButton mode="repeat" />
+      <PlayerVolumeHover />
     </div>
   );
 }
@@ -74,24 +71,5 @@ function PlayButton() {
     >
       {state.isPlaying ? <Pause /> : <Play />}
     </Button>
-  );
-}
-
-function PlayerVolume() {
-  const { state, store } = usePlayer();
-  const t = useTranslations("musicPlayer");
-  return (
-    <div className="flex items-center gap-3">
-      <Volume2 className="size-4 shrink-0" />
-      <Slider
-        aria-label={t("VOLUME_LABEL")}
-        value={[state.volume]}
-        max={100}
-        step={1}
-        onValueChange={([volume]) =>
-          store.update((value) => ({ ...value, volume: volume ?? 60 }))
-        }
-      />
-    </div>
   );
 }

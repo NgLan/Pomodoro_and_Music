@@ -49,3 +49,15 @@ it("ignores delayed events for a previous video and advances on ended", () => {
   handleYoutubeState(2, youtube, store);
   expect(store.getSnapshot().isPlaying).toBe(true);
 });
+
+it("calls seekTo on the player when store.seek is called", () => {
+  const store = createPlayerStore();
+  const youtube = youtubeFixture();
+  store.activate("focus");
+  store.reconcile(playlistFixture());
+  const disconnect = connectPlayback(youtube, store);
+  store.seek(75);
+  expect(youtube.seekTo).toHaveBeenCalledWith(75, true);
+  disconnect();
+});
+

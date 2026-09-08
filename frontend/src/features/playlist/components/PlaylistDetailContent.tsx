@@ -69,6 +69,7 @@ function DetailTracks({ state }: { state: DetailState }) {
       current={state.playback.current}
       items={state.query.data!.items}
       onMove={state.move}
+      onReorder={state.reorder}
       onOpenSearch={() => state.setIsSearchOpen(true)}
       onPlay={state.playback.select}
       onRemove={state.remove}
