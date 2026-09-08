@@ -9,7 +9,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/shared/ui/select";
 
 interface TimerConfigSelectorProps {
@@ -28,7 +27,9 @@ export function TimerConfigSelector(props: TimerConfigSelectorProps) {
           aria-label={t("TXT_SWITCH_CONFIG")}
           className="border-border bg-surface shadow-neo-sm h-10 max-w-xs text-sm font-bold sm:max-w-sm"
         >
-          <SelectValue />
+          <span data-slot="select-value" className="truncate flex-1 text-left font-bold">
+            {props.selected.name} ({calculateTotalMinutes(props.selected)} {t("TXT_MINUTES_SHORT")})
+          </span>
         </SelectTrigger>
         <ConfigOptions configurations={props.configurations} />
       </Select>

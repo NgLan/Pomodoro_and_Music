@@ -8,7 +8,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/shared/ui/select";
 import type { PlaylistSummaryResponseDto } from "@/api";
 
@@ -45,9 +44,9 @@ export function PlaylistSelector({
         onValueChange={(next) => onChange(next === "none" ? null : next)}
       >
         <SelectTrigger id={id} className="w-full" disabled={query.isLoading && !query.data}>
-          <SelectValue placeholder={t("TXT_CHOOSE_PLAYLIST")}>
+          <span data-slot="select-value" className="truncate flex-1 text-left font-medium">
             {displayLabel}
-          </SelectValue>
+          </span>
         </SelectTrigger>
         <PlaylistOptions selected={value} playlists={query.data ?? []} />
       </Select>

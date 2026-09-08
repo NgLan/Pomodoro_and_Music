@@ -26,16 +26,20 @@ export function useConfigurationForm(
     () => createConfigurationFormSchema(translate),
     [translate],
   );
+  const values = useMemo(
+    () =>
+      configuration ? valuesFromConfiguration(configuration) : EMPTY_VALUES,
+    [configuration],
+  );
   const form = useForm<ConfigurationFormValues>({
     resolver: zodResolver(schema),
     defaultValues: EMPTY_VALUES,
+    values,
+    resetOptions: { keepDefaultValues: false },
   });
   useEffect(() => {
-    if (isOpen)
-      form.reset(
-        configuration ? valuesFromConfiguration(configuration) : EMPTY_VALUES,
-      );
-  }, [configuration, form, isOpen]);
+    if (isOpen) form.reset(values);
+  }, [form, isOpen, values]);
   const submit = form.handleSubmit((values) =>
     onSubmit(configurationRequest(values)),
   );
