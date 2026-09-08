@@ -18,6 +18,16 @@ interface PlaylistSelectorProps {
   label: string;
 }
 
+function getSelectorDisplay(
+  value: string | null,
+  playlists: PlaylistSummaryResponseDto[] | undefined,
+  t: ReturnType<typeof useTranslations<"musicPlayer">>,
+): string {
+  if (!value || value === "none") return t("TXT_NO_PLAYLIST");
+  const found = playlists?.find((item) => item.id === value);
+  return found ? found.name : t("TXT_SAVED_PLAYLIST");
+}
+
 export function PlaylistSelector({
   value,
   onChange,
@@ -26,6 +36,7 @@ export function PlaylistSelector({
   const query = usePlaylistLibraryQuery();
   const id = useId();
   const t = useTranslations("musicPlayer");
+  const displayLabel = getSelectorDisplay(value, query.data, t);
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>
@@ -33,8 +44,10 @@ export function PlaylistSelector({
         value={value ?? "none"}
         onValueChange={(next) => onChange(next === "none" ? null : next)}
       >
-        <SelectTrigger id={id} className="w-full" disabled={query.isLoading}>
-          <SelectValue placeholder={t("TXT_CHOOSE_PLAYLIST")} />
+        <SelectTrigger id={id} className="w-full" disabled={query.isLoading && !query.data}>
+          <SelectValue placeholder={t("TXT_CHOOSE_PLAYLIST")}>
+            {displayLabel}
+          </SelectValue>
         </SelectTrigger>
         <PlaylistOptions selected={value} playlists={query.data ?? []} />
       </Select>
@@ -54,9 +67,11 @@ function PlaylistOptions({
   return (
     <SelectContent>
       <SelectItem value="none">{t("TXT_NO_PLAYLIST")}</SelectItem>
-      {selected && !playlists.some((item) => item.id === selected) && (
-        <SelectItem value={selected}>{t("TXT_SAVED_PLAYLIST")}</SelectItem>
-      )}
+      {selected &&
+        selected !== "none" &&
+        !playlists.some((item) => item.id === selected) && (
+          <SelectItem value={selected}>{t("TXT_SAVED_PLAYLIST")}</SelectItem>
+        )}
       {playlists.map((playlist) => (
         <SelectItem key={playlist.id} value={playlist.id}>
           {playlist.name}

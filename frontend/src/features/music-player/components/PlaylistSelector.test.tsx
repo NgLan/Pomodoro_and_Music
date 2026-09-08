@@ -49,6 +49,7 @@ it("propagates null when user selects no playlist", async () => {
     isError: false,
   });
   render(<PlaylistSelector value="playlist-1" onChange={handleChange} label="Nhạc tập trung" />);
+  expect(screen.getByRole("combobox")).toHaveTextContent("Deep Focus");
   await user.click(screen.getByRole("combobox"));
   const noneOption = await screen.findByRole("option", { name: "Không phát nhạc" });
   await user.click(noneOption);

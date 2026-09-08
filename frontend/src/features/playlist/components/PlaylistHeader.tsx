@@ -6,30 +6,29 @@ import { useTranslations } from "next-intl";
 import { AppUserMenu } from "@/shared/components/AppUserMenu";
 import { LanguageSwitcher } from "@/shared/components/LanguageSwitcher";
 import { routes } from "@/shared/config/routes";
-import { PageContainer } from "@/shared/ui/layout/AppShell";
 
 export function PlaylistHeader() {
   return (
-    <PageContainer className="flex flex-wrap items-center justify-between gap-3 py-2 sm:py-2.5">
+    <div className="mx-auto flex w-full max-w-(--content-max-width) items-center justify-between gap-2 px-4 py-1.5 sm:gap-4 sm:px-6 sm:py-2 lg:px-10">
       <PlaylistLogo />
       <PlaylistNav />
-      <div className="order-2 sm:order-3 flex items-center gap-2">
+      <div className="order-2 flex items-center gap-1.5 sm:order-3 sm:gap-2">
         <LanguageSwitcher />
         <AppUserMenu />
       </div>
-    </PageContainer>
+    </div>
   );
 }
 
 function PlaylistLogo() {
   const translate = useTranslations("playlist");
   return (
-    <Link className="order-1 flex items-center gap-3" href={routes.HOME}>
-      <span className="border-border bg-primary shadow-neo grid size-11 -rotate-2 place-items-center rounded-xl border-2">
-        <Coffee aria-hidden="true" className="size-6" />
+    <Link className="order-1 flex items-center gap-2 sm:gap-3" href={routes.HOME}>
+      <span className="border-border bg-primary shadow-neo grid size-9 -rotate-2 place-items-center rounded-lg border-2 sm:size-10 sm:rounded-xl">
+        <Coffee aria-hidden="true" className="size-5" />
       </span>
       <span>
-        <strong className="block leading-tight">Cappucino</strong>
+        <strong className="block text-sm leading-tight sm:text-base">Cappucino</strong>
         <span className="text-muted-foreground hidden text-xs sm:block">
           {translate("TXT_APP_TAGLINE")}
         </span>
@@ -43,21 +42,21 @@ function PlaylistNav() {
   return (
     <nav
       aria-label={translate("ARIA_MAIN_NAV")}
-      className="bg-muted border-border order-last flex w-full rounded-xl border-2 p-1 sm:order-2 sm:w-auto"
+      className="bg-muted border-border order-last hidden sm:order-2 sm:flex rounded-xl border-2 p-0.5 sm:p-1"
     >
       <Link
-        className="hover:bg-surface flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg px-4 text-sm font-bold"
+        className="hover:bg-surface flex h-8.5 items-center justify-center gap-1.5 rounded-lg px-2.5 text-xs font-bold sm:px-3 sm:text-sm"
         href={routes.HOME}
       >
-        <Timer aria-hidden="true" className="size-4" />
+        <Timer aria-hidden="true" className="size-3.5 sm:size-4" />
         {translate("TXT_NAV_POMODORO")}
       </Link>
       <Link
         aria-current="page"
-        className="bg-surface shadow-neo-sm flex min-h-10 flex-1 items-center justify-center gap-2 rounded-lg px-4 text-sm font-bold"
+        className="bg-surface shadow-neo-sm flex h-8.5 items-center justify-center gap-1.5 rounded-lg px-2.5 text-xs font-bold sm:px-3 sm:text-sm"
         href={routes.PLAYLISTS}
       >
-        <Music2 aria-hidden="true" className="size-4" />
+        <Music2 aria-hidden="true" className="size-3.5 sm:size-4" />
         {translate("TXT_NAV_PLAYLISTS")}
       </Link>
     </nav>

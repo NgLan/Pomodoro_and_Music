@@ -28,9 +28,9 @@ export function TimerPhaseHeading({
     configurations?.length && onSelectConfiguration && onEditConfiguration,
   );
   return (
-    <CardHeader className="relative text-center">
-      <div className="mb-2 flex items-center justify-center gap-2">
-        <Badge className="border-border bg-accent-pink text-surface border-2 px-3 py-1">
+    <CardHeader className="relative text-center pb-1 pt-2 sm:pt-3">
+      <div className="mb-1.5 flex items-center justify-center gap-2">
+        <Badge className="border-border bg-accent-pink text-surface border-2 px-2.5 py-0.5 text-xs">
           <Sparkles />
           {t(phaseTranslationKey(runtime.phase))}
         </Badge>

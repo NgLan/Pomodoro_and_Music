@@ -27,9 +27,9 @@ export function TimerContent(props: TimerContentProps) {
         onSelectConfiguration={props.onSelectConfiguration}
         onEditConfiguration={props.onEditConfiguration}
       />
-      <CardContent className="relative flex flex-1 flex-col items-center justify-center gap-4 sm:gap-5 py-2 sm:py-3">
+      <CardContent className="relative flex flex-1 flex-col items-center justify-center gap-2.5 sm:gap-3.5 py-1 sm:py-2">
         <TimerCountdown runtime={runtime} />
-        <Progress className="max-w-md" value={progress} />
+        <Progress className="max-w-xs sm:max-w-sm" value={progress} />
         <TimerControls
           status={runtime.status}
           onPrimary={props.timer.toggle}

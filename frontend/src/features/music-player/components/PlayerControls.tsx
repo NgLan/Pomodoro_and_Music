@@ -64,7 +64,7 @@ function PlayButton() {
   return (
     <Button
       size="icon"
-      className="size-12 rounded-full"
+      className="size-10 sm:size-11 rounded-full"
       disabled={!current}
       aria-label={t(state.isPlaying ? "BTN_PAUSE" : "BTN_PLAY")}
       onClick={store.toggle}
