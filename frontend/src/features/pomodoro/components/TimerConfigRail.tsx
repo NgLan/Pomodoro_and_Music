@@ -22,7 +22,7 @@ export function TimerConfigRail({ configuration }: TimerConfigRailProps) {
     <>
       <aside
         aria-label={t("TXT_CONFIG_SUMMARY")}
-        className="hidden sm:flex sm:absolute sm:left-3 md:left-4 sm:top-1/2 sm:-translate-y-1/2 flex-col gap-1.5 md:gap-2 z-10"
+        className="hidden sm:flex sm:absolute sm:left-2 md:left-3 sm:top-1 md:top-2 flex-col gap-1.5 md:gap-2 z-10"
       >
         {items.map((item) => (
           <RailItem key={item.label} item={item} />
