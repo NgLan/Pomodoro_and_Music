@@ -15,7 +15,7 @@ export function TimerCountdown({ runtime }: { runtime: TimerRuntime }) {
       <p className="font-mono text-[clamp(4.25rem,10vw,6.5rem)] leading-none font-extrabold tracking-[-0.05em] tabular-nums">
         {formatDuration(runtime.remainingSeconds)}
       </p>
-      <p className="text-muted-foreground mt-2.5 text-sm sm:text-base font-semibold">
+      <p className="text-muted-foreground mt-2.5 text-sm font-semibold sm:text-base">
         {t(status)}
       </p>
     </div>

@@ -4,9 +4,7 @@ const PASSWORD_PATTERN =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,128}$/;
 
 type ValidationKey =
-  | "MSG_EMAIL_INVALID"
-  | "MSG_PASSWORD_INVALID"
-  | "MSG_PASSWORD_REQUIRED";
+  "MSG_EMAIL_INVALID" | "MSG_PASSWORD_INVALID" | "MSG_PASSWORD_REQUIRED";
 type Translate = (key: ValidationKey) => string;
 
 export function createAuthFormSchema(

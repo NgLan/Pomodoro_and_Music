@@ -29,8 +29,8 @@ export class PomodoroConfigurationService implements PomodoroConfigurationServic
     return value;
   }
 
-  list(userId: string): Promise<Pomodoro[]> {
-    return this.repository.findAllForUser(userId);
+  list(userId: string, includeDeleted = false): Promise<Pomodoro[]> {
+    return this.repository.findAllForUser(userId, includeDeleted);
   }
 
   async get(userId: string, id: string): Promise<Pomodoro> {

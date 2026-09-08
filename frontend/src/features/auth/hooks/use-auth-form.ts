@@ -18,7 +18,9 @@ function useAuthenticate(mode: AuthMode) {
     try {
       if (mode === "register") await register(values);
       else await login({ email: values.email, password: values.password });
-      notification.success(mode === "register" ? "MSG_REGISTER_SUCCESS" : "MSG_LOGIN_SUCCESS");
+      notification.success(
+        mode === "register" ? "MSG_REGISTER_SUCCESS" : "MSG_LOGIN_SUCCESS",
+      );
       return null;
     } catch (error) {
       const code = normalizeApiError(error).errorCode;
@@ -33,7 +35,10 @@ export function useAuthForm() {
   const [mode, setMode] = useState<AuthMode>("login");
   const [requestErrorCode, setRequestErrorCode] = useState<string | null>(null);
   const authenticate = useAuthenticate(mode);
-  const schema = useMemo(() => createAuthFormSchema(mode, translate), [mode, translate]);
+  const schema = useMemo(
+    () => createAuthFormSchema(mode, translate),
+    [mode, translate],
+  );
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(schema),
     defaultValues: { displayName: "", email: "", password: "" },

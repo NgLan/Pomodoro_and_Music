@@ -19,14 +19,14 @@ export function AppShell({
   return (
     <div className={cn("flex min-h-svh flex-col", className)} {...props}>
       {header ? (
-        <header className="sticky top-0 z-(--z-sticky) border-b-3 border-border bg-surface">
+        <header className="border-border bg-surface sticky top-0 z-(--z-sticky) border-b-3">
           {header}
         </header>
       ) : null}
       <main className="flex-1">{children}</main>
       {miniPlayer ? (
         <aside
-          className="sticky bottom-0 z-(--z-sticky) border-t-3 border-border bg-surface"
+          className="border-border bg-surface sticky bottom-0 z-(--z-sticky) border-t-3"
           aria-label={miniPlayerLabel}
         >
           {miniPlayer}
@@ -40,7 +40,7 @@ export function PageContainer({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "mx-auto w-full max-w-(--content-max-width) px-3 py-2 sm:px-6 sm:py-3 lg:px-8 pb-16",
+        "mx-auto w-full max-w-(--content-max-width) px-3 py-2 pb-16 sm:px-6 sm:py-3 lg:px-8",
         className,
       )}
       {...props}

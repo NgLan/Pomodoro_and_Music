@@ -14,6 +14,7 @@ export interface PomodoroProps extends PomodoroDurations {
   isDefault: boolean;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export type PomodoroDurationUpdate = Partial<PomodoroDurations>;

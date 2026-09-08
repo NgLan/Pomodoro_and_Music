@@ -99,6 +99,7 @@
   "TXT_LOCAL_NOTE": "Your timer progress is stored in this browser on this device.",
   "TXT_SERVER_NOTE": "Your configurations and history are saved to your account.",
   "TXT_DELETED_CONFIG": "Deleted configuration",
+  "TXT_DELETED_TAG": "Deleted",
   "ARIA_CLOSE": "Close",
   "BTN_EDIT_CURRENT_CONFIG": "Edit this configuration",
   "TXT_SWITCH_CONFIG": "Switch configuration"

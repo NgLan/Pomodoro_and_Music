@@ -57,7 +57,7 @@ export function TimerPhaseHeading({
   const Icon = theme.icon;
 
   return (
-    <CardHeader className="relative text-center pb-0 pt-1 sm:pt-1.5">
+    <CardHeader className="relative pt-1 pb-0 text-center sm:pt-1.5">
       <div className="mb-1.5 flex items-center justify-center gap-1.5">
         <Badge
           className={cn(
@@ -75,7 +75,7 @@ export function TimerPhaseHeading({
         onSelect={onSelectConfiguration}
         onEdit={onEditConfiguration}
       />
-      <CardDescription className="mt-1 text-xs sm:text-sm font-semibold">
+      <CardDescription className="mt-1 text-xs font-semibold sm:text-sm">
         {t("TXT_ROUND", { current, total })}
       </CardDescription>
     </CardHeader>

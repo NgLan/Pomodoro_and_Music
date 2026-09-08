@@ -28,9 +28,12 @@ export class TypeOrmPomodoroConfigurationRepository implements PomodoroConfigura
     return entity ? toPomodoroDomain(entity) : null;
   }
 
-  async findAllForUser(userId: string): Promise<Pomodoro[]> {
+  async findAllForUser(
+    userId: string,
+    includeDeleted = false,
+  ): Promise<Pomodoro[]> {
     const values = await this.pomodoros.find({
-      where: { userId, deletedAt: IsNull() },
+      where: includeDeleted ? { userId } : { userId, deletedAt: IsNull() },
       order: { updatedAt: 'DESC' },
     });
     return values.map(toPomodoroDomain);

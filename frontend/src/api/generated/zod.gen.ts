@@ -108,7 +108,8 @@ export const zPomodoroConfigurationResponseDto = z.object({
     breakPlaylistId: z.string().uuid().nullable(),
     isDefault: z.boolean(),
     createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime()
+    updatedAt: z.string().datetime(),
+    deletedAt: z.string().datetime().nullish()
 });
 
 export const zPomodoroConfigurationRequestDto = z.object({
@@ -333,6 +334,10 @@ export const zPomodoroHistoryCreateBody = zCreatePomodoroHistoryRequestDto;
 export const zPomodoroHistoryCreateResponse = zApiResponseDto.and(z.object({
     data: zPomodoroHistoryResponseDto.optional()
 }));
+
+export const zPomodoroListQuery = z.object({
+    includeDeleted: z.boolean().optional()
+});
 
 /**
  * Pomodoro configurations returned.

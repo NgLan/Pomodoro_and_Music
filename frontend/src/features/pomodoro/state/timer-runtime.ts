@@ -48,7 +48,10 @@ export function createStoppedHistory(
     pomodoroId: runtime.configurationSnapshot.id,
     phaseType: runtime.phase,
     plannedDurationSeconds: runtime.plannedDurationSeconds,
-    actualDurationSeconds: Math.max(0, runtime.plannedDurationSeconds - remainingSeconds),
+    actualDurationSeconds: Math.max(
+      0,
+      runtime.plannedDurationSeconds - remainingSeconds,
+    ),
     status: "ENDED_EARLY",
     startedAt: runtime.startedAt ?? endedAt,
     endedAt,

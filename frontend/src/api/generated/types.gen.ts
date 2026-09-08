@@ -107,6 +107,7 @@ export type PomodoroConfigurationResponseDto = {
     isDefault: boolean;
     createdAt: string;
     updatedAt: string;
+    deletedAt?: string | null;
 };
 
 export type PomodoroConfigurationRequestDto = {
@@ -544,7 +545,12 @@ export type PomodoroHistoryCreateResponse = PomodoroHistoryCreateResponses[keyof
 export type PomodoroListData = {
     body?: never;
     path?: never;
-    query?: never;
+    query?: {
+        /**
+         * Include soft-deleted configurations
+         */
+        includeDeleted?: boolean;
+    };
     url: '/pomodoro';
 };
 

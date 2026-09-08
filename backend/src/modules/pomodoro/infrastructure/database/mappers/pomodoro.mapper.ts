@@ -19,5 +19,6 @@ export function toPomodoroPersistence(domain: Pomodoro): PomodoroOrmEntity {
     isDefault: domain.isDefault,
     createdAt: domain.createdAt,
     updatedAt: domain.updatedAt,
+    deletedAt: domain.deletedAt,
   });
 }

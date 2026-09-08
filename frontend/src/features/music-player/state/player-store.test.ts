@@ -99,4 +99,3 @@ it("updates position and seekTarget when seeking", () => {
     seekTarget: 45,
   });
 });
-

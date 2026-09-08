@@ -3,7 +3,7 @@ import type { PomodoroConfigurationInput } from '../inputs/pomodoro-configuratio
 
 export interface PomodoroConfigurationServiceInterface {
   create(userId: string, input: PomodoroConfigurationInput): Promise<Pomodoro>;
-  list(userId: string): Promise<Pomodoro[]>;
+  list(userId: string, includeDeleted?: boolean): Promise<Pomodoro[]>;
   get(userId: string, id: string): Promise<Pomodoro>;
   update(
     userId: string,

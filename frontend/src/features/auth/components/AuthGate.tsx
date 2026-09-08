@@ -13,7 +13,11 @@ export function AuthGate({ children }: { children: ReactNode }) {
   if (isInitializing) {
     return (
       <main className="grid min-h-svh place-items-center p-6">
-        <LoadingState className="w-full max-w-lg" title={translate("TXT_AUTH_LOADING")} description={translate("TXT_WELCOME_DESCRIPTION")} />
+        <LoadingState
+          className="w-full max-w-lg"
+          title={translate("TXT_AUTH_LOADING")}
+          description={translate("TXT_WELCOME_DESCRIPTION")}
+        />
       </main>
     );
   }

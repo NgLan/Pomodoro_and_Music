@@ -36,22 +36,39 @@ export function AppHeader({
 function AppLogo({ onSelect }: { onSelect: () => void }) {
   const translate = useTranslations("pomodoro");
   return (
-    <button className="order-1 flex items-center gap-2 text-left sm:gap-3" onClick={onSelect} type="button">
+    <button
+      className="order-1 flex items-center gap-2 text-left sm:gap-3"
+      onClick={onSelect}
+      type="button"
+    >
       <span className="border-border bg-primary shadow-neo grid size-9 -rotate-2 place-items-center rounded-lg border-2 sm:size-10 sm:rounded-xl">
         <Coffee aria-hidden="true" className="size-5" />
       </span>
       <span>
-        <strong className="block text-sm leading-tight sm:text-base">Cappucino</strong>
-        <span className="text-muted-foreground hidden text-xs sm:block">{translate("TXT_APP_TAGLINE")}</span>
+        <strong className="block text-sm leading-tight sm:text-base">
+          Cappucino
+        </strong>
+        <span className="text-muted-foreground hidden text-xs sm:block">
+          {translate("TXT_APP_TAGLINE")}
+        </span>
       </span>
     </button>
   );
 }
 
-function AppNavigation({ activeTab, onTabChange }: { activeTab: WorkspaceTab; onTabChange: (tab: WorkspaceTab) => void }) {
+function AppNavigation({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: WorkspaceTab;
+  onTabChange: (tab: WorkspaceTab) => void;
+}) {
   const translate = useTranslations("pomodoro");
   return (
-    <nav className="order-last hidden sm:order-2 sm:block" aria-label={translate("TXT_EYEBROW")}>
+    <nav
+      className="order-last hidden sm:order-2 sm:block"
+      aria-label={translate("TXT_EYEBROW")}
+    >
       <div className="bg-muted border-border flex rounded-xl border-2 p-0.5 sm:p-1">
         {NAVIGATION.map(({ icon: Icon, key, label }) => (
           <button
@@ -65,7 +82,10 @@ function AppNavigation({ activeTab, onTabChange }: { activeTab: WorkspaceTab; on
             <span>{translate(label)}</span>
           </button>
         ))}
-        <Link className="hover:bg-surface flex h-8.5 items-center justify-center gap-1.5 rounded-lg px-2.5 text-xs font-bold sm:px-3 sm:text-sm" href={routes.PLAYLISTS}>
+        <Link
+          className="hover:bg-surface flex h-8.5 items-center justify-center gap-1.5 rounded-lg px-2.5 text-xs font-bold sm:px-3 sm:text-sm"
+          href={routes.PLAYLISTS}
+        >
           <Music2 aria-hidden="true" className="size-3.5 sm:size-4" />
           <span>{translate("TXT_NAV_PLAYLISTS")}</span>
         </Link>

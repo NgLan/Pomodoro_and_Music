@@ -47,7 +47,8 @@ function useTrackDrag(onReorder?: (from: number, to: number) => void) {
 
 export function TrackList(props: TrackListProps) {
   const drag = useTrackDrag(props.onReorder);
-  if (!props.items.length) return <TrackListEmpty onOpenSearch={props.onOpenSearch} />;
+  if (!props.items.length)
+    return <TrackListEmpty onOpenSearch={props.onOpenSearch} />;
   return (
     <section aria-labelledby="track-list-title" className="space-y-4">
       <TrackListHeader count={props.items.length} />
@@ -72,7 +73,13 @@ function TrackListEmpty({ onOpenSearch }: { onOpenSearch: () => void }) {
   );
 }
 
-function TrackListItems({ props, drag }: { props: TrackListProps; drag: ReturnType<typeof useTrackDrag> }) {
+function TrackListItems({
+  props,
+  drag,
+}: {
+  props: TrackListProps;
+  drag: ReturnType<typeof useTrackDrag>;
+}) {
   return (
     <ol className="space-y-3">
       {props.items.map((item, index) => (
@@ -80,7 +87,9 @@ function TrackListItems({ props, drag }: { props: TrackListProps; drag: ReturnTy
           key={item.id}
           index={index}
           item={item}
-          isCurrent={props.current?.externalMediaId === item.media.externalMediaId}
+          isCurrent={
+            props.current?.externalMediaId === item.media.externalMediaId
+          }
           isFirst={index === 0}
           isLast={index === props.items.length - 1}
           isDragging={drag.dragged === index}
@@ -103,7 +112,10 @@ function TrackListHeader({ count }: { count: number }) {
   return (
     <div className="flex items-end justify-between gap-4">
       <div>
-        <h2 className="flex items-center gap-2 text-2xl font-bold" id="track-list-title">
+        <h2
+          className="flex items-center gap-2 text-2xl font-bold"
+          id="track-list-title"
+        >
           <ListMusic />
           {t("TXT_TRACK_LIST")}
         </h2>

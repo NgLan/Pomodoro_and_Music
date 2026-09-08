@@ -7,9 +7,15 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   ApiErrorResponses,
   ApiListResponse,
@@ -53,12 +59,21 @@ export class PomodoroConfigurationController {
     operationId: 'pomodoroList',
     summary: 'List my Pomodoro configurations',
   })
+  @ApiQuery({
+    name: 'includeDeleted',
+    required: false,
+    type: Boolean,
+    description: 'Include soft-deleted configurations',
+  })
   @ApiListResponse(
     PomodoroConfigurationResponseDto,
     'Pomodoro configurations returned.',
   )
-  async list(@CurrentUserId() userId: string) {
-    const values = await this.service.list(userId);
+  async list(
+    @CurrentUserId() userId: string,
+    @Query('includeDeleted') includeDeleted?: string,
+  ) {
+    const values = await this.service.list(userId, includeDeleted === 'true');
     return values.map(PomodoroConfigurationResponseDto.fromDomain);
   }
 

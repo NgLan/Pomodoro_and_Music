@@ -99,6 +99,7 @@
   "TXT_LOCAL_NOTE": "Tiến độ đồng hồ được lưu trong trình duyệt trên thiết bị này.",
   "TXT_SERVER_NOTE": "Cấu hình và lịch sử được lưu trong tài khoản của bạn.",
   "TXT_DELETED_CONFIG": "Cấu hình đã xóa",
+  "TXT_DELETED_TAG": "Đã xóa",
   "ARIA_CLOSE": "Đóng",
   "BTN_EDIT_CURRENT_CONFIG": "Chỉnh sửa cấu hình này",
   "TXT_SWITCH_CONFIG": "Đổi cấu hình"

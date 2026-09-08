@@ -16,15 +16,23 @@ export function AuthHero() {
         <LanguageSwitcher />
       </div>
       <div>
-        <p className="text-accent-pink text-sm font-extrabold tracking-wider uppercase">Cappucino</p>
+        <p className="text-accent-pink text-sm font-extrabold tracking-wider uppercase">
+          Cappucino
+        </p>
         <h1 className="mt-3 text-[clamp(2.6rem,6vw,5rem)] leading-[0.95] tracking-[-0.05em]">
           {translate("TXT_WELCOME_TITLE")}
         </h1>
-        <p className="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed">{translate("TXT_WELCOME_DESCRIPTION")}</p>
+        <p className="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed">
+          {translate("TXT_WELCOME_DESCRIPTION")}
+        </p>
       </div>
       <div className="hidden items-end gap-1 lg:flex" aria-hidden="true">
         {BARS.map((height, index) => (
-          <span className="bg-accent-pink border-border w-4 rounded-t-md border-2" key={index} style={{ height }} />
+          <span
+            className="bg-accent-pink border-border w-4 rounded-t-md border-2"
+            key={index}
+            style={{ height }}
+          />
         ))}
       </div>
     </section>

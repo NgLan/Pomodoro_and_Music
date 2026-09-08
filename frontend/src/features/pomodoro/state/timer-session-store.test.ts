@@ -11,7 +11,12 @@ beforeEach(() => {
 it("advances to next phase when ending a focus phase early", () => {
   const store = createTimerSessionStore();
   const record = vi.fn();
-  store.setEvents({ record, completed: vi.fn(), stopped: vi.fn(), music: vi.fn() });
+  store.setEvents({
+    record,
+    completed: vi.fn(),
+    stopped: vi.fn(),
+    music: vi.fn(),
+  });
   store.configure(configurationFixture);
 
   store.toggle(); // starts running
@@ -33,7 +38,12 @@ it("advances to next phase when ending a focus phase early", () => {
 
 it("advances from break phase to next focus round when ending early and automatically runs", () => {
   const store = createTimerSessionStore();
-  store.setEvents({ record: vi.fn(), completed: vi.fn(), stopped: vi.fn(), music: vi.fn() });
+  store.setEvents({
+    record: vi.fn(),
+    completed: vi.fn(),
+    stopped: vi.fn(),
+    music: vi.fn(),
+  });
   store.configure(configurationFixture);
 
   store.toggle();
@@ -49,7 +59,12 @@ it("advances from break phase to next focus round when ending early and automati
 
 it("resets entire session cycle back to round 1 (Focus) with 0 completed sessions", () => {
   const store = createTimerSessionStore();
-  store.setEvents({ record: vi.fn(), completed: vi.fn(), stopped: vi.fn(), music: vi.fn() });
+  store.setEvents({
+    record: vi.fn(),
+    completed: vi.fn(),
+    stopped: vi.fn(),
+    music: vi.fn(),
+  });
   store.configure(configurationFixture);
 
   store.toggle();
@@ -61,20 +76,31 @@ it("resets entire session cycle back to round 1 (Focus) with 0 completed session
   expect(snapshot?.phase).toBe("FOCUS");
   expect(snapshot?.completedFocusSessions).toBe(0);
   expect(snapshot?.status).toBe("IDLE");
-  expect(snapshot?.remainingSeconds).toBe(configurationFixture.focusDurationSeconds);
+  expect(snapshot?.remainingSeconds).toBe(
+    configurationFixture.focusDurationSeconds,
+  );
 });
 
 it("clears session and removes it from storage when active configuration is deleted", () => {
   const store = createTimerSessionStore();
   const stopped = vi.fn();
-  store.setEvents({ record: vi.fn(), completed: vi.fn(), stopped, music: vi.fn() });
+  store.setEvents({
+    record: vi.fn(),
+    completed: vi.fn(),
+    stopped,
+    music: vi.fn(),
+  });
   store.configure(configurationFixture);
 
-  expect(store.getSnapshot()?.configurationSnapshot.id).toBe(configurationFixture.id);
+  expect(store.getSnapshot()?.configurationSnapshot.id).toBe(
+    configurationFixture.id,
+  );
 
   // Deleting an unrelated configuration should do nothing
   store.removeConfiguration("non-existent-id");
-  expect(store.getSnapshot()?.configurationSnapshot.id).toBe(configurationFixture.id);
+  expect(store.getSnapshot()?.configurationSnapshot.id).toBe(
+    configurationFixture.id,
+  );
 
   // Deleting the active configuration should clear store and trigger stopped
   store.removeConfiguration(configurationFixture.id);
@@ -84,7 +110,12 @@ it("clears session and removes it from storage when active configuration is dele
 
 it("switches to new configuration even when previous timer was paused or running", () => {
   const store = createTimerSessionStore();
-  store.setEvents({ record: vi.fn(), completed: vi.fn(), stopped: vi.fn(), music: vi.fn() });
+  store.setEvents({
+    record: vi.fn(),
+    completed: vi.fn(),
+    stopped: vi.fn(),
+    music: vi.fn(),
+  });
   store.configure(configurationFixture);
   store.toggle(); // RUNNING
   store.toggle(); // PAUSED
@@ -101,4 +132,3 @@ it("switches to new configuration even when previous timer was paused or running
   expect(store.getSnapshot()?.configurationSnapshot.name).toBe("New Config");
   expect(store.getSnapshot()?.status).toBe("IDLE");
 });
-

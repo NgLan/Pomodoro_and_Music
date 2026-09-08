@@ -35,7 +35,8 @@ function useVolumeFlyout(volume: number, onUpdate: (val: number) => void) {
 export function PlayerVolumeHover() {
   const { state, store } = usePlayer();
   const t = useTranslations("musicPlayer");
-  const onUpdate = (val: number) => store.update((s) => ({ ...s, volume: val }));
+  const onUpdate = (val: number) =>
+    store.update((s) => ({ ...s, volume: val }));
   const { isOpen, handleOpen, handleClose, toggleMute, setIsDragging } =
     useVolumeFlyout(state.volume, onUpdate);
 
@@ -67,7 +68,7 @@ export function PlayerVolumeHover() {
 }
 
 function VolumeIcon({ volume }: { volume: number }) {
-  if (volume === 0) return <VolumeX className="size-4 text-muted-foreground" />;
+  if (volume === 0) return <VolumeX className="text-muted-foreground size-4" />;
   if (volume < 50) return <Volume1 className="size-4" />;
   return <Volume2 className="size-4" />;
 }
@@ -90,7 +91,7 @@ function VolumeFlyout({ volume, onDragChange, onValueChange }: FlyoutProps) {
       <span className="bg-surface-blue border-border text-text rounded border px-1 py-0.5 font-mono text-[11px] font-bold">
         {volume}%
       </span>
-      <div className="h-[120px] w-6 flex items-center justify-center py-1">
+      <div className="flex h-[120px] w-6 items-center justify-center py-1">
         <Slider
           orientation="vertical"
           aria-label={t("VOLUME_LABEL")}

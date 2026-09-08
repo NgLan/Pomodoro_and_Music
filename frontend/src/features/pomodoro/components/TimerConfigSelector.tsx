@@ -27,7 +27,10 @@ export function TimerConfigSelector(props: TimerConfigSelectorProps) {
           aria-label={t("TXT_SWITCH_CONFIG")}
           className="border-border bg-surface shadow-neo-sm h-10 max-w-xs text-sm font-bold sm:max-w-sm"
         >
-          <span data-slot="select-value" className="truncate flex-1 text-left font-bold">
+          <span
+            data-slot="select-value"
+            className="flex-1 truncate text-left font-bold"
+          >
             {props.selected.name}
           </span>
         </SelectTrigger>
@@ -38,7 +41,11 @@ export function TimerConfigSelector(props: TimerConfigSelectorProps) {
   );
 }
 
-function ConfigOptions({ configurations }: { configurations: PomodoroConfigurationResponseDto[] }) {
+function ConfigOptions({
+  configurations,
+}: {
+  configurations: PomodoroConfigurationResponseDto[];
+}) {
   return (
     <SelectContent>
       {configurations.map((item) => (

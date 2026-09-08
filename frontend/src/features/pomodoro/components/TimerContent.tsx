@@ -37,11 +37,11 @@ export function TimerContent(props: TimerContentProps) {
         onSelectConfiguration={props.onSelectConfiguration}
         onEditConfiguration={props.onEditConfiguration}
       />
-      <CardContent className="relative flex flex-1 flex-col items-center justify-evenly gap-2.5 sm:gap-3.5 py-2 sm:py-3">
+      <CardContent className="relative flex flex-1 flex-col items-center justify-evenly gap-2.5 py-2 sm:gap-3.5 sm:py-3">
         <TimerConfigRail configuration={runtime.configurationSnapshot} />
         <TimerCountdown runtime={runtime} />
         <Progress
-          className="max-w-sm sm:max-w-md h-3.5 sm:h-4"
+          className="h-3.5 max-w-sm sm:h-4 sm:max-w-md"
           indicatorClassName={theme.progressClass}
           value={progress}
         />

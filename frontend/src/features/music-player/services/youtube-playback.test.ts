@@ -60,4 +60,3 @@ it("calls seekTo on the player when store.seek is called", () => {
   expect(youtube.seekTo).toHaveBeenCalledWith(75, true);
   disconnect();
 });
-

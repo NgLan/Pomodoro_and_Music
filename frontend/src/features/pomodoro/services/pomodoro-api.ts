@@ -28,9 +28,11 @@ function requireData<T>(value: T | undefined): T {
 
 export async function listPomodoroConfigurations(
   accessToken: string,
+  includeDeleted = false,
 ): Promise<PomodoroConfigurationResponseDto[]> {
   const response = await pomodoroList({
     headers: authorizationHeaders(accessToken),
+    query: includeDeleted ? { includeDeleted: true } : undefined,
     throwOnError: true,
   });
   return requireData(response.data.data);

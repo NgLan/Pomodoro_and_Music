@@ -15,15 +15,18 @@ import { usePomodoroQueries } from "./use-pomodoro-queries";
 function readQueryState(queries: ReturnType<typeof usePomodoroQueries>) {
   return {
     configurations: queries.configurations.data ?? [],
+    historyConfigurations: queries.historyConfigurations.data ?? [],
     history: queries.history.data?.items ?? [],
     historyMeta: queries.history.data?.meta,
     isError:
       queries.configurations.isError ||
+      queries.historyConfigurations.isError ||
       queries.history.isError ||
       queries.recentHistory.isError,
     isHistoryFetching: queries.history.isFetching,
     isLoading:
       queries.configurations.isLoading ||
+      queries.historyConfigurations.isLoading ||
       queries.history.isLoading ||
       queries.recentHistory.isLoading,
     recentHistory: queries.recentHistory.data?.items ?? [],

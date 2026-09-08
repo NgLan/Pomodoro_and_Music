@@ -1,14 +1,25 @@
 "use client";
 
 import {
-  createContext, useCallback, useContext, useEffect, useMemo, useRef,
-  useState, type ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
 } from "react";
 
 import {
-  authLogin, authLogout, authRefresh, authRegister,
-  type AuthSessionResponseDto, type AuthUserResponseDto,
-  type LoginRequestDto, type RegisterRequestDto,
+  authLogin,
+  authLogout,
+  authRefresh,
+  authRegister,
+  type AuthSessionResponseDto,
+  type AuthUserResponseDto,
+  type LoginRequestDto,
+  type RegisterRequestDto,
 } from "@/api";
 
 interface AuthContextValue {
@@ -22,12 +33,16 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-function readSession(envelope: { data?: AuthSessionResponseDto }): AuthSessionResponseDto {
+function readSession(envelope: {
+  data?: AuthSessionResponseDto;
+}): AuthSessionResponseDto {
   if (!envelope.data) throw new Error("Authentication response has no data");
   return envelope.data;
 }
 
-function useRefreshSession(setSession: (value: AuthSessionResponseDto | null) => void) {
+function useRefreshSession(
+  setSession: (value: AuthSessionResponseDto | null) => void,
+) {
   const refreshSession = useCallback(async () => {
     try {
       const response = await authRefresh({ throwOnError: true });
@@ -42,7 +57,9 @@ function useRefreshSession(setSession: (value: AuthSessionResponseDto | null) =>
   return refreshSession;
 }
 
-function useSessionBootstrap(refreshSession: () => Promise<AuthSessionResponseDto>) {
+function useSessionBootstrap(
+  refreshSession: () => Promise<AuthSessionResponseDto>,
+) {
   const [isInitializing, setIsInitializing] = useState(true);
   const hasInitialized = useRef(false);
   useEffect(() => {
@@ -55,7 +72,10 @@ function useSessionBootstrap(refreshSession: () => Promise<AuthSessionResponseDt
   return isInitializing;
 }
 
-function useSessionRotation(session: AuthSessionResponseDto | null, refreshSession: () => Promise<unknown>) {
+function useSessionRotation(
+  session: AuthSessionResponseDto | null,
+  refreshSession: () => Promise<unknown>,
+) {
   useEffect(() => {
     if (!session) return;
     const refreshInMilliseconds = Math.max(
@@ -69,16 +89,24 @@ function useSessionRotation(session: AuthSessionResponseDto | null, refreshSessi
   }, [refreshSession, session]);
 }
 
-function useAuthActions(setSession: (value: AuthSessionResponseDto | null) => void) {
-  const login = useCallback(async (input: LoginRequestDto) => {
-    const response = await authLogin({ body: input, throwOnError: true });
-    setSession(readSession(response.data));
-  }, [setSession]);
+function useAuthActions(
+  setSession: (value: AuthSessionResponseDto | null) => void,
+) {
+  const login = useCallback(
+    async (input: LoginRequestDto) => {
+      const response = await authLogin({ body: input, throwOnError: true });
+      setSession(readSession(response.data));
+    },
+    [setSession],
+  );
 
-  const register = useCallback(async (input: RegisterRequestDto) => {
-    const response = await authRegister({ body: input, throwOnError: true });
-    setSession(readSession(response.data));
-  }, [setSession]);
+  const register = useCallback(
+    async (input: RegisterRequestDto) => {
+      const response = await authRegister({ body: input, throwOnError: true });
+      setSession(readSession(response.data));
+    },
+    [setSession],
+  );
 
   const logout = useCallback(async () => {
     await authLogout({ throwOnError: true });

@@ -17,7 +17,11 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-function TestValue({ control }: { control: ReturnType<typeof useForm<ConfigurationFormValues>>["control"] }) {
+function TestValue({
+  control,
+}: {
+  control: ReturnType<typeof useForm<ConfigurationFormValues>>["control"];
+}) {
   const value = useWatch({ control, name: "focusPlaylistId" });
   return <span data-testid="focus-val">{String(value)}</span>;
 }

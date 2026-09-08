@@ -17,6 +17,7 @@ interface WorkspaceTabsProps {
   tab: WorkspaceTab;
   setTab: (tab: WorkspaceTab) => void;
   configurations: PomodoroConfigurationResponseDto[];
+  historyConfigurations?: PomodoroConfigurationResponseDto[];
   selected?: PomodoroConfigurationResponseDto;
   selectedId: string | null;
   history: PomodoroHistoryResponseDto[];
@@ -50,7 +51,7 @@ function HistoryTab(props: WorkspaceTabsProps) {
   return (
     <TabsContent value="history">
       <HistoryPanel
-        configurations={props.configurations}
+        configurations={props.historyConfigurations ?? props.configurations}
         entries={props.history}
         filters={props.historyFilters}
         isFetching={props.isHistoryFetching}

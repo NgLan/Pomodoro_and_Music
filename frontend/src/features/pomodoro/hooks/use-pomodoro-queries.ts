@@ -19,6 +19,14 @@ function useConfigurationsQuery(accessToken: string | null) {
   });
 }
 
+function useHistoryConfigurationsQuery(accessToken: string | null) {
+  return useQuery({
+    enabled: Boolean(accessToken),
+    queryKey: ["pomodoro", "configurations", "history-filter"],
+    queryFn: () => listPomodoroConfigurations(accessToken!, true),
+  });
+}
+
 function useHistoryQuery(
   accessToken: string | null,
   query: HistoryQuery,
@@ -37,12 +45,20 @@ export function usePomodoroQueries(
   historyQuery: HistoryQuery,
 ) {
   const configurations = useConfigurationsQuery(accessToken);
+  const historyConfigurations = useHistoryConfigurationsQuery(accessToken);
   const recentHistory = useHistoryQuery(accessToken, RECENT_HISTORY_QUERY);
   const history = useHistoryQuery(accessToken, historyQuery, true);
   const refetch = () => {
     void configurations.refetch();
+    void historyConfigurations.refetch();
     void recentHistory.refetch();
     void history.refetch();
   };
-  return { configurations, history, recentHistory, refetch };
+  return {
+    configurations,
+    history,
+    historyConfigurations,
+    recentHistory,
+    refetch,
+  };
 }

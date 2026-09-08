@@ -20,6 +20,7 @@ function ReadyWorkspace({ state }: { state: WorkspaceState }) {
       tab={state.tab}
       setTab={state.setTab}
       configurations={state.configurations}
+      historyConfigurations={state.historyConfigurations}
       selected={state.selected}
       selectedId={state.effectiveId}
       history={state.history}

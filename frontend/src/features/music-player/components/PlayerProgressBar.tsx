@@ -27,7 +27,7 @@ export function PlayerProgressBar() {
     usePlaybackProgress();
 
   return (
-    <div className="flex w-full items-center gap-2 text-xs font-mono text-muted-foreground">
+    <div className="text-muted-foreground flex w-full items-center gap-2 font-mono text-xs">
       <span className="w-10 text-right tabular-nums">
         {formatTime(position)}
       </span>

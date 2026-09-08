@@ -15,6 +15,13 @@ export class PomodoroConfigurationResponseDto {
   @ApiProperty() isDefault!: boolean;
   @ApiProperty({ format: 'date-time' }) createdAt!: string;
   @ApiProperty({ format: 'date-time' }) updatedAt!: string;
+  @ApiProperty({
+    type: String,
+    format: 'date-time',
+    nullable: true,
+    required: false,
+  })
+  deletedAt?: string | null;
 
   static fromDomain(value: Pomodoro): PomodoroConfigurationResponseDto {
     return {
@@ -29,6 +36,7 @@ export class PomodoroConfigurationResponseDto {
       isDefault: value.isDefault,
       createdAt: value.createdAt.toISOString(),
       updatedAt: value.updatedAt.toISOString(),
+      deletedAt: value.deletedAt ? value.deletedAt.toISOString() : null,
     };
   }
 }

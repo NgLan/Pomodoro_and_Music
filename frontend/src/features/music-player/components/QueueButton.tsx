@@ -12,7 +12,7 @@ export function QueueButton() {
   return (
     <>
       <Button
-        className="w-full h-11 sm:h-12 font-bold text-sm sm:text-base shadow-neo-sm"
+        className="shadow-neo-sm h-11 w-full text-sm font-bold sm:h-12 sm:text-base"
         variant="outline"
         disabled={!state.playlistId}
         onClick={() => setOpen(true)}

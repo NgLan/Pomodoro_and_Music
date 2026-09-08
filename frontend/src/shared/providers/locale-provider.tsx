@@ -61,7 +61,10 @@ function useLocaleState(initialLocale: AppLocale) {
   return useMemo(() => ({ locale, setLocale }), [locale, setLocale]);
 }
 
-export function AppLocaleProvider({ children, initialLocale }: {
+export function AppLocaleProvider({
+  children,
+  initialLocale,
+}: {
   children: ReactNode;
   initialLocale: AppLocale;
 }) {

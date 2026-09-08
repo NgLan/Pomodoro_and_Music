@@ -17,9 +17,9 @@ export function PlayerDockDetails({ onMinimize }: PlayerDockDetailsProps) {
   const t = useTranslations("musicPlayer");
 
   return (
-    <div className="min-w-0 flex flex-col justify-between gap-1.5">
+    <div className="flex min-w-0 flex-col justify-between gap-1.5">
       <DockHeader onMinimize={onMinimize} />
-      <p className="truncate font-bold text-sm sm:text-base leading-snug">
+      <p className="truncate text-sm leading-snug font-bold sm:text-base">
         {current?.title || state.playlist?.name || t("TXT_LOADING")}
       </p>
       <PlayerControls />
@@ -45,7 +45,7 @@ function DockHeader({ onMinimize }: { onMinimize: () => void }) {
         variant="ghost"
         aria-label={t("BTN_MINIMIZE")}
         onClick={onMinimize}
-        className="size-7 border-2 border-border shadow-[2px_2px_0_var(--color-border)] hover:bg-surface-blue"
+        className="border-border hover:bg-surface-blue size-7 border-2 shadow-[2px_2px_0_var(--color-border)]"
       >
         <ChevronDown className="size-3.5" />
       </Button>

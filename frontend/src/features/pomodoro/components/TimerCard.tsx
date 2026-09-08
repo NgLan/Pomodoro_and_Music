@@ -38,19 +38,28 @@ interface TimerCardProps {
 }
 
 export function TimerCard(props: TimerCardProps) {
-  if (!props.configuration) return <EmptyTimer onCreate={props.onNeedConfiguration} />;
+  if (!props.configuration)
+    return <EmptyTimer onCreate={props.onNeedConfiguration} />;
   return <ActiveTimer {...props} configuration={props.configuration} />;
 }
 
-function ActiveTimer(props: TimerCardProps & { configuration: PomodoroConfigurationResponseDto }) {
+function ActiveTimer(
+  props: TimerCardProps & { configuration: PomodoroConfigurationResponseDto },
+) {
   const [stopOpen, setStopOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const timer = usePomodoroTimer(props.configuration);
-  const stop = () => { timer.stop(); setStopOpen(false); };
-  const reset = () => { timer.reset(); setResetOpen(false); };
+  const stop = () => {
+    timer.stop();
+    setStopOpen(false);
+  };
+  const reset = () => {
+    timer.reset();
+    setResetOpen(false);
+  };
 
   return (
-    <Card className="bg-surface relative flex flex-col justify-between overflow-hidden p-3 sm:p-4 gap-2 sm:gap-3 min-h-[32rem] sm:min-h-[34rem]">
+    <Card className="bg-surface relative flex min-h-[32rem] flex-col justify-between gap-2 overflow-hidden p-3 sm:min-h-[34rem] sm:gap-3 sm:p-4">
       <span className="bg-accent-yellow border-border absolute -top-7 -right-8 size-20 rotate-12 rounded-3xl border-3" />
       <TimerContent
         timer={timer}
@@ -60,8 +69,16 @@ function ActiveTimer(props: TimerCardProps & { configuration: PomodoroConfigurat
         onStop={() => setStopOpen(true)}
         onReset={() => setResetOpen(true)}
       />
-      <TimerStopDialog open={stopOpen} onOpenChange={setStopOpen} onStop={stop} />
-      <TimerResetDialog open={resetOpen} onOpenChange={setResetOpen} onConfirm={reset} />
+      <TimerStopDialog
+        open={stopOpen}
+        onOpenChange={setStopOpen}
+        onStop={stop}
+      />
+      <TimerResetDialog
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+        onConfirm={reset}
+      />
     </Card>
   );
 }

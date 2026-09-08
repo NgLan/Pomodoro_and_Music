@@ -34,13 +34,40 @@ function trackEdits(
 ) {
   const move = (index: number, direction: -1 | 1) => {
     const len = playlist?.items.length ?? 0;
-    if (!playlist || items.reorder.isPending || index + direction < 0 || index + direction >= len) return;
-    items.reorder.mutate(swapItems(playlist.items.map((i) => i.id), index, direction));
+    if (
+      !playlist ||
+      items.reorder.isPending ||
+      index + direction < 0 ||
+      index + direction >= len
+    )
+      return;
+    items.reorder.mutate(
+      swapItems(
+        playlist.items.map((i) => i.id),
+        index,
+        direction,
+      ),
+    );
   };
   const reorder = (from: number, to: number) => {
     const len = playlist?.items.length ?? 0;
-    if (!playlist || items.reorder.isPending || from === to || from < 0 || to < 0 || from >= len || to >= len) return;
-    items.reorder.mutate(moveItem(playlist.items.map((i) => i.id), from, to));
+    if (
+      !playlist ||
+      items.reorder.isPending ||
+      from === to ||
+      from < 0 ||
+      to < 0 ||
+      from >= len ||
+      to >= len
+    )
+      return;
+    items.reorder.mutate(
+      moveItem(
+        playlist.items.map((i) => i.id),
+        from,
+        to,
+      ),
+    );
   };
   const remove = (itemId: string) => {
     if (!items.remove.isPending) items.remove.mutate(itemId);
@@ -50,7 +77,10 @@ function trackEdits(
 
 function swapItems(ids: string[], index: number, direction: -1 | 1): string[] {
   const next = [...ids];
-  [next[index], next[index + direction]] = [next[index + direction]!, next[index]!];
+  [next[index], next[index + direction]] = [
+    next[index + direction]!,
+    next[index]!,
+  ];
   return next;
 }
 

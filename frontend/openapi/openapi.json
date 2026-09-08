@@ -10,9 +10,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "App"
-        ]
+        "tags": ["App"]
       }
     },
     "/health/live": {
@@ -73,9 +71,7 @@
           }
         },
         "summary": "Check whether the process is alive",
-        "tags": [
-          "Health"
-        ]
+        "tags": ["Health"]
       }
     },
     "/health/ready": {
@@ -136,9 +132,7 @@
           }
         },
         "summary": "Check whether the application can serve traffic",
-        "tags": [
-          "Health"
-        ]
+        "tags": ["Health"]
       }
     },
     "/auth/register": {
@@ -209,9 +203,7 @@
           }
         },
         "summary": "Create a local account",
-        "tags": [
-          "Authentication"
-        ]
+        "tags": ["Authentication"]
       }
     },
     "/auth/login": {
@@ -282,9 +274,7 @@
           }
         },
         "summary": "Sign in with email and password",
-        "tags": [
-          "Authentication"
-        ]
+        "tags": ["Authentication"]
       }
     },
     "/auth/refresh": {
@@ -345,9 +335,7 @@
           }
         },
         "summary": "Rotate refresh token and issue a new access token",
-        "tags": [
-          "Authentication"
-        ]
+        "tags": ["Authentication"]
       }
     },
     "/auth/logout": {
@@ -408,9 +396,7 @@
           }
         },
         "summary": "Revoke the current refresh token",
-        "tags": [
-          "Authentication"
-        ]
+        "tags": ["Authentication"]
       }
     },
     "/pomodoro/history": {
@@ -453,11 +439,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": [
-                "COMPLETED",
-                "ENDED_EARLY",
-                "CANCELLED"
-              ]
+              "enum": ["COMPLETED", "ENDED_EARLY", "CANCELLED"]
             }
           },
           {
@@ -493,10 +475,7 @@
                       "properties": {
                         "data": {
                           "type": "object",
-                          "required": [
-                            "items",
-                            "meta"
-                          ],
+                          "required": ["items", "meta"],
                           "properties": {
                             "items": {
                               "type": "array",
@@ -577,9 +556,7 @@
           }
         ],
         "summary": "List my Pomodoro phase history",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       },
       "post": {
         "operationId": "pomodoroHistoryCreate",
@@ -653,9 +630,7 @@
           }
         ],
         "summary": "Record a completed or ended phase",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       }
     },
     "/pomodoro": {
@@ -731,13 +706,21 @@
           }
         ],
         "summary": "Create a Pomodoro configuration",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       },
       "get": {
         "operationId": "pomodoroList",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "includeDeleted",
+            "required": false,
+            "in": "query",
+            "description": "Include soft-deleted configurations",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Pomodoro configurations returned.",
@@ -800,9 +783,7 @@
           }
         ],
         "summary": "List my Pomodoro configurations",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       }
     },
     "/pomodoro/{id}": {
@@ -877,9 +858,7 @@
           }
         ],
         "summary": "Get one Pomodoro configuration",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       },
       "put": {
         "operationId": "pomodoroUpdate",
@@ -962,9 +941,7 @@
           }
         ],
         "summary": "Update a Pomodoro configuration",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       },
       "delete": {
         "operationId": "pomodoroDelete",
@@ -1037,9 +1014,7 @@
           }
         ],
         "summary": "Delete configuration without deleting history",
-        "tags": [
-          "Pomodoro"
-        ]
+        "tags": ["Pomodoro"]
       }
     },
     "/youtube/playlists/preview": {
@@ -1115,9 +1090,7 @@
           }
         ],
         "summary": "Preview a complete YouTube playlist without saving",
-        "tags": [
-          "YouTube playlists"
-        ]
+        "tags": ["YouTube playlists"]
       }
     },
     "/youtube/playlists/import": {
@@ -1193,9 +1166,7 @@
           }
         ],
         "summary": "Import selected videos atomically into a personal playlist",
-        "tags": [
-          "YouTube playlists"
-        ]
+        "tags": ["YouTube playlists"]
       }
     },
     "/playlists/{id}/sync": {
@@ -1270,9 +1241,7 @@
           }
         ],
         "summary": "Append new source videos while preserving local edits and exclusions",
-        "tags": [
-          "YouTube playlists"
-        ]
+        "tags": ["YouTube playlists"]
       }
     },
     "/playlists": {
@@ -1348,9 +1317,7 @@
           }
         ],
         "summary": "Create a personal playlist",
-        "tags": [
-          "Playlists"
-        ]
+        "tags": ["Playlists"]
       },
       "get": {
         "operationId": "playlistList",
@@ -1427,9 +1394,7 @@
           }
         ],
         "summary": "List and search my playlists",
-        "tags": [
-          "Playlists"
-        ]
+        "tags": ["Playlists"]
       }
     },
     "/playlists/{id}": {
@@ -1504,9 +1469,7 @@
           }
         ],
         "summary": "Get playlist detail and ordered items",
-        "tags": [
-          "Playlists"
-        ]
+        "tags": ["Playlists"]
       },
       "put": {
         "operationId": "playlistUpdate",
@@ -1589,9 +1552,7 @@
           }
         ],
         "summary": "Update playlist metadata",
-        "tags": [
-          "Playlists"
-        ]
+        "tags": ["Playlists"]
       },
       "delete": {
         "operationId": "playlistDelete",
@@ -1664,9 +1625,7 @@
           }
         ],
         "summary": "Delete only the internal playlist copy",
-        "tags": [
-          "Playlists"
-        ]
+        "tags": ["Playlists"]
       }
     },
     "/playlists/{id}/duplicate": {
@@ -1741,9 +1700,7 @@
           }
         ],
         "summary": "Duplicate playlist and ordered items",
-        "tags": [
-          "Playlists"
-        ]
+        "tags": ["Playlists"]
       }
     },
     "/playlists/{id}/items": {
@@ -1828,9 +1785,7 @@
           }
         ],
         "summary": "Resolve and append one YouTube video",
-        "tags": [
-          "Playlist items"
-        ]
+        "tags": ["Playlist items"]
       }
     },
     "/playlists/{id}/items/{itemId}": {
@@ -1913,9 +1868,7 @@
           }
         ],
         "summary": "Remove one item and normalize positions",
-        "tags": [
-          "Playlist items"
-        ]
+        "tags": ["Playlist items"]
       }
     },
     "/playlists/{id}/items/order": {
@@ -2000,9 +1953,7 @@
           }
         ],
         "summary": "Atomically save the complete item order",
-        "tags": [
-          "Playlist items"
-        ]
+        "tags": ["Playlist items"]
       }
     },
     "/youtube/videos": {
@@ -2081,9 +2032,7 @@
           }
         ],
         "summary": "Search public YouTube videos",
-        "tags": [
-          "YouTube videos"
-        ]
+        "tags": ["YouTube videos"]
       }
     },
     "/youtube/videos/resolve": {
@@ -2159,9 +2108,7 @@
           }
         ],
         "summary": "Resolve a YouTube video URL",
-        "tags": [
-          "YouTube videos"
-        ]
+        "tags": ["YouTube videos"]
       }
     }
   },
@@ -2194,9 +2141,7 @@
             "example": "Name is required"
           }
         },
-        "required": [
-          "message"
-        ]
+        "required": ["message"]
       },
       "ApiErrorResponseDto": {
         "type": "object",
@@ -2224,13 +2169,7 @@
             "example": "0198bb70-92ac-77c8-b22f-892d2d97f599"
           }
         },
-        "required": [
-          "code",
-          "message",
-          "error_code",
-          "details",
-          "request_id"
-        ]
+        "required": ["code", "message", "error_code", "details", "request_id"]
       },
       "ApiResponseDto": {
         "type": "object",
@@ -2251,12 +2190,7 @@
             "type": "object"
           }
         },
-        "required": [
-          "status",
-          "code",
-          "message",
-          "data"
-        ]
+        "required": ["status", "code", "message", "data"]
       },
       "LivenessResponseDto": {
         "type": "object",
@@ -2266,9 +2200,7 @@
             "example": "ok"
           }
         },
-        "required": [
-          "status"
-        ]
+        "required": ["status"]
       },
       "ReadinessChecksDto": {
         "type": "object",
@@ -2282,10 +2214,7 @@
             "example": "up"
           }
         },
-        "required": [
-          "application",
-          "database"
-        ]
+        "required": ["application", "database"]
       },
       "ReadinessResponseDto": {
         "type": "object",
@@ -2298,10 +2227,7 @@
             "$ref": "#/components/schemas/ReadinessChecksDto"
           }
         },
-        "required": [
-          "status",
-          "checks"
-        ]
+        "required": ["status", "checks"]
       },
       "AuthUserResponseDto": {
         "type": "object",
@@ -2319,11 +2245,7 @@
             "nullable": true
           }
         },
-        "required": [
-          "id",
-          "email",
-          "displayName"
-        ]
+        "required": ["id", "email", "displayName"]
       },
       "AuthSessionResponseDto": {
         "type": "object",
@@ -2339,11 +2261,7 @@
             "$ref": "#/components/schemas/AuthUserResponseDto"
           }
         },
-        "required": [
-          "accessToken",
-          "accessTokenExpiresInSeconds",
-          "user"
-        ]
+        "required": ["accessToken", "accessTokenExpiresInSeconds", "user"]
       },
       "RegisterRequestDto": {
         "type": "object",
@@ -2363,10 +2281,7 @@
             "example": "Nguyen An"
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "LoginRequestDto": {
         "type": "object",
@@ -2381,10 +2296,7 @@
             "maxLength": 128
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "LogoutResponseDto": {
         "type": "object",
@@ -2394,25 +2306,15 @@
             "example": true
           }
         },
-        "required": [
-          "signedOut"
-        ]
+        "required": ["signedOut"]
       },
       "PomodoroPhaseType": {
         "type": "string",
-        "enum": [
-          "FOCUS",
-          "SHORT_BREAK",
-          "LONG_BREAK"
-        ]
+        "enum": ["FOCUS", "SHORT_BREAK", "LONG_BREAK"]
       },
       "PomodoroHistoryStatus": {
         "type": "string",
-        "enum": [
-          "COMPLETED",
-          "ENDED_EARLY",
-          "CANCELLED"
-        ]
+        "enum": ["COMPLETED", "ENDED_EARLY", "CANCELLED"]
       },
       "PomodoroHistoryResponseDto": {
         "type": "object",
@@ -2561,6 +2463,11 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "required": [
@@ -2627,9 +2534,7 @@
             "example": true
           }
         },
-        "required": [
-          "deleted"
-        ]
+        "required": ["deleted"]
       },
       "YoutubePlaylistPreviewItemDto": {
         "type": "object",
@@ -2748,9 +2653,7 @@
             "example": "https://www.youtube.com/playlist?list=PLexample"
           }
         },
-        "required": [
-          "url"
-        ]
+        "required": ["url"]
       },
       "YoutubePlaylistImportResponseDto": {
         "type": "object",
@@ -2794,10 +2697,7 @@
             "maxLength": 255
           }
         },
-        "required": [
-          "url",
-          "selectedVideoIds"
-        ]
+        "required": ["url", "selectedVideoIds"]
       },
       "YoutubePlaylistSyncResponseDto": {
         "type": "object",
@@ -2886,11 +2786,7 @@
             "$ref": "#/components/schemas/MediaItemResponseDto"
           }
         },
-        "required": [
-          "id",
-          "position",
-          "media"
-        ]
+        "required": ["id", "position", "media"]
       },
       "PlaylistDetailResponseDto": {
         "type": "object",
@@ -2913,10 +2809,7 @@
           },
           "sourceType": {
             "type": "string",
-            "enum": [
-              "MANUAL",
-              "YOUTUBE"
-            ]
+            "enum": ["MANUAL", "YOUTUBE"]
           },
           "sourceUrl": {
             "type": "string",
@@ -2978,9 +2871,7 @@
             "nullable": true
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "PlaylistSummaryResponseDto": {
         "type": "object",
@@ -3003,10 +2894,7 @@
           },
           "sourceType": {
             "type": "string",
-            "enum": [
-              "MANUAL",
-              "YOUTUBE"
-            ]
+            "enum": ["MANUAL", "YOUTUBE"]
           },
           "itemCount": {
             "type": "number"
@@ -3039,9 +2927,7 @@
             "example": true
           }
         },
-        "required": [
-          "deleted"
-        ]
+        "required": ["deleted"]
       },
       "AddVideoRequestDto": {
         "type": "object",
@@ -3051,9 +2937,7 @@
             "example": "jfKfPfyJRdk"
           }
         },
-        "required": [
-          "externalVideoId"
-        ]
+        "required": ["externalVideoId"]
       },
       "ReorderPlaylistItemsRequestDto": {
         "type": "object",
@@ -3066,9 +2950,7 @@
             }
           }
         },
-        "required": [
-          "itemIds"
-        ]
+        "required": ["itemIds"]
       },
       "ResolveYoutubeVideoRequestDto": {
         "type": "object",
@@ -3078,9 +2960,7 @@
             "example": "https://www.youtube.com/watch?v=jfKfPfyJRdk"
           }
         },
-        "required": [
-          "url"
-        ]
+        "required": ["url"]
       }
     }
   }

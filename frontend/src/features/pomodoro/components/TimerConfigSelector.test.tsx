@@ -34,7 +34,9 @@ it("renders configuration name and handles edit", async () => {
 
   expect(screen.getByRole("combobox")).toHaveTextContent("Học Nihongo");
 
-  const editBtn = screen.getByRole("button", { name: "Chỉnh sửa cấu hình này" });
+  const editBtn = screen.getByRole("button", {
+    name: "Chỉnh sửa cấu hình này",
+  });
   await user.click(editBtn);
 
   expect(handleEdit).toHaveBeenCalledWith(mockConfig);

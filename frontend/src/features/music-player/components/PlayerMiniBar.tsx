@@ -20,16 +20,16 @@ export function PlayerMiniBar({ onExpand }: PlayerMiniBarProps) {
       <div className="shrink-0">
         <PlayerControls />
       </div>
-      <div className="hidden sm:block flex-1 min-w-[140px] max-w-xl">
+      <div className="hidden max-w-xl min-w-[140px] flex-1 sm:block">
         <PlayerProgressBar />
       </div>
-      <div className="flex items-center shrink-0">
+      <div className="flex shrink-0 items-center">
         <Button
           size="icon"
           variant="ghost"
           aria-label={t("BTN_EXPAND")}
           onClick={onExpand}
-          className="size-8 border-2 border-border shadow-[2px_2px_0_var(--color-border)] hover:bg-surface-blue"
+          className="border-border hover:bg-surface-blue size-8 border-2 shadow-[2px_2px_0_var(--color-border)]"
         >
           <ChevronUp className="size-4" />
         </Button>
@@ -44,19 +44,21 @@ function MiniTrackInfo() {
   const title = current?.title || state.playlist?.name || t("TXT_LOADING");
 
   return (
-    <div className="flex items-center gap-2 min-w-0 max-w-[180px] sm:max-w-xs shrink-0">
+    <div className="flex max-w-[180px] min-w-0 shrink-0 items-center gap-2 sm:max-w-xs">
       {current?.thumbnailUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={current.thumbnailUrl}
           alt=""
-          className="size-8 sm:size-9 rounded border-2 border-border object-cover shrink-0"
+          className="border-border size-8 shrink-0 rounded border-2 object-cover sm:size-9"
         />
       )}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-xs sm:text-sm font-bold leading-tight">{title}</p>
+        <p className="truncate text-xs leading-tight font-bold sm:text-sm">
+          {title}
+        </p>
         {current?.channelName && (
-          <p className="truncate text-[0.68rem] sm:text-xs text-muted-foreground leading-tight">
+          <p className="text-muted-foreground truncate text-[0.68rem] leading-tight sm:text-xs">
             {current.channelName}
           </p>
         )}

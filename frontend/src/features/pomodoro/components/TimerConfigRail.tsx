@@ -22,13 +22,13 @@ export function TimerConfigRail({ configuration }: TimerConfigRailProps) {
     <>
       <aside
         aria-label={t("TXT_CONFIG_SUMMARY")}
-        className="hidden sm:flex sm:absolute sm:left-2 md:left-3 sm:top-1 md:top-2 flex-col gap-1.5 md:gap-2 z-10"
+        className="z-10 hidden flex-col gap-1.5 sm:absolute sm:top-1 sm:left-2 sm:flex md:top-2 md:left-3 md:gap-2"
       >
         {items.map((item) => (
           <RailItem key={item.label} item={item} />
         ))}
       </aside>
-      <div className="flex sm:hidden flex-wrap items-center justify-center gap-1.5 w-full">
+      <div className="flex w-full flex-wrap items-center justify-center gap-1.5 sm:hidden">
         {items.map((item) => (
           <MobileRailItem key={item.label} item={item} />
         ))}
@@ -40,17 +40,17 @@ export function TimerConfigRail({ configuration }: TimerConfigRailProps) {
 function RailItem({ item }: { item: RailItemData }) {
   const Icon = item.icon;
   return (
-    <div className="border-border bg-surface shadow-neo-sm flex items-center gap-2 rounded-xl border-2 px-2.5 py-1.5 min-w-[7.5rem] md:min-w-[8.25rem]">
+    <div className="border-border bg-surface shadow-neo-sm flex min-w-[7.5rem] items-center gap-2 rounded-xl border-2 px-2.5 py-1.5 md:min-w-[8.25rem]">
       <span
         className={`${item.color} border-border grid size-7 shrink-0 place-items-center rounded-lg border-2`}
       >
         <Icon className="size-3.5" />
       </span>
       <div className="min-w-0">
-        <span className="text-muted-foreground block truncate text-[0.62rem] font-bold uppercase leading-tight">
+        <span className="text-muted-foreground block truncate text-[0.62rem] leading-tight font-bold uppercase">
           {item.label}
         </span>
-        <strong className="block truncate text-xs md:text-sm font-extrabold leading-tight">
+        <strong className="block truncate text-xs leading-tight font-extrabold md:text-sm">
           {item.value}
         </strong>
       </div>
@@ -60,7 +60,7 @@ function RailItem({ item }: { item: RailItemData }) {
 
 function MobileRailItem({ item }: { item: RailItemData }) {
   return (
-    <span className="border-border bg-surface shadow-neo-sm border rounded-lg px-2 py-0.5 text-[0.68rem] font-bold flex items-center gap-1">
+    <span className="border-border bg-surface shadow-neo-sm flex items-center gap-1 rounded-lg border px-2 py-0.5 text-[0.68rem] font-bold">
       <span className="text-muted-foreground">{item.label}:</span>
       <span>{item.value}</span>
     </span>

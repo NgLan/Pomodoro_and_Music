@@ -13,9 +13,19 @@ export function AuthSubmitForm({ state }: { state: ReturnTypeOfUseAuthForm }) {
       <form className="space-y-5" onSubmit={state.submit}>
         <AuthFields form={state.form} mode={state.mode} />
         {state.requestErrorCode && (
-          <Alert variant="destructive"><AlertTitle>{translate("TXT_AUTH_ERROR_TITLE")}</AlertTitle><AlertDescription>{translate("TXT_AUTH_ERROR_DESCRIPTION")}</AlertDescription></Alert>
+          <Alert variant="destructive">
+            <AlertTitle>{translate("TXT_AUTH_ERROR_TITLE")}</AlertTitle>
+            <AlertDescription>
+              {translate("TXT_AUTH_ERROR_DESCRIPTION")}
+            </AlertDescription>
+          </Alert>
         )}
-        <Button className="w-full" disabled={state.form.formState.isSubmitting} size="lg" type="submit">
+        <Button
+          className="w-full"
+          disabled={state.form.formState.isSubmitting}
+          size="lg"
+          type="submit"
+        >
           {translate(state.mode === "login" ? "BTN_LOGIN" : "BTN_REGISTER")}
         </Button>
       </form>

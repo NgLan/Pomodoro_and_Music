@@ -23,12 +23,17 @@ export function PlaylistHeader() {
 function PlaylistLogo() {
   const translate = useTranslations("playlist");
   return (
-    <Link className="order-1 flex items-center gap-2 sm:gap-3" href={routes.HOME}>
+    <Link
+      className="order-1 flex items-center gap-2 sm:gap-3"
+      href={routes.HOME}
+    >
       <span className="border-border bg-primary shadow-neo grid size-9 -rotate-2 place-items-center rounded-lg border-2 sm:size-10 sm:rounded-xl">
         <Coffee aria-hidden="true" className="size-5" />
       </span>
       <span>
-        <strong className="block text-sm leading-tight sm:text-base">Cappucino</strong>
+        <strong className="block text-sm leading-tight sm:text-base">
+          Cappucino
+        </strong>
         <span className="text-muted-foreground hidden text-xs sm:block">
           {translate("TXT_APP_TAGLINE")}
         </span>
@@ -42,7 +47,7 @@ function PlaylistNav() {
   return (
     <nav
       aria-label={translate("ARIA_MAIN_NAV")}
-      className="bg-muted border-border order-last hidden sm:order-2 sm:flex rounded-xl border-2 p-0.5 sm:p-1"
+      className="bg-muted border-border order-last hidden rounded-xl border-2 p-0.5 sm:order-2 sm:flex sm:p-1"
     >
       <Link
         className="hover:bg-surface flex h-8.5 items-center justify-center gap-1.5 rounded-lg px-2.5 text-xs font-bold sm:px-3 sm:text-sm"

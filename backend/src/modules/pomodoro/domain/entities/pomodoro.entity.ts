@@ -18,6 +18,7 @@ export class Pomodoro {
   readonly isDefault: boolean;
   private readonly createdAtValue: Date;
   private readonly updatedAtValue: Date;
+  readonly deletedAt: Date | null;
 
   private constructor(props: PomodoroProps) {
     validatePomodoroDurations(props);
@@ -33,6 +34,7 @@ export class Pomodoro {
     this.isDefault = props.isDefault;
     this.createdAtValue = new Date(props.createdAt);
     this.updatedAtValue = new Date(props.updatedAt);
+    this.deletedAt = props.deletedAt ? new Date(props.deletedAt) : null;
   }
 
   static create(props: PomodoroProps): Pomodoro {

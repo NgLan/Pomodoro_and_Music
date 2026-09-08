@@ -36,7 +36,10 @@ function ConfigurationFilter({
   const translate = useTranslations("pomodoro");
   const options = [
     { label: translate("TXT_ALL_CONFIGS"), value: "all" },
-    ...configurations.map(({ id, name }) => ({ label: name, value: id })),
+    ...configurations.map(({ id, name, deletedAt }) => ({
+      label: deletedAt ? `${name} (${translate("TXT_DELETED_TAG")})` : name,
+      value: id,
+    })),
   ];
   return (
     <HistorySelectFilter
