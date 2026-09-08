@@ -21,8 +21,12 @@ const TABLE_ORDER = [
 ];
 
 async function sync() {
-  console.log('--- Starting Data Sync from Local to Supabase ---');
-  
+  const isToSupabase = process.argv.includes('--to-supabase');
+  const sourceName = isToSupabase ? 'Local Postgres' : 'Supabase';
+  const targetName = isToSupabase ? 'Supabase' : 'Local Postgres';
+
+  console.log(`--- Starting Data Sync: [${sourceName}] ➔ [${targetName}] ---`);
+
   const localClient = new pg.Client({ connectionString: localUrl });
   const supabaseClient = new pg.Client({
     connectionString: supabaseUrl,
@@ -34,37 +38,44 @@ async function sync() {
   await supabaseClient.connect();
   console.log('[OK] Connected to Supabase');
 
+  const sourceClient = isToSupabase ? localClient : supabaseClient;
+  const targetClient = isToSupabase ? supabaseClient : localClient;
+
   try {
-    await supabaseClient.query('BEGIN');
+    await targetClient.query('BEGIN');
 
     // If there's any existing data, clean up in reverse dependency order
-    console.log('Cleaning up existing Supabase data (if any)...');
+    console.log(`\nCleaning up existing data in ${targetName}...`);
     const REVERSE_ORDER = [...TABLE_ORDER].reverse();
     for (const table of REVERSE_ORDER) {
-      await supabaseClient.query(`DELETE FROM "${table}";`);
+      await targetClient.query(`DELETE FROM "${table}";`);
     }
 
     for (const table of TABLE_ORDER) {
       console.log(`\nSyncing table: "${table}"...`);
 
-      // 1. Fetch from local
-      const localDataRes = await localClient.query(`SELECT * FROM "${table}";`);
-      const rows = localDataRes.rows;
-      console.log(`  Local has ${rows.length} rows.`);
+      // 1. Fetch from source
+      const sourceDataRes = await sourceClient.query(`SELECT * FROM "${table}";`);
+      const rows = sourceDataRes.rows;
+      console.log(`  ${sourceName} has ${rows.length} rows.`);
 
       if (rows.length === 0) {
         console.log(`  Skipping empty table "${table}".`);
         continue;
       }
 
-      // 2. Fetch columns
-      const colsRes = await localClient.query(`
+      // 2. Fetch columns that exist in target table
+      const colsRes = await targetClient.query(`
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_schema = 'public' AND table_name = $1
         ORDER BY ordinal_position;
       `, [table]);
-      const columns = colsRes.rows.map(r => r.column_name);
+      const targetColumns = colsRes.rows.map(r => r.column_name);
+
+      // Only take columns that exist in both source row and target schema
+      const sampleRow = rows[0];
+      const columns = targetColumns.filter(c => c in sampleRow);
 
       // 3. Batch insert
       const batchSize = 100;
@@ -75,7 +86,7 @@ async function sync() {
         const valuePlaceholders = [];
         const values = [];
 
-        batch.forEach((row, rowIdx) => {
+        batch.forEach((row) => {
           const rowPlaceholders = [];
           columns.forEach((col) => {
             values.push(row[col]);
@@ -90,26 +101,26 @@ async function sync() {
           ON CONFLICT DO NOTHING;
         `;
 
-        await supabaseClient.query(query, values);
+        await targetClient.query(query, values);
         insertedCount += batch.length;
       }
 
-      console.log(`  Successfully synced ${insertedCount} rows into "${table}".`);
+      console.log(`  Successfully synced ${insertedCount} rows into "${table}" on ${targetName}.`);
     }
 
-    await supabaseClient.query('COMMIT');
-    console.log('\n[SUCCESS] Transaction committed successfully!');
+    await targetClient.query('COMMIT');
+    console.log(`\n[SUCCESS] Transaction committed successfully to ${targetName}!`);
 
     // Verify row counts
     console.log('\n--- Final Verification ---');
     for (const table of TABLE_ORDER) {
-      const localCnt = (await localClient.query(`SELECT COUNT(*)::int AS cnt FROM "${table}";`)).rows[0].cnt;
-      const supabaseCnt = (await supabaseClient.query(`SELECT COUNT(*)::int AS cnt FROM "${table}";`)).rows[0].cnt;
-      const status = localCnt === supabaseCnt ? '[MATCH]' : '[MISMATCH]';
-      console.log(`  ${status} ${table.padEnd(25)} -> Local: ${localCnt}, Supabase: ${supabaseCnt}`);
+      const sourceCnt = (await sourceClient.query(`SELECT COUNT(*)::int AS cnt FROM "${table}";`)).rows[0].cnt;
+      const targetCnt = (await targetClient.query(`SELECT COUNT(*)::int AS cnt FROM "${table}";`)).rows[0].cnt;
+      const status = sourceCnt === targetCnt ? '[MATCH]' : '[MISMATCH]';
+      console.log(`  ${status} ${table.padEnd(25)} -> ${sourceName}: ${sourceCnt}, ${targetName}: ${targetCnt}`);
     }
   } catch (err) {
-    await supabaseClient.query('ROLLBACK');
+    await targetClient.query('ROLLBACK');
     console.error('\n[ERROR] Sync failed, rolled back:', err);
     throw err;
   } finally {

@@ -41,6 +41,32 @@ describe('common foundation', () => {
       );
     });
 
+    it('selects LOCAL_DATABASE_URL in development when provided', () => {
+      const devEnv = {
+        ...VALID_ENVIRONMENT,
+        NODE_ENV: 'development',
+        LOCAL_DATABASE_URL: 'postgresql://user:pass@localhost:5432/local_db',
+        DATABASE_URL: 'postgresql://user:pass@supabase.com:5432/remote_db',
+      };
+      const validated = validateEnvironment(devEnv);
+      expect(validated.DATABASE_URL).toBe(
+        'postgresql://user:pass@localhost:5432/local_db',
+      );
+    });
+
+    it('selects DATABASE_URL in production even if LOCAL_DATABASE_URL is provided', () => {
+      const prodEnv = {
+        ...VALID_ENVIRONMENT,
+        NODE_ENV: 'production',
+        LOCAL_DATABASE_URL: 'postgresql://user:pass@localhost:5432/local_db',
+        DATABASE_URL: 'postgresql://user:pass@supabase.com:5432/remote_db',
+      };
+      const validated = validateEnvironment(prodEnv);
+      expect(validated.DATABASE_URL).toBe(
+        'postgresql://user:pass@supabase.com:5432/remote_db',
+      );
+    });
+
     it('rejects invalid types and ranges', () => {
       expect(() =>
         validateEnvironment({ ...VALID_ENVIRONMENT, PORT: '70000' }),

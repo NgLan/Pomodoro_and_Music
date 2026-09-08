@@ -59,11 +59,27 @@ export function validateEnvironment(environment: Environment): Environment {
     );
   }
 
-  const databaseUrl = validateUrl(
-    readRequiredString(environment, 'DATABASE_URL'),
-    'DATABASE_URL',
-    ['postgres:', 'postgresql:'],
-  );
+  const isDevelopment = nodeEnv === 'development';
+  const dbEnvKey =
+    isDevelopment && environment.LOCAL_DATABASE_URL
+      ? 'LOCAL_DATABASE_URL'
+      : 'DATABASE_URL';
+
+  const rawDatabaseUrl =
+    isDevelopment &&
+    typeof environment.LOCAL_DATABASE_URL === 'string' &&
+    environment.LOCAL_DATABASE_URL.trim() !== ''
+      ? environment.LOCAL_DATABASE_URL.trim()
+      : readRequiredString(environment, 'DATABASE_URL');
+
+  const databaseUrl = validateUrl(rawDatabaseUrl, dbEnvKey, [
+    'postgres:',
+    'postgresql:',
+  ]);
+
+  // Synchronize process.env.DATABASE_URL so all downstream consumers use the active URL
+  process.env.DATABASE_URL = databaseUrl;
+
   const frontendOrigin = validateUrl(
     readRequiredString(environment, 'FRONTEND_ORIGIN'),
     'FRONTEND_ORIGIN',

@@ -27,4 +27,3 @@ export function clearRefreshTokenCookie(
     secure: isProduction,
   });
 }
-
