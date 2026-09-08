@@ -1,9 +1,13 @@
 import { AuthGate } from "@/features/auth/components/AuthGate";
 import { PlaylistDetail } from "@/features/playlist/components/PlaylistDetail";
 
+interface PlaylistDetailPageProps {
+  params: Promise<{ id: string }>;
+}
+
 export default async function PlaylistDetailPage({
   params,
-}: PageProps<"/playlists/[id]">) {
+}: PlaylistDetailPageProps) {
   const { id } = await params;
   return (
     <AuthGate>
