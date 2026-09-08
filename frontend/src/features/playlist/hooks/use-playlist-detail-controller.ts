@@ -11,8 +11,8 @@ export function usePlaylistDetailController(id: string) {
   const [isEditing, setIsEditing] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isUrlOpen, setIsUrlOpen] = useState(false);
-  const playback = usePlaylistPlayback(query.data?.items ?? []);
-  const edits = trackEdits(query.data, items, playback);
+  const playback = usePlaylistPlayback(query.data);
+  const edits = trackEdits(query.data, items);
   return {
     query,
     items,
@@ -31,10 +31,15 @@ export function usePlaylistDetailController(id: string) {
 function trackEdits(
   playlist: ReturnType<typeof usePlaylistDetail>["data"],
   items: ReturnType<typeof usePlaylistItemActions>,
-  playback: ReturnType<typeof usePlaylistPlayback>,
 ) {
   const move = (index: number, direction: -1 | 1) => {
-    if (!playlist) return;
+    if (
+      !playlist ||
+      items.reorder.isPending ||
+      index + direction < 0 ||
+      index + direction >= playlist.items.length
+    )
+      return;
     const ordered = playlist.items.map((item) => item.id);
     [ordered[index], ordered[index + direction]] = [
       ordered[index + direction]!,
@@ -43,8 +48,7 @@ function trackEdits(
     items.reorder.mutate(ordered);
   };
   const remove = (itemId: string) => {
-    playback.prepareRemoval(itemId);
-    items.remove.mutate(itemId);
+    if (!items.remove.isPending) items.remove.mutate(itemId);
   };
   return { move, remove };
 }

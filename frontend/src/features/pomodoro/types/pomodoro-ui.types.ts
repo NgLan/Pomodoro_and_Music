@@ -18,6 +18,8 @@ export interface TimerRuntime {
 }
 
 export interface ConfigurationFormValues {
+  focusPlaylistId: PomodoroConfigurationResponseDto["focusPlaylistId"];
+  breakPlaylistId: PomodoroConfigurationResponseDto["breakPlaylistId"];
   name: string;
   focusDurationMinutes: number;
   shortBreakDurationMinutes: number;

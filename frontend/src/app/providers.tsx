@@ -9,6 +9,7 @@ import { AppLocaleProvider } from "@/shared/providers/locale-provider";
 import { NotificationProvider } from "@/shared/providers/notification-provider";
 import { QueryProvider } from "@/shared/providers/query-provider";
 import { TooltipProvider } from "@/shared/ui/tooltip";
+import { FocusSessionProvider } from "@/shared/providers/focus-session-provider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -23,7 +24,9 @@ export function Providers({ children, locale, messages }: ProvidersProps) {
       <QueryProvider>
         <AuthProvider>
           <TooltipProvider delayDuration={300}>
-            <NotificationProvider>{children}</NotificationProvider>
+            <NotificationProvider>
+              <FocusSessionProvider>{children}</FocusSessionProvider>
+            </NotificationProvider>
           </TooltipProvider>
         </AuthProvider>
       </QueryProvider>

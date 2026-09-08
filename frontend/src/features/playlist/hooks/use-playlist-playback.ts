@@ -1,66 +1,49 @@
 "use client";
+import type { MediaItemResponseDto, PlaylistDetailResponseDto } from "@/api";
+import type { PlayerStore } from "@/features/music-player/state/player-store";
+import { usePlayer } from "@/features/music-player/providers/PlayerProvider";
 
-import { useMemo, useState } from "react";
-import type { MediaItemResponseDto, PlaylistItemResponseDto } from "@/api";
-
-export function usePlaylistPlayback(items: PlaylistItemResponseDto[]) {
-  const available = useMemo(
-    () => items.filter((item) => item.media.availability === "AVAILABLE"),
-    [items],
-  );
-  const [current, setCurrent] = useState<MediaItemResponseDto | null>(null);
-  const [isShuffled, setIsShuffled] = useState(false);
-  const [isRepeat, setIsRepeat] = useState(false);
-
+export function usePlaylistPlayback(
+  playlist: PlaylistDetailResponseDto | undefined,
+) {
+  const { store, state, current } = usePlayer();
   const play = () => {
-    if (!available.length) return;
-    const index = isShuffled ? Math.floor(Math.random() * available.length) : 0;
-    setCurrent(available[index]!.media);
+    activatePlaylistDetail(playlist, store);
+    if (store.getSnapshot().itemId)
+      store.update((value) => ({ ...value, isPlaying: true }));
   };
-  const step = (offset: number) => {
-    if (!available.length) return;
-    const currentIndex = Math.max(0, findCurrent(available, current));
-    const bounded = Math.min(
-      available.length - 1,
-      Math.max(0, currentIndex + offset),
-    );
-    const index = isRepeat
-      ? (currentIndex + offset + available.length) % available.length
-      : bounded;
-    setCurrent(available[index]!.media);
-  };
-  const prepareRemoval = (itemId: string) => {
-    const index = available.findIndex((item) => item.id === itemId);
-    if (index < 0 || !sameMedia(available[index]!, current)) return;
-    setCurrent(
-      available[index + 1]?.media ?? available[index - 1]?.media ?? null,
-    );
-  };
-
   return {
-    current,
-    isRepeat,
-    isShuffled,
-    pause: () => setCurrent(null),
+    current: state.playlistId === playlist?.id ? current : null,
+    isRepeat: state.isRepeat,
+    isShuffled: state.isShuffleEnabled,
     play,
-    prepareRemoval,
-    select: setCurrent,
-    step,
-    toggleRepeat: () => setIsRepeat((value) => !value),
-    toggleShuffle: () => setIsShuffled((value) => !value),
+    select: (media: MediaItemResponseDto) =>
+      selectPlaylistTrack(playlist, store, media),
+    pause: store.pause,
+    step: store.step,
+    toggleRepeat: store.toggleRepeat,
+    toggleShuffle: store.toggleShuffle,
   };
 }
 
-function findCurrent(
-  items: PlaylistItemResponseDto[],
-  current: MediaItemResponseDto | null,
-): number {
-  return items.findIndex((item) => sameMedia(item, current));
+export function selectPlaylistTrack(
+  playlist: PlaylistDetailResponseDto | undefined,
+  store: PlayerStore,
+  media: MediaItemResponseDto,
+) {
+  if (!playlist) return;
+  activatePlaylistDetail(playlist, store);
+  const item = playlist?.items.find(
+    (entry) => entry.media.externalMediaId === media.externalMediaId,
+  );
+  if (item) store.select(item.id);
 }
 
-function sameMedia(
-  item: PlaylistItemResponseDto,
-  media: MediaItemResponseDto | null,
-): boolean {
-  return item.media.externalMediaId === media?.externalMediaId;
+function activatePlaylistDetail(
+  playlist: PlaylistDetailResponseDto | undefined,
+  store: PlayerStore,
+) {
+  if (!playlist) return;
+  store.activate(playlist.id);
+  store.reconcile(playlist);
 }

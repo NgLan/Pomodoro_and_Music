@@ -1,3 +1,5 @@
+import viMusicPlayer from "./locales/vi/music-player.json";
+import enMusicPlayer from "./locales/en/music-player.json";
 import viYoutubeImport from "./locales/vi/youtube-import.json";
 import enYoutubeImport from "./locales/en/youtube-import.json";
 import enAuth from "./locales/en/auth.json";
@@ -16,6 +18,7 @@ import type { AppLocale } from "./config";
 
 export const messagesByLocale = {
   vi: {
+    musicPlayer: viMusicPlayer,
     auth: viAuth,
     common: viCommon,
     errors: viErrors,
@@ -25,6 +28,7 @@ export const messagesByLocale = {
     youtubeImport: viYoutubeImport,
   },
   en: {
+    musicPlayer: enMusicPlayer,
     auth: enAuth,
     common: enCommon,
     errors: enErrors,
