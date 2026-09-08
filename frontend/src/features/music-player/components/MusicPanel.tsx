@@ -11,7 +11,7 @@ import { QueueButton } from "./QueueButton";
 
 export function MusicPanel() {
   return (
-    <Card className="bg-surface-blue min-w-0">
+    <Card className="bg-surface-blue min-w-0 flex flex-col justify-between min-h-[32rem] sm:min-h-[34rem]">
       <MusicHeading />
       <MusicContent />
     </Card>
@@ -21,7 +21,7 @@ export function MusicPanel() {
 function MusicHeading() {
   const t = useTranslations("musicPlayer");
   return (
-    <CardHeader className="pb-0 pt-1 sm:pt-1.5 px-3 sm:px-4">
+    <CardHeader className="pb-0 pt-2 sm:pt-3 px-3.5 sm:px-4.5">
       <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
         <Headphones className="size-4.5" />
         {t("TXT_TITLE")}
@@ -35,17 +35,21 @@ function MusicContent() {
   const { state, store } = usePlayer();
   const t = useTranslations("musicPlayer");
   return (
-    <CardContent className="space-y-1.5 sm:space-y-2 px-3 sm:px-4 pb-2 sm:pb-2.5">
-      <PlaylistSelector
-        value={state.playlistId}
-        onChange={store.activate}
-        label={t("PLAYLIST_LABEL")}
-      />
-      <NowPlaying />
-      <PlayerControls />
-      <PlayerStatus />
-      <QueueButton />
-      <p className="text-muted-foreground text-[0.68rem]">{t("TXT_OVERRIDE_HINT")}</p>
+    <CardContent className="flex flex-1 flex-col justify-between gap-3 px-3.5 sm:px-4.5 pb-3 sm:pb-4">
+      <div className="space-y-2 sm:space-y-2.5">
+        <PlaylistSelector
+          value={state.playlistId}
+          onChange={store.activate}
+          label={t("PLAYLIST_LABEL")}
+        />
+        <NowPlaying />
+        <PlayerControls />
+        <PlayerStatus />
+      </div>
+      <div className="space-y-1.5">
+        <QueueButton />
+        <p className="text-muted-foreground text-[0.68rem]">{t("TXT_OVERRIDE_HINT")}</p>
+      </div>
     </CardContent>
   );
 }
