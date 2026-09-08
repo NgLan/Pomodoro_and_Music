@@ -5,6 +5,7 @@
   "BTN_PREVIOUS": "Previous track",
   "BTN_NEXT": "Next track",
   "BTN_REPEAT": "Repeat playlist",
+  "BTN_REPEAT_ONE": "Repeat one track",
   "BTN_PLAY": "Play music",
   "BTN_PAUSE": "Pause music",
   "VOLUME_LABEL": "Volume",

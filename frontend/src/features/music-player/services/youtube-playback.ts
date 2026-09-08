@@ -51,7 +51,6 @@ function syncVideoTrack(
   }
 }
 
-
 export function isCurrentVideo(player: YoutubePlayer, store: PlayerStore) {
   const state = store.getSnapshot();
   const item = state.playlist?.items.find((entry) => entry.id === state.itemId);
@@ -70,7 +69,7 @@ export function handleYoutubeState(
   store: PlayerStore,
 ) {
   if (!isCurrentVideo(player, store)) return;
-  if (code === 0) store.step(1);
+  if (code === 0) store.ended();
   if (code === 1 || code === 2)
     store.update((state) => ({
       ...state,

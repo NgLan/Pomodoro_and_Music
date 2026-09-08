@@ -1,6 +1,7 @@
 import type { PlayerState } from "../types/player.types";
 import { skipFailedTrack, stepQueue } from "./player-queue";
 import { selectTrack, toggleShuffle } from "./player-selection";
+import { createRepeatActions } from "./player-repeat";
 
 export function createPlaybackActions(
   update: (transform: (state: PlayerState) => PlayerState) => void,
@@ -17,8 +18,7 @@ export function createPlaybackActions(
     step: (direction: -1 | 1) => update((state) => stepQueue(state, direction)),
     fail: () => update(skipFailedTrack),
     retry: () => update(retryPlayback),
-    toggleRepeat: () =>
-      update((state) => ({ ...state, isRepeat: !state.isRepeat })),
+    ...createRepeatActions(update),
     toggleShuffle: () => update(toggleShuffle),
     seek: (seconds: number) =>
       update((state) => ({

@@ -6,7 +6,6 @@ import type {
 } from "@/api";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import type { WorkspaceTab } from "../types/pomodoro-ui.types";
-import { ConfigurationSummary } from "./ConfigurationSummary";
 import { ConfigurationsPanel } from "./ConfigurationsPanel";
 import { HistoryPanel } from "./HistoryPanel";
 import { MusicPanel } from "@/features/music-player/components/MusicPanel";
@@ -78,8 +77,7 @@ function TimerTab(props: WorkspaceTabsProps) {
 
 function ConfigurationTab(props: WorkspaceTabsProps) {
   return (
-    <TabsContent value="configurations" className="space-y-6">
-      <ConfigurationSummary configuration={props.selected} />
+    <TabsContent value="configurations">
       <ConfigurationsPanel
         configurations={props.configurations}
         selectedId={props.selectedId}

@@ -1,44 +1,36 @@
-import {
-  Pause,
-  Play,
-  Repeat,
-  Shuffle,
-  SkipBack,
-  SkipForward,
-} from "lucide-react";
+import { Pause, Play, Shuffle, SkipBack, SkipForward } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/shared/ui/button";
 import { usePlayer } from "../providers/PlayerProvider";
 import { PlayerVolumeHover } from "./PlayerVolumeHover";
+import { RepeatModeButton } from "./RepeatModeButton";
 
 export function PlayerControls() {
   return (
     <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
-      <ModeButton mode="shuffle" />
+      <ShuffleButton />
       <StepButton direction={-1} />
       <PlayButton />
       <StepButton direction={1} />
-      <ModeButton mode="repeat" />
+      <RepeatModeButton />
       <PlayerVolumeHover />
     </div>
   );
 }
 
-function ModeButton({ mode }: { mode: "shuffle" | "repeat" }) {
+function ShuffleButton() {
   const { state, store } = usePlayer();
   const t = useTranslations("musicPlayer");
-  const isShuffle = mode === "shuffle";
-  const pressed = isShuffle ? state.isShuffleEnabled : state.isRepeat;
   return (
     <Button
       size="icon"
-      variant={pressed ? "secondary" : "ghost"}
+      variant={state.isShuffleEnabled ? "secondary" : "ghost"}
       className="size-9 sm:size-10 [&_svg]:size-4.5 sm:[&_svg]:size-5"
-      aria-label={t(isShuffle ? "BTN_SHUFFLE" : "BTN_REPEAT")}
-      aria-pressed={pressed}
-      onClick={isShuffle ? store.toggleShuffle : store.toggleRepeat}
+      aria-label={t("BTN_SHUFFLE")}
+      aria-pressed={state.isShuffleEnabled}
+      onClick={store.toggleShuffle}
     >
-      {isShuffle ? <Shuffle /> : <Repeat />}
+      <Shuffle />
     </Button>
   );
 }
@@ -66,7 +58,7 @@ function PlayButton() {
   return (
     <Button
       size="icon"
-      className="size-12 sm:size-14 rounded-full shadow-neo [&_svg]:size-6 sm:[&_svg]:size-7"
+      className="shadow-neo size-12 rounded-full sm:size-14 [&_svg]:size-6 sm:[&_svg]:size-7"
       disabled={!current}
       aria-label={t(state.isPlaying ? "BTN_PAUSE" : "BTN_PLAY")}
       onClick={store.toggle}

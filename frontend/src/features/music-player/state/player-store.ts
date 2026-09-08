@@ -14,6 +14,7 @@ export const initialPlayerState: PlayerState = {
   isPlaying: false,
   isShuffleEnabled: false,
   isRepeat: false,
+  isRepeatOne: false,
   failedIds: [],
   issue: null,
   revision: 0,

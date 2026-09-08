@@ -3,13 +3,10 @@ import { useTranslations } from "next-intl";
 import { usePlaylistLibraryQuery } from "@/features/playlist/hooks/use-playlist-library-query";
 import { Button } from "@/shared/ui/button";
 import { Label } from "@/shared/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/shared/ui/select";
+import { Select, SelectTrigger } from "@/shared/ui/select";
 import type { PlaylistSummaryResponseDto } from "@/api";
+
+import { PlaylistOptions } from "./PlaylistOptions";
 
 interface PlaylistSelectorProps {
   value: string | null;
@@ -27,56 +24,47 @@ function getSelectorDisplay(
   return found ? found.name : t("TXT_SAVED_PLAYLIST");
 }
 
-export function PlaylistSelector({
-  value,
-  onChange,
-  label,
-}: PlaylistSelectorProps) {
+export function PlaylistSelector(props: PlaylistSelectorProps) {
   const query = usePlaylistLibraryQuery();
   const id = useId();
-  const t = useTranslations("musicPlayer");
-  const displayLabel = getSelectorDisplay(value, query.data, t);
   return (
     <div className="space-y-1.5 sm:space-y-2">
-      <Label htmlFor={id} className="text-xs sm:text-sm font-bold">{label}</Label>
-      <Select
-        value={value ?? "none"}
-        onValueChange={(next) => onChange(next === "none" ? null : next)}
-      >
-        <SelectTrigger id={id} className="w-full h-10 sm:h-10.5 text-sm sm:text-base font-bold" disabled={query.isLoading && !query.data}>
-          <span data-slot="select-value" className="truncate flex-1 text-left font-bold">
-            {displayLabel}
-          </span>
-        </SelectTrigger>
-        <PlaylistOptions selected={value} playlists={query.data ?? []} />
-      </Select>
+      <Label htmlFor={id} className="text-xs font-bold sm:text-sm">
+        {props.label}
+      </Label>
+      <PlaylistSelect {...props} id={id} query={query} />
       <SelectorRetry query={query} />
     </div>
   );
 }
 
-function PlaylistOptions({
-  selected,
-  playlists,
-}: {
-  selected: string | null;
-  playlists: PlaylistSummaryResponseDto[];
-}) {
+type PlaylistSelectProps = PlaylistSelectorProps & {
+  id: string;
+  query: ReturnType<typeof usePlaylistLibraryQuery>;
+};
+
+function PlaylistSelect({ value, onChange, id, query }: PlaylistSelectProps) {
   const t = useTranslations("musicPlayer");
+  const change = (next: string) => {
+    // Radix's native form select can emit an empty value while options mount.
+    if (next) onChange(next === "none" ? null : next);
+  };
   return (
-    <SelectContent>
-      <SelectItem value="none">{t("TXT_NO_PLAYLIST")}</SelectItem>
-      {selected &&
-        selected !== "none" &&
-        !playlists.some((item) => item.id === selected) && (
-          <SelectItem value={selected}>{t("TXT_SAVED_PLAYLIST")}</SelectItem>
-        )}
-      {playlists.map((playlist) => (
-        <SelectItem key={playlist.id} value={playlist.id}>
-          {playlist.name}
-        </SelectItem>
-      ))}
-    </SelectContent>
+    <Select value={value ?? "none"} onValueChange={change}>
+      <SelectTrigger
+        id={id}
+        className="h-10 w-full text-sm font-bold sm:h-10.5 sm:text-base"
+        disabled={query.isLoading && !query.data}
+      >
+        <span
+          data-slot="select-value"
+          className="flex-1 truncate text-left font-bold"
+        >
+          {getSelectorDisplay(value, query.data, t)}
+        </span>
+      </SelectTrigger>
+      <PlaylistOptions selected={value} playlists={query.data ?? []} />
+    </Select>
   );
 }
 

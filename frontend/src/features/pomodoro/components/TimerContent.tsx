@@ -2,6 +2,7 @@ import type { PomodoroConfigurationResponseDto } from "@/api";
 import { CardContent } from "@/shared/ui/card";
 import { Progress } from "@/shared/ui/progress";
 import type { usePomodoroTimer } from "../hooks/use-pomodoro-timer";
+import { TimerConfigRail } from "./TimerConfigRail";
 import { TimerControls } from "./TimerControls";
 import { TimerPhaseHeading } from "./TimerPhaseHeading";
 import { TimerCountdown } from "./TimerCountdown";
@@ -28,6 +29,7 @@ export function TimerContent(props: TimerContentProps) {
         onEditConfiguration={props.onEditConfiguration}
       />
       <CardContent className="relative flex flex-1 flex-col items-center justify-evenly gap-2.5 sm:gap-3.5 py-2 sm:py-3">
+        <TimerConfigRail configuration={runtime.configurationSnapshot} />
         <TimerCountdown runtime={runtime} />
         <Progress className="max-w-sm sm:max-w-md h-3.5 sm:h-4" value={progress} />
         <TimerControls

@@ -15,6 +15,7 @@ export interface PlayerState extends PlaylistCursor {
   isPlaying: boolean;
   isShuffleEnabled: boolean;
   isRepeat: boolean;
+  isRepeatOne: boolean;
   failedIds: string[];
   issue: PlayerIssue;
   revision: number;
