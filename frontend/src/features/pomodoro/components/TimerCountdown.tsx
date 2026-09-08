@@ -12,10 +12,10 @@ export function TimerCountdown({ runtime }: { runtime: TimerRuntime }) {
         : "TXT_READY";
   return (
     <div className="text-center">
-      <p className="font-mono text-[clamp(2.5rem,6vw,4.25rem)] leading-none font-extrabold tracking-[-0.08em] tabular-nums">
+      <p className="font-mono text-[clamp(3.75rem,8.5vw,5.75rem)] leading-none font-extrabold tracking-[-0.06em] tabular-nums">
         {formatDuration(runtime.remainingSeconds)}
       </p>
-      <p className="text-muted-foreground mt-1 text-xs font-semibold">
+      <p className="text-muted-foreground mt-2 text-xs sm:text-sm font-semibold">
         {t(status)}
       </p>
     </div>
