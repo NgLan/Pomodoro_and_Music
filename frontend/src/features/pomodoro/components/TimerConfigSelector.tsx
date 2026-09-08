@@ -28,7 +28,7 @@ export function TimerConfigSelector(props: TimerConfigSelectorProps) {
           className="border-border bg-surface shadow-neo-sm h-10 max-w-xs text-sm font-bold sm:max-w-sm"
         >
           <span data-slot="select-value" className="truncate flex-1 text-left font-bold">
-            {props.selected.name} ({calculateTotalMinutes(props.selected)} {t("TXT_MINUTES_SHORT")})
+            {props.selected.name}
           </span>
         </SelectTrigger>
         <ConfigOptions configurations={props.configurations} />
@@ -39,12 +39,11 @@ export function TimerConfigSelector(props: TimerConfigSelectorProps) {
 }
 
 function ConfigOptions({ configurations }: { configurations: PomodoroConfigurationResponseDto[] }) {
-  const t = useTranslations("pomodoro");
   return (
     <SelectContent>
       {configurations.map((item) => (
         <SelectItem key={item.id} value={item.id}>
-          {item.name} ({calculateTotalMinutes(item)} {t("TXT_MINUTES_SHORT")})
+          {item.name}
         </SelectItem>
       ))}
     </SelectContent>
@@ -65,12 +64,5 @@ function EditConfigButton({ onEdit }: { onEdit: () => void }) {
     >
       <Settings className="size-4.5" />
     </Button>
-  );
-}
-
-function calculateTotalMinutes(item: PomodoroConfigurationResponseDto): number {
-  return (
-    Math.round(item.focusDurationSeconds / 60) *
-    item.focusSessionsBeforeLongBreak
   );
 }

@@ -18,7 +18,7 @@ const mockConfig: PomodoroConfigurationResponseDto = {
   updatedAt: "2026-01-01T00:00:00.000Z",
 };
 
-it("renders configuration name with total minutes and handles edit", async () => {
+it("renders configuration name and handles edit", async () => {
   const user = userEvent.setup();
   const handleEdit = vi.fn();
   const handleSelect = vi.fn();
@@ -32,7 +32,7 @@ it("renders configuration name with total minutes and handles edit", async () =>
     />,
   );
 
-  expect(screen.getByRole("combobox")).toHaveTextContent("Học Nihongo (100 phút)");
+  expect(screen.getByRole("combobox")).toHaveTextContent("Học Nihongo");
 
   const editBtn = screen.getByRole("button", { name: "Chỉnh sửa cấu hình này" });
   await user.click(editBtn);
