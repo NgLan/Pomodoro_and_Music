@@ -1,10 +1,12 @@
 "use client";
 
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import type { PomodoroConfigurationResponseDto } from "@/api";
 import type { WorkspaceTab } from "../types/pomodoro-ui.types";
 import { usePomodoroData } from "./use-pomodoro-data";
 import { usePomodoroHistoryNavigation } from "./use-pomodoro-history-navigation";
+import { useTimerSessionStore } from "../providers/TimerSessionProvider";
+import type { TimerSessionStore } from "../state/timer-session-store";
 
 type PomodoroData = ReturnType<typeof usePomodoroData>;
 type SelectedIdSetter = Dispatch<SetStateAction<string | null>>;
@@ -47,7 +49,7 @@ function useConfigurationForm(
   };
   const save = async (draft: Parameters<typeof data.save>[0]) => {
     const value = await data.save(draft);
-    setSelectedId((current) => current ?? value.id);
+    setSelectedId(value.id);
     setFormOpen(false);
   };
   return { closeForm, create, edit, formOpen, save };
@@ -57,19 +59,23 @@ function useConfigurationDeletion(
   data: PomodoroData,
   selectedId: string | null,
   setSelectedId: SelectedIdSetter,
+  store: TimerSessionStore,
 ) {
   const [deleting, setDeleting] =
     useState<PomodoroConfigurationResponseDto | null>(null);
   const confirmDelete = async () => {
     if (!deleting) return;
-    await data.remove(deleting.id);
-    if (selectedId === deleting.id) setSelectedId(null);
+    const deletedId = deleting.id;
+    await data.remove(deletedId);
+    store.removeConfiguration(deletedId);
+    if (selectedId === deletedId) setSelectedId(null);
     setDeleting(null);
   };
   return { confirmDelete, deleting, setDeleting };
 }
 
 export function useWorkspaceController() {
+  const store = useTimerSessionStore();
   const historyNavigation = usePomodoroHistoryNavigation();
   const data = usePomodoroData(historyNavigation.historyQuery);
   const [tab, setTab] = useState<WorkspaceTab>("timer");
@@ -79,7 +85,22 @@ export function useWorkspaceController() {
     data,
     selection.selectedId,
     selection.setSelectedId,
+    store,
   );
+
+  useEffect(() => {
+    if (data.isLoading) return;
+    const snapshot = store.getSnapshot();
+    if (!snapshot) return;
+
+    const exists = data.configurations.some(
+      (item) => item.id === snapshot.configurationSnapshot.id,
+    );
+    if (!exists) {
+      store.clear();
+    }
+  }, [data.configurations, data.isLoading, store]);
+
   return {
     ...data,
     ...historyNavigation,
@@ -90,3 +111,4 @@ export function useWorkspaceController() {
     tab,
   };
 }
+

@@ -26,13 +26,22 @@ export class TimerSessionStore {
       this.listeners.delete(listener);
     };
   };
-  private set = (next: TimerRuntime) => {
+  private set = (next: TimerRuntime | null) => {
     this.runtime = next;
     saveTimerSession(next);
     this.listeners.forEach((listener) => listener());
   };
   setEvents = (events: TimerSessionEvents) => {
     this.events = events;
+  };
+  clear = () => {
+    this.set(null);
+    this.events?.stopped();
+  };
+  removeConfiguration = (deletedId: string) => {
+    if (this.runtime?.configurationSnapshot.id === deletedId) {
+      this.clear();
+    }
   };
   configure = (configuration: PomodoroConfigurationResponseDto) => {
     if (this.runtime?.configurationSnapshot === configuration) return;
@@ -41,8 +50,8 @@ export class TimerSessionStore {
       if (same) {
         this.set({ ...this.runtime, configurationSnapshot: configuration });
         this.events?.music(this.runtime);
+        return;
       }
-      return;
     }
     const next = createTimerRuntime(
       configuration,
