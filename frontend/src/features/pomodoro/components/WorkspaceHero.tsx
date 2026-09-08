@@ -14,7 +14,7 @@ function TodayStats({ configuration, entries }: {
   );
   const seconds = focus.reduce((total, entry) => total + entry.actualDurationSeconds, 0);
   const items = [
-    [translate("TXT_TODAY_FOCUS"), `${Math.round(seconds / 60)} ${translate("TXT_MINUTES_SHORT")}`],
+    [translate("TXT_TODAY_FOCUS"), formatFocusTime(seconds, translate)],
     [translate("TXT_TODAY_SESSIONS"), String(focus.length)],
     [translate("TXT_ACTIVE_CONFIG"), configuration?.name ?? "—"],
   ];
@@ -45,3 +45,25 @@ export function WorkspaceHero({ configuration, history }: {
     </header>
   );
 }
+
+type PomodoroTranslator = (
+  key: "TXT_HOURS_SHORT" | "TXT_MINUTES_SHORT" | "TXT_SECONDS_SHORT",
+) => string;
+
+export function formatFocusTime(
+  totalSeconds: number,
+  t: PomodoroTranslator,
+): string {
+  const rounded = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(rounded / 3600);
+  const minutes = Math.floor((rounded % 3600) / 60);
+  const seconds = rounded % 60;
+
+  const parts: string[] = [];
+  if (hours > 0) parts.push(`${hours} ${t("TXT_HOURS_SHORT")}`);
+  if (minutes > 0 || hours > 0) parts.push(`${minutes} ${t("TXT_MINUTES_SHORT")}`);
+  parts.push(`${seconds} ${t("TXT_SECONDS_SHORT")}`);
+
+  return parts.join(" ");
+}
+

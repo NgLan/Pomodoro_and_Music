@@ -41,8 +41,28 @@ const mockHistory: PomodoroHistoryResponseDto[] = [
   },
 ];
 
-it("calculates focus minutes including completed and ended early sessions but not breaks", () => {
+it("calculates focus duration accurately down to seconds including completed and ended early sessions", () => {
   render(<WorkspaceHero history={mockHistory} />);
-  // 1500s + 600s = 2100s = 35 minutes
-  expect(screen.getByText("35 phút")).toBeInTheDocument();
+  // 1500s + 600s = 2100s = 35 phút 0 giây
+  expect(screen.getByText("35 phút 0 giây")).toBeInTheDocument();
+});
+
+it("formats seconds accurately when partial seconds are present", () => {
+  const historyWithSeconds: PomodoroHistoryResponseDto[] = [
+    ...mockHistory,
+    {
+      id: "h4",
+      pomodoroId: "p1",
+      configurationName: "Test",
+      phaseType: "FOCUS",
+      status: "ENDED_EARLY",
+      plannedDurationSeconds: 1500,
+      actualDurationSeconds: 45, // 45 seconds
+      startedAt: today,
+      endedAt: today,
+    },
+  ];
+  render(<WorkspaceHero history={historyWithSeconds} />);
+  // 2100s + 45s = 2145s = 35 phút 45 giây
+  expect(screen.getByText("35 phút 45 giây")).toBeInTheDocument();
 });
