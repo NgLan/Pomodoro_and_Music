@@ -93,5 +93,7 @@
   "TXT_LOCAL_NOTE": "Dữ liệu được lưu an toàn trên trình duyệt của thiết bị này.",
   "TXT_SERVER_NOTE": "Cấu hình và lịch sử được đồng bộ an toàn với tài khoản của bạn.",
   "TXT_DELETED_CONFIG": "Cấu hình đã xóa",
-  "ARIA_CLOSE": "Đóng"
+  "ARIA_CLOSE": "Đóng",
+  "BTN_EDIT_CURRENT_CONFIG": "Chỉnh sửa cấu hình này",
+  "TXT_SWITCH_CONFIG": "Đổi cấu hình"
 }

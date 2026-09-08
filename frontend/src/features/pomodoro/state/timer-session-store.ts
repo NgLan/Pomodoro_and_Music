@@ -8,10 +8,11 @@ import {
   tickTimer,
 } from "./timer-session-actions";
 import { getRemainingSeconds } from "./pomodoro-machine";
+import { loadTimerSession, saveTimerSession } from "../utils/timer-storage";
 
 /** Session lifetime is owned by the provider, independently of route components. */
 export class TimerSessionStore {
-  private runtime: TimerRuntime | null = null;
+  private runtime: TimerRuntime | null = loadTimerSession();
   private events: TimerSessionEvents | null = null;
   private listeners = new Set<() => void>();
   getSnapshot = () => this.runtime;
@@ -23,6 +24,7 @@ export class TimerSessionStore {
   };
   private set = (next: TimerRuntime) => {
     this.runtime = next;
+    saveTimerSession(next);
     this.listeners.forEach((listener) => listener());
   };
   setEvents = (events: TimerSessionEvents) => {

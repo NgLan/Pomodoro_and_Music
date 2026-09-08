@@ -59,14 +59,20 @@ function WorkspaceTabLabels() {
   );
 }
 
-function TimerTab({ selected, create }: WorkspaceTabsProps) {
+function TimerTab(props: WorkspaceTabsProps) {
   return (
     <TabsContent value="timer" className="space-y-6">
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.65fr)_minmax(18rem,0.85fr)]">
-        <TimerCard configuration={selected} onNeedConfiguration={create} />
+        <TimerCard
+          configuration={props.selected}
+          configurations={props.configurations}
+          onNeedConfiguration={props.create}
+          onSelectConfiguration={props.select}
+          onEditConfiguration={props.edit}
+        />
         <MusicPanel />
       </div>
-      <ConfigurationSummary configuration={selected} />
+      <ConfigurationSummary configuration={props.selected} />
     </TabsContent>
   );
 }

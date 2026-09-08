@@ -7,7 +7,11 @@ function TodayStats({ configuration, entries }: {
 }) {
   const translate = useTranslations("pomodoro");
   const today = new Date().toDateString();
-  const focus = entries.filter((entry) => new Date(entry.startedAt).toDateString() === today && entry.phaseType === "FOCUS" && entry.status === "COMPLETED");
+  const focus = entries.filter(
+    (entry) =>
+      new Date(entry.startedAt).toDateString() === today &&
+      entry.phaseType === "FOCUS",
+  );
   const seconds = focus.reduce((total, entry) => total + entry.actualDurationSeconds, 0);
   const items = [
     [translate("TXT_TODAY_FOCUS"), `${Math.round(seconds / 60)} ${translate("TXT_MINUTES_SHORT")}`],

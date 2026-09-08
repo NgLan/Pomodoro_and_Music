@@ -93,5 +93,7 @@
   "TXT_LOCAL_NOTE": "Your data is stored safely in this browser on this device.",
   "TXT_SERVER_NOTE": "Configurations and history are securely synced to your account.",
   "TXT_DELETED_CONFIG": "Deleted configuration",
-  "ARIA_CLOSE": "Close"
+  "ARIA_CLOSE": "Close",
+  "BTN_EDIT_CURRENT_CONFIG": "Edit this configuration",
+  "TXT_SWITCH_CONFIG": "Switch configuration"
 }

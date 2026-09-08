@@ -1,3 +1,4 @@
+import type { PomodoroConfigurationResponseDto } from "@/api";
 import { CardContent } from "@/shared/ui/card";
 import { Progress } from "@/shared/ui/progress";
 import type { usePomodoroTimer } from "../hooks/use-pomodoro-timer";
@@ -8,23 +9,31 @@ import { TimerNextPhase } from "./TimerNextPhase";
 
 interface TimerContentProps {
   timer: ReturnType<typeof usePomodoroTimer>;
+  configurations?: PomodoroConfigurationResponseDto[];
+  onSelectConfiguration?: (id: string) => void;
+  onEditConfiguration?: (config: PomodoroConfigurationResponseDto) => void;
   onStop: () => void;
 }
 
-export function TimerContent({ timer, onStop }: TimerContentProps) {
-  const { runtime } = timer;
+export function TimerContent(props: TimerContentProps) {
+  const { runtime } = props.timer;
   const progress =
     (1 - runtime.remainingSeconds / runtime.plannedDurationSeconds) * 100;
   return (
     <>
-      <TimerPhaseHeading runtime={runtime} />
+      <TimerPhaseHeading
+        runtime={runtime}
+        configurations={props.configurations}
+        onSelectConfiguration={props.onSelectConfiguration}
+        onEditConfiguration={props.onEditConfiguration}
+      />
       <CardContent className="relative flex flex-1 flex-col items-center justify-center gap-7 py-5">
         <TimerCountdown runtime={runtime} />
         <Progress className="max-w-md" value={progress} />
         <TimerControls
           status={runtime.status}
-          onPrimary={timer.toggle}
-          onStop={onStop}
+          onPrimary={props.timer.toggle}
+          onStop={props.onStop}
         />
         <TimerNextPhase runtime={runtime} />
       </CardContent>

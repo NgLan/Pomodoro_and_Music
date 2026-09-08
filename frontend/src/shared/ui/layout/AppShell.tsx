@@ -19,7 +19,7 @@ export function AppShell({
   return (
     <div className={cn("flex min-h-svh flex-col", className)} {...props}>
       {header ? (
-        <header className="border-border bg-surface z-(--z-sticky) border-b-3">
+        <header className="sticky top-0 z-(--z-sticky) border-b-3 border-border bg-surface">
           {header}
         </header>
       ) : null}

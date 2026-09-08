@@ -28,24 +28,22 @@ function EmptyTimer({ onCreate }: { onCreate: () => void }) {
   );
 }
 
-export function TimerCard({
-  configuration,
-  onNeedConfiguration,
-}: {
+interface TimerCardProps {
   configuration?: PomodoroConfigurationResponseDto;
+  configurations?: PomodoroConfigurationResponseDto[];
   onNeedConfiguration: () => void;
-}) {
-  if (!configuration) return <EmptyTimer onCreate={onNeedConfiguration} />;
-  return <ActiveTimer configuration={configuration} />;
+  onSelectConfiguration?: (id: string) => void;
+  onEditConfiguration?: (config: PomodoroConfigurationResponseDto) => void;
 }
 
-function ActiveTimer({
-  configuration,
-}: {
-  configuration: PomodoroConfigurationResponseDto;
-}) {
+export function TimerCard(props: TimerCardProps) {
+  if (!props.configuration) return <EmptyTimer onCreate={props.onNeedConfiguration} />;
+  return <ActiveTimer {...props} configuration={props.configuration} />;
+}
+
+function ActiveTimer(props: TimerCardProps & { configuration: PomodoroConfigurationResponseDto }) {
   const [stopOpen, setStopOpen] = useState(false);
-  const timer = usePomodoroTimer(configuration);
+  const timer = usePomodoroTimer(props.configuration);
   const stop = () => {
     timer.stop();
     setStopOpen(false);
@@ -53,7 +51,13 @@ function ActiveTimer({
   return (
     <Card className="bg-surface relative min-h-[34rem] overflow-hidden p-2 sm:p-4">
       <span className="bg-accent-yellow border-border absolute -top-7 -right-8 size-28 rotate-12 rounded-3xl border-3" />
-      <TimerContent timer={timer} onStop={() => setStopOpen(true)} />
+      <TimerContent
+        timer={timer}
+        configurations={props.configurations}
+        onSelectConfiguration={props.onSelectConfiguration}
+        onEditConfiguration={props.onEditConfiguration}
+        onStop={() => setStopOpen(true)}
+      />
       <TimerStopDialog
         open={stopOpen}
         onOpenChange={setStopOpen}
